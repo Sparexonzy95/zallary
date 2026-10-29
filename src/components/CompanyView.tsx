@@ -338,37 +338,39 @@ export function CompanyView({ vault, portal, onBackToCompanies }: Props) {
         </div>
       ) : active === 'institution' ? (
         /* ═════════ GOVERNANCE & ROLES PORTAL ═════════ */
-        <div className="stack dashboard-shell dashboard-shell-employer employer-dashboard-premium employer-dashboard-redesign template-detail-page">
-          <div className="employer-task-dashboard">
-            <section className="employer-task-hero">
-              <div className="employer-task-hero-copy">
-                <span className="employer-task-kicker">Institution Governance · {company?.name || 'Company'}</span>
-                <h1>
-                  Roles & <span>Policies</span>
-                </h1>
-                <p className="employer-task-hero-subtitle">
-                  Manage on-chain role delegations, maker-checker separation, and protocol safety policies.
-                </p>
-              </div>
+        <div className="stack dashboard-shell dashboard-shell-employer employer-dashboard-premium employer-dashboard-redesign template-detail-page role-assignment-page">
+          <section className="employer-task-hero template-detail-hero">
+            <div className="employer-task-hero-copy template-detail-hero-copy">
+              <span className="employer-task-kicker">Institution Governance · {company?.name || 'Company'}</span>
+              <h1>
+                Roles & <span>Policies</span>
+              </h1>
+              <p className="employer-task-hero-subtitle">
+                Manage on-chain role delegations, maker-checker separation, and protocol safety policies.
+              </p>
+            </div>
 
-              <div className="employer-task-hero-metrics" aria-label="Governance summary">
-                <div className="employer-task-hero-metric">
-                  <span>Maker-Checker</span>
-                  <strong>{separate.enforced ? 'Enforced' : 'Relaxed'}</strong>
-                </div>
-                <div className="employer-task-hero-metric">
-                  <span>Admin Role</span>
-                  <strong>{roles.ADMIN ? 'Authorized' : 'Viewer'}</strong>
-                </div>
-                <div className="employer-task-hero-metric">
-                  <span>Vault Status</span>
-                  <strong className="text-[#38d996]">Active</strong>
-                </div>
+            <div className="employer-task-hero-metrics template-detail-hero-metrics" aria-label="Governance summary">
+              <div className="employer-task-hero-metric">
+                <span>Maker-Checker</span>
+                <strong className={separate.enforced ? 'text-[#38d996]' : 'text-[#FE9E15]'}>
+                  {separate.enforced ? 'Enforced' : 'Relaxed'}
+                </strong>
               </div>
-            </section>
+              <div className="employer-task-hero-metric">
+                <span>Admin Access</span>
+                <strong>{roles.ADMIN ? 'Authorized' : 'Viewer'}</strong>
+              </div>
+              <div className="employer-task-hero-metric">
+                <span>Vault Status</span>
+                <strong className="text-[#38d996]">Active</strong>
+              </div>
+            </div>
+          </section>
 
-            <main className="employer-task-main">
-              <div className="filter-tabs employer-payroll-filters">
+          <div className="template-detail-layout">
+            <main className="template-detail-main">
+              <div className="filter-tabs employer-payroll-filters mb-4">
                 <button
                   type="button"
                   className={`filter-tab${governanceTab === 'roles' ? ' active' : ''}`}
@@ -391,6 +393,47 @@ export function CompanyView({ vault, portal, onBackToCompanies }: Props) {
                 <PoliciesSection vault={vault} isAdmin={roles.ADMIN} />
               )}
             </main>
+
+            <aside className="template-detail-sidebar">
+              <button
+                type="button"
+                className="employer-task-primary-action template-detail-sidebar-action-btn"
+                onClick={() => setGovernanceTab(governanceTab === 'roles' ? 'policies' : 'roles')}
+              >
+                {governanceTab === 'roles' ? 'View Safety Policies' : 'Manage Role Delegations'}
+              </button>
+
+              <div className="employer-task-card employer-status-sidebar template-detail-sidebar-card">
+                <div className="employer-status-sidebar-head">
+                  <span className="employer-task-side-icon">
+                    <Shield size={14} strokeWidth={1.9} />
+                  </span>
+                  <div>
+                    <span>Governance</span>
+                    <strong>Institution Controls</strong>
+                  </div>
+                </div>
+
+                <div className="employer-status-row">
+                  <span>Your Role</span>
+                  <strong>{roles.ADMIN ? 'Administrator' : 'Auditor'}</strong>
+                </div>
+                <div className="employer-status-row">
+                  <span>Maker-Checker</span>
+                  <strong className={separate.enforced ? 'text-[#38d996]' : 'text-[#FE9E15]'}>
+                    {separate.enforced ? 'Enforced' : 'Relaxed'}
+                  </strong>
+                </div>
+                <div className="employer-status-row">
+                  <span>Settlement</span>
+                  <strong>USDC (Native Gas)</strong>
+                </div>
+                <div className="employer-status-row">
+                  <span>Network</span>
+                  <strong className="text-[#38d996]">Circle Arc</strong>
+                </div>
+              </div>
+            </aside>
           </div>
         </div>
       ) : (

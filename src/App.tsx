@@ -12,11 +12,12 @@ import { AppShell, type NavItem } from '@/components/AppShell'
 import { CompanyView } from '@/components/CompanyView'
 import { CreateCompanySheet } from '@/components/CreateCompanySheet'
 import { Home } from '@/components/Home'
+import { RegisterInstitutionPage } from '@/components/RegisterInstitutionPage'
 import { NewLandingPage } from '@/components/zalary/NewLandingPage'
 import { DecryptHoverText } from '@/components/DecryptHoverText'
 
 interface Route {
-  view: 'landing' | 'app'
+  view: 'landing' | 'app' | 'register'
   vault: Address | null
   portal: Portal | null
 }
@@ -26,6 +27,7 @@ const readRoute = (): Route => {
   const company = params.get('company')
   const portal = params.get('portal')
   const app = params.get('app')
+  const register = params.get('register')
   const hasVault = company && isAddress(company)
 
   if (hasVault) {
@@ -33,6 +35,14 @@ const readRoute = (): Route => {
       view: 'app',
       vault: company,
       portal: isPortal(portal) ? portal : null,
+    }
+  }
+
+  if (register === 'true') {
+    return {
+      view: 'register',
+      vault: null,
+      portal: null,
     }
   }
 
@@ -57,6 +67,8 @@ const routeUrl = (route: Route) => {
   if (route.vault) {
     params.set('company', route.vault)
     if (route.portal) params.set('portal', route.portal)
+  } else if (route.view === 'register') {
+    params.set('register', 'true')
   } else if (route.view === 'app') {
     params.set('app', 'true')
   }
@@ -112,15 +124,15 @@ export default function App() {
           key: 'companies',
           label: 'All Companies',
           icon: Building2,
-          active: true,
+          active: route.view !== 'register',
           onSelect: () => go({ view: 'app', vault: null, portal: null }),
         },
         {
           key: 'create_company',
           label: 'Deploy Company',
           icon: Plus,
-          active: false,
-          onSelect: () => setCreating(true),
+          active: route.view === 'register',
+          onSelect: () => go({ view: 'register', vault: null, portal: null }),
         },
       ]
 
@@ -160,10 +172,15 @@ export default function App() {
               portal={route.portal}
               onBackToCompanies={() => go({ view: 'app', vault: null, portal: null })}
             />
+          ) : route.view === 'register' ? (
+            <RegisterInstitutionPage
+              onCreated={(vault) => go({ view: 'app', vault, portal: 'institution' })}
+              onBack={() => go({ view: 'app', vault: null, portal: null })}
+            />
           ) : (
             <Home
               onOpen={(vault) => go({ view: 'app', vault, portal: null })}
-              onCreate={() => setCreating(true)}
+              onCreate={() => go({ view: 'register', vault: null, portal: null })}
             />
           )}
         </AppShell>
@@ -172,7 +189,7 @@ export default function App() {
       <CreateCompanySheet
         open={creating}
         onClose={() => setCreating(false)}
-        onCreated={(vault) => go({ view: 'app', vault, portal: null })}
+        onCreated={(vault) => go({ view: 'app', vault, portal: 'institution' })}
       />
       <AddFundsSheet open={addingFunds} onClose={() => setAddingFunds(false)} />
     </AddFundsContext.Provider>

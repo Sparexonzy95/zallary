@@ -1,0 +1,355 @@
+import React, { useState } from 'react'
+import { useAccount } from 'wagmi'
+import { isAddress, parseEventLogs, type Address } from 'viem'
+import {
+  ArrowLeft,
+  ArrowRight,
+  Check,
+  Send,
+  ShieldCheck,
+  Wallet,
+} from 'lucide-react'
+import { factoryAbi } from '@/abi/factoryAbi'
+import { FACTORY_ADDRESS } from '@/lib/deployments'
+import { shortAddress } from '@/lib/format'
+import { useTx } from '@/hooks/useTx'
+import { Button, Card, Field, Notice } from '@/components/ui'
+
+interface Props {
+  onCreated: (vault: Address) => void
+  onBack?: () => void
+}
+
+export function RegisterInstitutionPage({ onCreated, onBack }: Props) {
+  const { address, isConnected } = useAccount()
+  const tx = useTx()
+
+  const [step, setStep] = useState<0 | 1 | 2>(0)
+  const [name, setName] = useState('')
+  const [recipient, setRecipient] = useState('')
+  const [feePercent, setFeePercent] = useState('0.25')
+  const [delayHours, setDelayHours] = useState('24')
+
+  const feeRecipient = recipient.trim() || address || ''
+  const feeBps = Math.round(Number(feePercent) * 100)
+  const delayNumber = Number(delayHours)
+
+  const nameValid = name.trim().length > 0 && name.trim().length <= 64
+  const feeValid = Number.isFinite(feeBps) && feeBps >= 0 && feeBps <= 500
+  const delayValid = Number.isFinite(delayNumber) && delayNumber >= 0
+  const recipientValid = isAddress(feeRecipient)
+  const detailsReady = nameValid && feeValid && delayValid && recipientValid
+
+  const activeStepCopy = [
+    { label: 'Step 01', title: 'Wallet verified' },
+    { label: 'Step 02', title: 'Institution profile' },
+    { label: 'Step 03', title: 'Review & deploy on Arc' },
+  ][step]
+
+  const deploy = () => {
+    const factory = FACTORY_ADDRESS
+    if (!factory || !detailsReady || !isAddress(feeRecipient)) return
+
+    void tx.run(
+      (write) =>
+        write({
+          address: factory,
+          abi: factoryAbi,
+          functionName: 'createCompany',
+          args: [
+            name.trim(),
+            Math.round(delayNumber * 3600),
+            feeRecipient,
+            BigInt(feeBps),
+          ],
+        }),
+      {
+        success: 'Institution Company Vault deployed on Arc Testnet!',
+        onDone: (receipt) => {
+          const [created] = parseEventLogs({
+            abi: factoryAbi,
+            logs: receipt.logs,
+            eventName: 'CompanyCreated',
+          })
+          if (created) {
+            onCreated(created.args.vault)
+          }
+        },
+      },
+    )
+  }
+
+  return (
+    <div className="onboarding-page employer-onboarding-page dashboard-shell">
+      {/* ─── Header ─── */}
+      <div className="employer-onboarding-head">
+        <div>
+          {onBack && (
+            <button
+              type="button"
+              onClick={onBack}
+              className="template-detail-back-link inline-flex items-center gap-1.5 text-xs font-semibold text-white/50 hover:text-white transition-colors mb-2"
+            >
+              <ArrowLeft size={14} />
+              <span>Back to Directory</span>
+            </button>
+          )}
+          <div className="employer-kicker">Institution</div>
+          <h1>Register Institution Vault</h1>
+          <p>
+            Deploy an institutional payroll escrow vault on Circle Arc Testnet.
+          </p>
+        </div>
+
+        <div className="employer-onboarding-side">
+          <div className="employer-onboarding-wallet">
+            <span className="employer-onboarding-wallet-icon" aria-label="Wallet icon">
+              <Wallet size={16} />
+            </span>
+            <strong>{address ? shortAddress(address) : 'Not connected'}</strong>
+            <span className="employer-onboarding-network">Arc Testnet</span>
+          </div>
+        </div>
+      </div>
+
+      {/* ─── Carousel Flow ─── */}
+      <div className="employer-onboarding-carousel">
+        <div className="employer-onboarding-flow-top">
+          <div className="employer-onboarding-flow-copy">
+            <span>{activeStepCopy.label}</span>
+            <h2>{activeStepCopy.title}</h2>
+          </div>
+          <div className="employer-onboarding-flow-count">
+            Step {step + 1} of 3
+          </div>
+        </div>
+
+        <div className="employer-onboarding-status" aria-label="Institution registration progress">
+          {([
+            { number: '01', title: 'Wallet', caption: 'Verified', idx: 0 as const },
+            { number: '02', title: 'Profile', caption: 'Vault details', idx: 1 as const },
+            { number: '03', title: 'On-chain', caption: 'Arc Testnet', idx: 2 as const },
+          ]).map((s) => {
+            const active = s.idx === step
+            const complete =
+              s.idx === 0
+                ? isConnected
+                : s.idx === 1
+                  ? detailsReady
+                  : tx.status === 'success'
+
+            return (
+              <button
+                key={s.number}
+                type="button"
+                className={`employer-onboarding-status-item${active ? ' active' : ''}${complete ? ' complete' : ''}`}
+                onClick={() => setStep(s.idx)}
+                aria-current={active ? 'step' : undefined}
+              >
+                <span>{complete ? <Check size={13} strokeWidth={2} /> : s.number}</span>
+                <strong>{s.title}</strong>
+                <small>{s.caption}</small>
+              </button>
+            )
+          })}
+        </div>
+
+        <div className="employer-onboarding-carousel-viewport">
+          <div
+            className="employer-onboarding-carousel-track"
+            style={{ transform: `translateX(-${step * 100}%)` }}
+          >
+            {/* ─── Slide 1: Wallet Verification ─── */}
+            <div className="employer-onboarding-slide">
+              <Card
+                className="employer-onboarding-card employer-onboarding-wallet-verified-card p-6"
+              >
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="text-xl font-bold font-display text-white">Wallet Verified</h3>
+                      <p className="text-xs text-white/50 mt-1">
+                        This wallet will be assigned master Administrator and emergency Pauser authorizations on deployment.
+                      </p>
+                    </div>
+                    <div className="employer-onboarding-wallet-card">
+                      <strong>{address ? shortAddress(address) : 'Not Connected'}</strong>
+                      <span className="employer-onboarding-wallet-icon" aria-label="Verified wallet">
+                        <Wallet size={18} strokeWidth={1.8} aria-hidden="true" />
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="inner rounded-2xl p-4 flex items-start gap-3 bg-white/[0.02] border border-white/5 text-xs text-white/60 leading-relaxed">
+                    <ShieldCheck className="size-4 text-[#38d996] shrink-0 mt-0.5" />
+                    <span>
+                      Smart vaults are fully decentralized and non-custodial. As creator, you retain governance controls and can delegate HR and Finance operational roles to separate keyholders.
+                    </span>
+                  </div>
+
+                  <div className="employer-onboarding-slide-actions pt-2 flex justify-end">
+                    <Button
+                      type="button"
+                      disabled={!isConnected}
+                      onClick={() => setStep(1)}
+                      className="btn btn-primary"
+                    >
+                      Continue to Profile
+                      <ArrowRight size={15} strokeWidth={1.8} />
+                    </Button>
+                  </div>
+                </div>
+              </Card>
+            </div>
+
+            {/* ─── Slide 2: Institution Profile ─── */}
+            <div className="employer-onboarding-slide">
+              <Card className="employer-onboarding-card p-6">
+                <div className="space-y-5">
+                  <div>
+                    <h3 className="text-xl font-bold font-display text-white">Institution Profile</h3>
+                    <p className="text-xs text-white/50 mt-1">
+                      Set organization identity, protocol disbursement fee rate, and governance transition timelock.
+                    </p>
+                  </div>
+
+                  <div className="form-stack space-y-4">
+                    <Field label="Organization / Company Name">
+                      <input
+                        className="field"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        placeholder="e.g. Acme Treasury Labs"
+                        required
+                        maxLength={64}
+                      />
+                    </Field>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <Field label="Protocol Disbursement Fee" help="Max 5.00% (Added at funding)">
+                        <div className="relative">
+                          <input
+                            className="field pr-8 tabular-nums text-right font-mono"
+                            inputMode="decimal"
+                            value={feePercent}
+                            onChange={(e) => setFeePercent(e.target.value.replace(/[^0-9.]/g, ''))}
+                          />
+                          <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-white/40 font-mono">
+                            %
+                          </span>
+                        </div>
+                      </Field>
+
+                      <Field label="Security Timelock Delay" help="Admin transition delay in hours">
+                        <div className="relative">
+                          <input
+                            className="field pr-12 tabular-nums text-right font-mono"
+                            inputMode="numeric"
+                            value={delayHours}
+                            onChange={(e) => setDelayHours(e.target.value.replace(/[^0-9.]/g, ''))}
+                          />
+                          <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-white/40 font-mono">
+                            hrs
+                          </span>
+                        </div>
+                      </Field>
+                    </div>
+
+                    <Field label="Fee Beneficiary Wallet" help="Receives protocol fee at funding execution">
+                      <input
+                        className="field mono text-xs sm:text-sm"
+                        value={recipient}
+                        onChange={(e) => setRecipient(e.target.value.trim())}
+                        placeholder={address ?? '0x...'}
+                      />
+                    </Field>
+                  </div>
+
+                  <div className="employer-onboarding-slide-actions pt-2 flex items-center justify-between">
+                    <Button type="button" variant="ghost" onClick={() => setStep(0)}>
+                      <ArrowLeft size={15} strokeWidth={1.8} />
+                      Back
+                    </Button>
+                    <Button
+                      type="button"
+                      disabled={!detailsReady}
+                      onClick={() => setStep(2)}
+                      className="btn btn-primary"
+                    >
+                      Review Registration
+                      <ArrowRight size={15} strokeWidth={1.8} />
+                    </Button>
+                  </div>
+                </div>
+              </Card>
+            </div>
+
+            {/* ─── Slide 3: Review & Submit ─── */}
+            <div className="employer-onboarding-slide">
+              <Card className="employer-onboarding-card p-6">
+                <div className="space-y-5">
+                  <div>
+                    <h3 className="text-xl font-bold font-display text-white">Review & Deploy</h3>
+                    <p className="text-xs text-white/50 mt-1">
+                      Zalary prepares the on-chain deployment transaction and your connected wallet signs it on Circle Arc.
+                    </p>
+                  </div>
+
+                  <div className="create-payroll-review-list">
+                    <div className="review-row flex items-center justify-between border-b border-white/5 p-3 text-xs">
+                      <span className="text-white/50">Institution Name</span>
+                      <strong className="text-white font-semibold font-display text-sm">{name || 'Not set'}</strong>
+                    </div>
+                    <div className="review-row flex items-center justify-between border-b border-white/5 p-3 text-xs">
+                      <span className="text-white/50">Creator & Master Admin</span>
+                      <strong className="font-mono text-white/80">{address ? shortAddress(address) : 'Not connected'}</strong>
+                    </div>
+                    <div className="review-row flex items-center justify-between border-b border-white/5 p-3 text-xs">
+                      <span className="text-white/50">Fee Beneficiary</span>
+                      <strong className="font-mono text-white/80">{shortAddress(feeRecipient)}</strong>
+                    </div>
+                    <div className="review-row flex items-center justify-between border-b border-white/5 p-3 text-xs">
+                      <span className="text-white/50">Protocol Fee Rate</span>
+                      <strong className="font-mono text-[#FE9E15]">{feePercent}%</strong>
+                    </div>
+                    <div className="review-row flex items-center justify-between border-b border-white/5 p-3 text-xs">
+                      <span className="text-white/50">Admin Timelock</span>
+                      <strong className="font-mono text-white/80">{delayHours} Hours</strong>
+                    </div>
+                    <div className="review-row flex items-center justify-between p-3 text-xs">
+                      <span className="text-white/50">Settlement Network</span>
+                      <strong className="text-[#38d996] font-mono">Circle Arc Testnet (USDC)</strong>
+                    </div>
+                  </div>
+
+                  {tx.error && <Notice tone="bad">{tx.error}</Notice>}
+
+                  <div className="employer-onboarding-slide-actions pt-2 flex items-center justify-between">
+                    <Button type="button" variant="ghost" onClick={() => setStep(1)} disabled={tx.busy}>
+                      <ArrowLeft size={15} strokeWidth={1.8} />
+                      Back
+                    </Button>
+                    <Button
+                      type="button"
+                      disabled={!detailsReady || tx.busy}
+                      loading={tx.busy}
+                      onClick={deploy}
+                      className="btn btn-primary"
+                    >
+                      <Send size={15} strokeWidth={1.8} />
+                      {tx.status === 'wallet'
+                        ? 'Confirm in Wallet…'
+                        : tx.status === 'confirming'
+                          ? 'Deploying on Arc…'
+                          : 'Register with Wallet'}
+                    </Button>
+                  </div>
+                </div>
+              </Card>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
