@@ -1,0 +1,485 @@
+{"level":"debug","message":"[vite] connected.","timestamp":1793263161498}
+{"level":"error","message":"[vite] SyntaxError: The requested module '/node_modules/.vite/deps/viem.js?v=5cca9a44' does not provide an export named 'ContractFunctionRevertError'","timestamp":1793263291105,"stack":"SyntaxError: The requested module '/node_modules/.vite/deps/viem.js?v=5cca9a44' does not provide an export named 'ContractFunctionRevertError'"}
+{"level":"error","message":"[vite] Failed to reload /src/App.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)","timestamp":1793263291105}
+{"level":"debug","message":"[vite] hot updated: /src/App.tsx","timestamp":1793263291105}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793263291105}
+{"level":"error","message":"[vite] SyntaxError: The requested module '/node_modules/.vite/deps/viem.js?v=5cca9a44' does not provide an export named 'ContractFunctionRevertError'","timestamp":1793263291512,"stack":"SyntaxError: The requested module '/node_modules/.vite/deps/viem.js?v=5cca9a44' does not provide an export named 'ContractFunctionRevertError'"}
+{"level":"error","message":"[vite] Failed to reload /src/App.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)","timestamp":1793263291512}
+{"level":"debug","message":"[vite] hot updated: /src/App.tsx","timestamp":1793263291512}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793263291512}
+{"level":"debug","message":"(previous line repeated 7× more)","timestamp":1793263316013}
+{"level":"debug","message":"[vite] hot updated: /src/App.tsx","timestamp":1793263316013}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793263316013}
+{"level":"debug","message":"(previous line repeated 7× more)","timestamp":1793263316311}
+{"level":"debug","message":"[vite] hot updated: /src/App.tsx","timestamp":1793263316311}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793263316311}
+{"level":"debug","message":"[vite] connected.","timestamp":1793263411071}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793263428222}
+{"level":"debug","message":"[vite] hot updated: /src/App.tsx","timestamp":1793263428223}
+{"level":"debug","message":"[vite] hot updated: /src/components/ui.tsx","timestamp":1793263428223}
+{"level":"debug","message":"[vite] hot updated: /src/components/MyPayTab.tsx","timestamp":1793263428223}
+{"level":"debug","message":"[vite] hot updated: /src/components/CreateCompanySheet.tsx","timestamp":1793263428223}
+{"level":"debug","message":"[vite] hot updated: /src/components/PayrollsTab.tsx","timestamp":1793263428223}
+{"level":"debug","message":"[vite] hot updated: /src/components/TeamTab.tsx","timestamp":1793263428223}
+{"level":"debug","message":"[vite] hot updated: /src/components/PrepareForm.tsx","timestamp":1793263428223}
+{"level":"debug","message":"[vite] hot updated: /src/components/FundPanel.tsx","timestamp":1793263428223}
+{"level":"debug","message":"[vite] hot updated: /src/components/Home.tsx","timestamp":1793263428223}
+{"level":"debug","message":"[vite] hot updated: /src/components/CompanyView.tsx","timestamp":1793263428223}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793263429041}
+{"level":"debug","message":"[vite] hot updated: /src/components/ui.tsx","timestamp":1793263429041}
+{"level":"debug","message":"[vite] hot updated: /src/components/Home.tsx","timestamp":1793263429041}
+{"level":"debug","message":"[vite] hot updated: /src/components/MyPayTab.tsx","timestamp":1793263429041}
+{"level":"debug","message":"[vite] hot updated: /src/components/PayrollsTab.tsx","timestamp":1793263429041}
+{"level":"debug","message":"[vite] hot updated: /src/components/TeamTab.tsx","timestamp":1793263429041}
+{"level":"debug","message":"[vite] hot updated: /src/components/PrepareForm.tsx","timestamp":1793263429041}
+{"level":"debug","message":"[vite] hot updated: /src/components/FundPanel.tsx","timestamp":1793263429041}
+{"level":"log","message":"[vite] server connection lost. Polling for restart...","timestamp":1793263429041}
+{"level":"log","message":"[vite] server connection lost. Polling for restart...","timestamp":1793263457933}
+{"level":"debug","message":"[vite] hot updated: /src/components/CreateCompanySheet.tsx","timestamp":1793263473957}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793263473958}
+{"level":"debug","message":"[vite] hot updated: /src/components/Home.tsx","timestamp":1793263473958}
+{"level":"debug","message":"[vite] hot updated: /src/components/CompanyView.tsx","timestamp":1793263473958}
+{"level":"debug","message":"[vite] hot updated: /src/components/MyPayTab.tsx","timestamp":1793263473958}
+{"level":"debug","message":"[vite] hot updated: /src/components/PayrollsTab.tsx","timestamp":1793263473958}
+{"level":"debug","message":"[vite] hot updated: /src/components/TeamTab.tsx","timestamp":1793263473958}
+{"level":"debug","message":"[vite] hot updated: /src/components/FundPanel.tsx","timestamp":1793263473958}
+{"level":"debug","message":"[vite] hot updated: /src/components/PrepareForm.tsx","timestamp":1793263473958}
+{"level":"debug","message":"[vite] hot updated: /src/components/CreateCompanySheet.tsx","timestamp":1793263474293}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793263474294}
+{"level":"debug","message":"[vite] hot updated: /src/components/Home.tsx","timestamp":1793263474294}
+{"level":"debug","message":"[vite] hot updated: /src/components/CompanyView.tsx","timestamp":1793263474294}
+{"level":"debug","message":"[vite] hot updated: /src/components/MyPayTab.tsx","timestamp":1793263474294}
+{"level":"debug","message":"[vite] hot updated: /src/components/PayrollsTab.tsx","timestamp":1793263474294}
+{"level":"debug","message":"[vite] hot updated: /src/components/TeamTab.tsx","timestamp":1793263474294}
+{"level":"debug","message":"[vite] hot updated: /src/components/FundPanel.tsx","timestamp":1793263474294}
+{"level":"debug","message":"[vite] hot updated: /src/components/PrepareForm.tsx","timestamp":1793263474294}
+{"level":"debug","message":"[vite] hot updated: /src/App.tsx","timestamp":1793263590010}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793263590010}
+{"level":"debug","message":"[vite] hot updated: /src/components/ui.tsx","timestamp":1793263590010}
+{"level":"debug","message":"[vite] hot updated: /src/components/MyPayTab.tsx","timestamp":1793263590010}
+{"level":"debug","message":"[vite] hot updated: /src/components/TeamTab.tsx","timestamp":1793263590010}
+{"level":"debug","message":"[vite] hot updated: /src/components/CreateCompanySheet.tsx","timestamp":1793263590010}
+{"level":"debug","message":"[vite] hot updated: /src/components/PayrollsTab.tsx","timestamp":1793263590014}
+{"level":"debug","message":"[vite] hot updated: /src/components/FundPanel.tsx","timestamp":1793263590015}
+{"level":"debug","message":"[vite] hot updated: /src/components/PrepareForm.tsx","timestamp":1793263590015}
+{"level":"debug","message":"[vite] hot updated: /src/components/Home.tsx","timestamp":1793263590015}
+{"level":"debug","message":"[vite] hot updated: /src/components/CompanyView.tsx","timestamp":1793263590015}
+{"level":"log","message":"[vite] server connection lost. Polling for restart...","timestamp":1793263590208}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793263624245}
+{"level":"debug","message":"[vite] hot updated: /src/App.tsx","timestamp":1793263624245}
+{"level":"debug","message":"[vite] hot updated: /src/components/ui.tsx","timestamp":1793263624245}
+{"level":"debug","message":"[vite] hot updated: /src/components/MyPayTab.tsx","timestamp":1793263624245}
+{"level":"debug","message":"[vite] hot updated: /src/components/TeamTab.tsx","timestamp":1793263624245}
+{"level":"debug","message":"[vite] hot updated: /src/components/CompanyView.tsx","timestamp":1793263624245}
+{"level":"debug","message":"[vite] hot updated: /src/components/Home.tsx","timestamp":1793263624246}
+{"level":"debug","message":"[vite] hot updated: /src/components/PayrollsTab.tsx","timestamp":1793263624246}
+{"level":"debug","message":"[vite] hot updated: /src/components/FundPanel.tsx","timestamp":1793263624246}
+{"level":"debug","message":"[vite] hot updated: /src/components/PrepareForm.tsx","timestamp":1793263624246}
+{"level":"debug","message":"[vite] hot updated: /src/components/CreateCompanySheet.tsx","timestamp":1793263624246}
+{"level":"log","message":"[vite] server connection lost. Polling for restart...","timestamp":1793263624819}
+{"level":"debug","message":"[vite] hot updated: /src/App.tsx","timestamp":1793263858180}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793263858180}
+{"level":"debug","message":"[vite] hot updated: /src/components/TeamTab.tsx","timestamp":1793263858180}
+{"level":"debug","message":"[vite] hot updated: /src/components/ui.tsx","timestamp":1793263858180}
+{"level":"debug","message":"[vite] hot updated: /src/components/MyPayTab.tsx","timestamp":1793263858180}
+{"level":"debug","message":"[vite] hot updated: /src/components/PrepareForm.tsx","timestamp":1793263858180}
+{"level":"debug","message":"[vite] hot updated: /src/components/CompanyView.tsx","timestamp":1793263858181}
+{"level":"debug","message":"[vite] hot updated: /src/components/Home.tsx","timestamp":1793263858181}
+{"level":"debug","message":"[vite] hot updated: /src/components/PayrollsTab.tsx","timestamp":1793263858181}
+{"level":"debug","message":"[vite] hot updated: /src/components/FundPanel.tsx","timestamp":1793263858181}
+{"level":"debug","message":"[vite] hot updated: /src/components/CreateCompanySheet.tsx","timestamp":1793263858181}
+{"level":"debug","message":"[vite] hot updated: /src/components/PrepareForm.tsx","timestamp":1793263859173}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793263859173}
+{"level":"debug","message":"[vite] hot updated: /src/components/TeamTab.tsx","timestamp":1793263859173}
+{"level":"debug","message":"[vite] hot updated: /src/components/ui.tsx","timestamp":1793263859173}
+{"level":"debug","message":"[vite] hot updated: /src/components/Home.tsx","timestamp":1793263859173}
+{"level":"debug","message":"[vite] hot updated: /src/components/MyPayTab.tsx","timestamp":1793263859173}
+{"level":"debug","message":"[vite] hot updated: /src/components/PayrollsTab.tsx","timestamp":1793263859173}
+{"level":"debug","message":"[vite] hot updated: /src/components/FundPanel.tsx","timestamp":1793263859173}
+{"level":"log","message":"[vite] server connection lost. Polling for restart...","timestamp":1793263859173}
+{"level":"debug","message":"[vite] hot updated: /src/components/PrepareForm.tsx","timestamp":1793263886490}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793263886491}
+{"level":"debug","message":"[vite] hot updated: /src/components/PrepareForm.tsx","timestamp":1793263887198}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793263887198}
+{"level":"debug","message":"[vite] hot updated: /src/components/PrepareForm.tsx","timestamp":1793263891377}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793263891377}
+{"level":"debug","message":"[vite] hot updated: /src/components/PrepareForm.tsx","timestamp":1793263891631}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793263891631}
+{"level":"error","message":"Warning: Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.%s row-2 \n    at ul\n    at div\n    at section\n    at Card (https://ijqpdwnqrir7o59h9l2t3.preview.studio.arc.io/src/components/ui.tsx:30:24)\n    at PrepareForm (https://ijqpdwnqrir7o59h9l2t3.preview.studio.arc.io/src/components/PrepareForm.tsx?t=1793263890213:37:31)\n    at div\n    at PayrollsTab (https://ijqpdwnqrir7o59h9l2t3.preview.studio.arc.io/src/components/PayrollsTab.tsx:152:31)\n    at div\n    at CompanyView (https://ijqpdwnqrir7o59h9l2t3.preview.studio.arc.io/src/components/CompanyView.tsx:34:31)\n    at main\n    at div\n    at App (https://ijqpdwnqrir7o59h9l2t3.preview.studio.arc.io/src/App.tsx:40:36)\n    at Le (https://ijqpdwnqrir7o59h9l2t3.preview.studio.arc.io/node_modules/.vite/deps/connectkit.js?v=5cca9a44:18792:42)\n    at Web3ContextProvider (https://ijqpdwnqrir7o59h9l2t3.preview.studio.arc.io/node_modules/.vite/deps/connectkit.js?v=5cca9a44:34419:30)\n    at ConnectKitProvider (https://ijqpdwnqrir7o59h9l2t3.preview.studio.arc.io/node_modules/.vite/deps/connectkit.js?v=5cca9a44:37909:29)\n    at QueryClientProvider (https://ijqpdwnqrir7o59h9l2t3.preview.studio.arc.io/node_modules/.vite/deps/chunk-L72R44ZZ.js?v=5cca9a44:39:30)\n    at Hydrate (https://ijqpdwnqrir7o59h9l2t3.preview.studio.arc.io/node_modules/.vite/deps/chunk-O3MR4H2Y.js?v=5cca9a44:392:11)\n    at WagmiProvider (https://ijqpdwnqrir7o59h9l2t3.preview.studio.arc.io/node_modules/.vite/deps/chunk-O3MR4H2Y.js?v=5cca9a44:414:11)","timestamp":1793263893937}
+{"level":"debug","message":"[vite] hot updated: /src/App.tsx","timestamp":1793264025641}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793264025641}
+{"level":"debug","message":"[vite] hot updated: /src/components/ui.tsx","timestamp":1793264025641}
+{"level":"debug","message":"[vite] hot updated: /src/components/TeamTab.tsx","timestamp":1793264025641}
+{"level":"debug","message":"[vite] hot updated: /src/components/Home.tsx","timestamp":1793264025641}
+{"level":"debug","message":"[vite] hot updated: /src/components/PrepareForm.tsx","timestamp":1793264025641}
+{"level":"debug","message":"[vite] hot updated: /src/components/CompanyView.tsx","timestamp":1793264025642}
+{"level":"debug","message":"[vite] hot updated: /src/components/MyPayTab.tsx","timestamp":1793264025642}
+{"level":"debug","message":"[vite] hot updated: /src/components/PayrollsTab.tsx","timestamp":1793264025642}
+{"level":"debug","message":"[vite] hot updated: /src/components/FundPanel.tsx","timestamp":1793264025642}
+{"level":"debug","message":"[vite] hot updated: /src/components/CreateCompanySheet.tsx","timestamp":1793264025642}
+{"level":"log","message":"[vite] server connection lost. Polling for restart...","timestamp":1793264025758}
+{"level":"debug","message":"[vite] hot updated: /src/components/PrepareForm.tsx","timestamp":1793264043530}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793264043530}
+{"level":"debug","message":"[vite] hot updated: /src/components/PrepareForm.tsx","timestamp":1793264043546}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793264043546}
+{"level":"debug","message":"[vite] hot updated: /src/components/PayrollsTab.tsx","timestamp":1793264044463}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793264044463}
+{"level":"debug","message":"[vite] hot updated: /src/components/PayrollsTab.tsx","timestamp":1793264044469}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793264044469}
+{"level":"debug","message":"(previous line repeated 1× more)","timestamp":1793264133227}
+{"level":"debug","message":"[vite] hot updated: /src/App.tsx","timestamp":1793264133227}
+{"level":"debug","message":"[vite] hot updated: /src/components/ui.tsx","timestamp":1793264133227}
+{"level":"debug","message":"[vite] hot updated: /src/components/CompanyView.tsx","timestamp":1793264133227}
+{"level":"debug","message":"[vite] hot updated: /src/components/Home.tsx","timestamp":1793264133227}
+{"level":"debug","message":"[vite] hot updated: /src/components/TeamTab.tsx","timestamp":1793264133227}
+{"level":"debug","message":"[vite] hot updated: /src/components/MyPayTab.tsx","timestamp":1793264133227}
+{"level":"debug","message":"[vite] hot updated: /src/components/PayrollsTab.tsx","timestamp":1793264133227}
+{"level":"debug","message":"[vite] hot updated: /src/components/FundPanel.tsx","timestamp":1793264133227}
+{"level":"debug","message":"[vite] hot updated: /src/components/PrepareForm.tsx","timestamp":1793264133227}
+{"level":"debug","message":"[vite] hot updated: /src/components/CreateCompanySheet.tsx","timestamp":1793264133227}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793264133943}
+{"level":"debug","message":"[vite] hot updated: /src/components/Home.tsx","timestamp":1793264133944}
+{"level":"debug","message":"[vite] hot updated: /src/components/ui.tsx","timestamp":1793264133944}
+{"level":"debug","message":"[vite] hot updated: /src/components/TeamTab.tsx","timestamp":1793264133944}
+{"level":"debug","message":"[vite] hot updated: /src/components/MyPayTab.tsx","timestamp":1793264133944}
+{"level":"debug","message":"[vite] hot updated: /src/components/PayrollsTab.tsx","timestamp":1793264133944}
+{"level":"debug","message":"[vite] hot updated: /src/components/FundPanel.tsx","timestamp":1793264133944}
+{"level":"debug","message":"[vite] hot updated: /src/components/PrepareForm.tsx","timestamp":1793264133944}
+{"level":"log","message":"[vite] server connection lost. Polling for restart...","timestamp":1793264133944}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793264216093}
+{"level":"debug","message":"[vite] hot updated: /src/App.tsx","timestamp":1793264216093}
+{"level":"debug","message":"[vite] hot updated: /src/components/ui.tsx","timestamp":1793264216094}
+{"level":"debug","message":"[vite] hot updated: /src/components/TeamTab.tsx","timestamp":1793264216094}
+{"level":"debug","message":"[vite] hot updated: /src/components/CompanyView.tsx","timestamp":1793264216094}
+{"level":"debug","message":"[vite] hot updated: /src/components/Home.tsx","timestamp":1793264216094}
+{"level":"debug","message":"[vite] hot updated: /src/components/PayrollsTab.tsx","timestamp":1793264216094}
+{"level":"debug","message":"[vite] hot updated: /src/components/MyPayTab.tsx","timestamp":1793264216094}
+{"level":"debug","message":"[vite] hot updated: /src/components/FundPanel.tsx","timestamp":1793264216094}
+{"level":"debug","message":"[vite] hot updated: /src/components/PrepareForm.tsx","timestamp":1793264216094}
+{"level":"debug","message":"[vite] hot updated: /src/components/CreateCompanySheet.tsx","timestamp":1793264216094}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793264216834}
+{"level":"debug","message":"[vite] hot updated: /src/components/ui.tsx","timestamp":1793264216834}
+{"level":"debug","message":"[vite] hot updated: /src/components/Home.tsx","timestamp":1793264216834}
+{"level":"debug","message":"[vite] hot updated: /src/components/PayrollsTab.tsx","timestamp":1793264216834}
+{"level":"debug","message":"[vite] hot updated: /src/components/TeamTab.tsx","timestamp":1793264216834}
+{"level":"debug","message":"[vite] hot updated: /src/components/MyPayTab.tsx","timestamp":1793264216834}
+{"level":"debug","message":"[vite] hot updated: /src/components/FundPanel.tsx","timestamp":1793264216834}
+{"level":"debug","message":"[vite] hot updated: /src/components/PrepareForm.tsx","timestamp":1793264216835}
+{"level":"log","message":"[vite] server connection lost. Polling for restart...","timestamp":1793264216835}
+{"level":"debug","message":"[vite] hot updated: /src/components/PayrollsTab.tsx","timestamp":1793264827583}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793264827584}
+{"level":"debug","message":"[vite] hot updated: /src/components/FundPanel.tsx","timestamp":1793264827584}
+{"level":"debug","message":"[vite] hot updated: /src/components/TeamTab.tsx","timestamp":1793264827584}
+{"level":"debug","message":"[vite] hot updated: /src/components/MyPayTab.tsx","timestamp":1793264827584}
+{"level":"debug","message":"[vite] hot updated: /src/components/PrepareForm.tsx","timestamp":1793264827584}
+{"level":"debug","message":"[vite] hot updated: /src/components/Home.tsx","timestamp":1793264827584}
+{"level":"debug","message":"[vite] hot updated: /src/components/CompanyView.tsx","timestamp":1793264827584}
+{"level":"debug","message":"[vite] hot updated: /src/components/PayrollsTab.tsx","timestamp":1793264828562}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793264828563}
+{"level":"debug","message":"[vite] hot updated: /src/components/FundPanel.tsx","timestamp":1793264828563}
+{"level":"debug","message":"[vite] hot updated: /src/components/Home.tsx","timestamp":1793264828563}
+{"level":"debug","message":"[vite] hot updated: /src/components/TeamTab.tsx","timestamp":1793264828563}
+{"level":"debug","message":"[vite] hot updated: /src/components/MyPayTab.tsx","timestamp":1793264828563}
+{"level":"debug","message":"[vite] hot updated: /src/components/PrepareForm.tsx","timestamp":1793264828563}
+{"level":"debug","message":"[vite] hot updated: /src/components/CompanyView.tsx","timestamp":1793264828563}
+{"level":"debug","message":"[vite] hot updated: /src/components/FundPanel.tsx","timestamp":1793264828566}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793264828566}
+{"level":"debug","message":"[vite] hot updated: /src/components/PrepareForm.tsx","timestamp":1793264828567}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793264828567}
+{"level":"debug","message":"[vite] hot updated: /src/components/TeamTab.tsx","timestamp":1793264832992}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793264832992}
+{"level":"log","message":"[vite] server connection lost. Polling for restart...","timestamp":1793265209685}
+{"level":"debug","message":"[vite] hot updated: /src/components/FundPanel.tsx","timestamp":1793265265791}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793265265791}
+{"level":"debug","message":"[vite] hot updated: /src/components/TeamTab.tsx","timestamp":1793265265791}
+{"level":"debug","message":"[vite] hot updated: /src/App.tsx","timestamp":1793265265791}
+{"level":"debug","message":"[vite] hot updated: /src/components/ui.tsx","timestamp":1793265265791}
+{"level":"debug","message":"[vite] hot updated: /src/components/MyPayTab.tsx","timestamp":1793265265791}
+{"level":"debug","message":"[vite] hot updated: /src/components/PrepareForm.tsx","timestamp":1793265265791}
+{"level":"debug","message":"[vite] hot updated: /src/components/PayrollsTab.tsx","timestamp":1793265265791}
+{"level":"debug","message":"[vite] hot updated: /src/components/CreateCompanySheet.tsx","timestamp":1793265265791}
+{"level":"debug","message":"[vite] hot updated: /src/components/Home.tsx","timestamp":1793265265792}
+{"level":"debug","message":"[vite] hot updated: /src/components/CompanyView.tsx","timestamp":1793265265792}
+{"level":"log","message":"[vite] server connection lost. Polling for restart...","timestamp":1793265265792}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793265284042}
+{"level":"debug","message":"[vite] hot updated: /src/components/CreateCompanySheet.tsx","timestamp":1793265284042}
+{"level":"debug","message":"[vite] hot updated: /src/components/Home.tsx","timestamp":1793265284043}
+{"level":"debug","message":"[vite] hot updated: /src/components/CompanyView.tsx","timestamp":1793265284044}
+{"level":"debug","message":"[vite] hot updated: /src/components/MyPayTab.tsx","timestamp":1793265284044}
+{"level":"debug","message":"[vite] hot updated: /src/components/PayrollsTab.tsx","timestamp":1793265284044}
+{"level":"debug","message":"[vite] hot updated: /src/components/TeamTab.tsx","timestamp":1793265284044}
+{"level":"debug","message":"[vite] hot updated: /src/components/FundPanel.tsx","timestamp":1793265284045}
+{"level":"debug","message":"[vite] hot updated: /src/components/PrepareForm.tsx","timestamp":1793265284045}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793265826259}
+{"level":"debug","message":"[vite] hot updated: /src/App.tsx","timestamp":1793265826259}
+{"level":"debug","message":"[vite] hot updated: /src/components/ui.tsx","timestamp":1793265826259}
+{"level":"debug","message":"[vite] hot updated: /src/components/MyPayTab.tsx","timestamp":1793265826259}
+{"level":"debug","message":"[vite] hot updated: /src/components/TeamTab.tsx","timestamp":1793265826259}
+{"level":"debug","message":"[vite] hot updated: /src/components/CompanyView.tsx","timestamp":1793265826259}
+{"level":"debug","message":"[vite] hot updated: /src/components/Home.tsx","timestamp":1793265826260}
+{"level":"debug","message":"[vite] hot updated: /src/components/PayrollsTab.tsx","timestamp":1793265826260}
+{"level":"debug","message":"[vite] hot updated: /src/components/FundPanel.tsx","timestamp":1793265826260}
+{"level":"debug","message":"[vite] hot updated: /src/components/PrepareForm.tsx","timestamp":1793265826260}
+{"level":"debug","message":"[vite] hot updated: /src/components/CreateCompanySheet.tsx","timestamp":1793265826260}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793265827328}
+{"level":"debug","message":"[vite] hot updated: /src/components/ui.tsx","timestamp":1793265827328}
+{"level":"debug","message":"[vite] hot updated: /src/components/Home.tsx","timestamp":1793265827328}
+{"level":"debug","message":"[vite] hot updated: /src/components/MyPayTab.tsx","timestamp":1793265827328}
+{"level":"debug","message":"[vite] hot updated: /src/components/PayrollsTab.tsx","timestamp":1793265827328}
+{"level":"debug","message":"[vite] hot updated: /src/components/TeamTab.tsx","timestamp":1793265827328}
+{"level":"debug","message":"[vite] hot updated: /src/components/FundPanel.tsx","timestamp":1793265827328}
+{"level":"debug","message":"[vite] hot updated: /src/components/PrepareForm.tsx","timestamp":1793265827328}
+{"level":"log","message":"[vite] server connection lost. Polling for restart...","timestamp":1793265827329}
+{"level":"debug","message":"[vite] hot updated: /src/components/MyPayTab.tsx","timestamp":1793265938669}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793265938669}
+{"level":"debug","message":"[vite] hot updated: /src/components/ui.tsx","timestamp":1793265938670}
+{"level":"debug","message":"[vite] hot updated: /src/components/FundPanel.tsx","timestamp":1793265938670}
+{"level":"debug","message":"[vite] hot updated: /src/components/TeamTab.tsx","timestamp":1793265938670}
+{"level":"debug","message":"[vite] hot updated: /src/components/CreateCompanySheet.tsx","timestamp":1793265938670}
+{"level":"debug","message":"[vite] hot updated: /src/components/PayrollsTab.tsx","timestamp":1793265938670}
+{"level":"debug","message":"[vite] hot updated: /src/components/PrepareForm.tsx","timestamp":1793265938670}
+{"level":"debug","message":"[vite] hot updated: /src/components/CompanyView.tsx","timestamp":1793265938670}
+{"level":"debug","message":"[vite] hot updated: /src/components/Home.tsx","timestamp":1793265938670}
+{"level":"debug","message":"[vite] hot updated: /src/App.tsx","timestamp":1793265938670}
+{"level":"debug","message":"[vite] hot updated: /src/components/MyPayTab.tsx","timestamp":1793265939638}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793265939638}
+{"level":"debug","message":"[vite] hot updated: /src/components/ui.tsx","timestamp":1793265939638}
+{"level":"debug","message":"[vite] hot updated: /src/components/FundPanel.tsx","timestamp":1793265939638}
+{"level":"debug","message":"[vite] hot updated: /src/components/PayrollsTab.tsx","timestamp":1793265939639}
+{"level":"debug","message":"[vite] hot updated: /src/components/TeamTab.tsx","timestamp":1793265939639}
+{"level":"debug","message":"[vite] hot updated: /src/components/PrepareForm.tsx","timestamp":1793265939639}
+{"level":"debug","message":"[vite] hot updated: /src/components/Home.tsx","timestamp":1793265939639}
+{"level":"log","message":"[vite] server connection lost. Polling for restart...","timestamp":1793265939639}
+{"level":"debug","message":"[vite] hot updated: /src/components/ui.tsx","timestamp":1793265955854}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793265955854}
+{"level":"debug","message":"[vite] hot updated: /src/components/MyPayTab.tsx","timestamp":1793265955854}
+{"level":"debug","message":"[vite] hot updated: /src/components/CreateCompanySheet.tsx","timestamp":1793265955854}
+{"level":"debug","message":"[vite] hot updated: /src/components/PayrollsTab.tsx","timestamp":1793265955854}
+{"level":"debug","message":"[vite] hot updated: /src/components/FundPanel.tsx","timestamp":1793265955854}
+{"level":"debug","message":"[vite] hot updated: /src/components/PrepareForm.tsx","timestamp":1793265955854}
+{"level":"debug","message":"[vite] hot updated: /src/components/TeamTab.tsx","timestamp":1793265955854}
+{"level":"debug","message":"[vite] hot updated: /src/App.tsx","timestamp":1793265955854}
+{"level":"debug","message":"[vite] hot updated: /src/components/CompanyView.tsx","timestamp":1793265955854}
+{"level":"debug","message":"[vite] hot updated: /src/components/Home.tsx","timestamp":1793265955854}
+{"level":"debug","message":"[vite] hot updated: /src/components/ui.tsx","timestamp":1793265956729}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793265956729}
+{"level":"debug","message":"[vite] hot updated: /src/components/MyPayTab.tsx","timestamp":1793265956729}
+{"level":"debug","message":"[vite] hot updated: /src/components/PayrollsTab.tsx","timestamp":1793265956729}
+{"level":"debug","message":"[vite] hot updated: /src/components/FundPanel.tsx","timestamp":1793265956729}
+{"level":"debug","message":"[vite] hot updated: /src/components/PrepareForm.tsx","timestamp":1793265956729}
+{"level":"debug","message":"[vite] hot updated: /src/components/TeamTab.tsx","timestamp":1793265956729}
+{"level":"debug","message":"[vite] hot updated: /src/components/Home.tsx","timestamp":1793265956729}
+{"level":"log","message":"[vite] server connection lost. Polling for restart...","timestamp":1793265956729}
+{"level":"log","message":"[vite] server connection lost. Polling for restart...","timestamp":1793265960919}
+{"level":"error","message":"Warning: You are calling ReactDOMClient.createRoot() on a container that has already been passed to createRoot() before. Instead, call root.render() on the existing root instead if you want to update it.","timestamp":1793266013221}
+{"level":"error","message":"Warning: You are calling ReactDOMClient.createRoot() on a container that has already been passed to createRoot() before. Instead, call root.render() on the existing root instead if you want to update it.","timestamp":1793266013690}
+{"level":"debug","message":"[vite] invalidate /src/main.tsx: Could not Fast Refresh (\"true\" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports","timestamp":1793266013807}
+{"level":"debug","message":"[vite] hot updated: /src/main.tsx","timestamp":1793266013807}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266013807}
+{"level":"debug","message":"[vite] hot updated: /src/App.tsx","timestamp":1793266074557}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266074558}
+{"level":"debug","message":"[vite] hot updated: /src/App.tsx","timestamp":1793266074708}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266074708}
+{"level":"debug","message":"[vite] hot updated: /src/App.tsx","timestamp":1793266074883}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266074883}
+{"level":"debug","message":"[vite] hot updated: /src/components/FundPanel.tsx","timestamp":1793266075300}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266075300}
+{"level":"debug","message":"[vite] hot updated: /src/components/FundPanel.tsx","timestamp":1793266075301}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266075301}
+{"level":"debug","message":"[vite] hot updated: /src/components/FundPanel.tsx","timestamp":1793266075305}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266075305}
+{"level":"debug","message":"[vite] hot updated: /src/components/PrepareForm.tsx","timestamp":1793266076308}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266076308}
+{"level":"debug","message":"[vite] hot updated: /src/components/PrepareForm.tsx","timestamp":1793266076318}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266076318}
+{"level":"debug","message":"[vite] hot updated: /src/components/PrepareForm.tsx","timestamp":1793266076320}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266076320}
+{"level":"log","message":"[vite] server connection lost. Polling for restart...","timestamp":1793266100848}
+{"level":"log","message":"[vite] server connection lost. Polling for restart...","timestamp":1793266100849}
+{"level":"log","message":"[vite] server connection lost. Polling for restart...","timestamp":1793266100849}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266457003}
+{"level":"debug","message":"[vite] hot updated: /src/App.tsx","timestamp":1793266457004}
+{"level":"debug","message":"[vite] hot updated: /src/components/ui.tsx","timestamp":1793266457004}
+{"level":"debug","message":"[vite] hot updated: /src/components/MyPayTab.tsx","timestamp":1793266457004}
+{"level":"debug","message":"[vite] hot updated: /src/components/TeamTab.tsx","timestamp":1793266457004}
+{"level":"debug","message":"[vite] hot updated: /src/components/CompanyView.tsx","timestamp":1793266457004}
+{"level":"debug","message":"[vite] hot updated: /src/components/Home.tsx","timestamp":1793266457004}
+{"level":"debug","message":"[vite] hot updated: /src/components/PayrollsTab.tsx","timestamp":1793266457004}
+{"level":"debug","message":"[vite] hot updated: /src/components/PrepareForm.tsx","timestamp":1793266457004}
+{"level":"debug","message":"[vite] hot updated: /src/components/FundPanel.tsx","timestamp":1793266457004}
+{"level":"debug","message":"[vite] hot updated: /src/components/CreateCompanySheet.tsx","timestamp":1793266457004}
+{"level":"debug","message":"[vite] hot updated: /src/components/BridgePanel.tsx","timestamp":1793266457005}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266457790}
+{"level":"debug","message":"[vite] hot updated: /src/components/BridgePanel.tsx","timestamp":1793266457791}
+{"level":"debug","message":"[vite] hot updated: /src/components/ui.tsx","timestamp":1793266457791}
+{"level":"debug","message":"[vite] hot updated: /src/components/Home.tsx","timestamp":1793266457791}
+{"level":"debug","message":"[vite] hot updated: /src/components/MyPayTab.tsx","timestamp":1793266457791}
+{"level":"debug","message":"[vite] hot updated: /src/components/PayrollsTab.tsx","timestamp":1793266457791}
+{"level":"debug","message":"[vite] hot updated: /src/components/TeamTab.tsx","timestamp":1793266457791}
+{"level":"debug","message":"[vite] hot updated: /src/components/PrepareForm.tsx","timestamp":1793266457791}
+{"level":"debug","message":"[vite] hot updated: /src/components/FundPanel.tsx","timestamp":1793266457791}
+{"level":"log","message":"[vite] server connection lost. Polling for restart...","timestamp":1793266457792}
+{"level":"debug","message":"[vite] hot updated: /src/components/PrepareForm.tsx","timestamp":1793266476041}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266476041}
+{"level":"debug","message":"[vite] hot updated: /src/components/PrepareForm.tsx","timestamp":1793266476053}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266476053}
+{"level":"debug","message":"[vite] hot updated: /src/App.tsx","timestamp":1793266483368}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266483368}
+{"level":"debug","message":"[vite] hot updated: /src/App.tsx","timestamp":1793266483768}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266483768}
+{"level":"debug","message":"(previous line repeated 1× more)","timestamp":1793266764839}
+{"level":"debug","message":"[vite] hot updated: /src/App.tsx","timestamp":1793266764839}
+{"level":"debug","message":"[vite] hot updated: /src/components/ui.tsx","timestamp":1793266764839}
+{"level":"debug","message":"[vite] hot updated: /src/components/TeamTab.tsx","timestamp":1793266764839}
+{"level":"debug","message":"[vite] hot updated: /src/components/CreateCompanySheet.tsx","timestamp":1793266764839}
+{"level":"debug","message":"[vite] hot updated: /src/components/PayrollsTab.tsx","timestamp":1793266764840}
+{"level":"debug","message":"[vite] hot updated: /src/components/MyPayTab.tsx","timestamp":1793266764840}
+{"level":"debug","message":"[vite] hot updated: /src/components/FundPanel.tsx","timestamp":1793266764840}
+{"level":"debug","message":"[vite] hot updated: /src/components/PrepareForm.tsx","timestamp":1793266764840}
+{"level":"debug","message":"[vite] hot updated: /src/components/CompanyView.tsx","timestamp":1793266764840}
+{"level":"debug","message":"[vite] hot updated: /src/components/Home.tsx","timestamp":1793266764840}
+{"level":"debug","message":"[vite] hot updated: /src/components/BridgePanel.tsx","timestamp":1793266764840}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266765569}
+{"level":"debug","message":"[vite] hot updated: /src/components/BridgePanel.tsx","timestamp":1793266765569}
+{"level":"debug","message":"[vite] hot updated: /src/components/Home.tsx","timestamp":1793266765570}
+{"level":"debug","message":"[vite] hot updated: /src/components/ui.tsx","timestamp":1793266765570}
+{"level":"debug","message":"[vite] hot updated: /src/components/PayrollsTab.tsx","timestamp":1793266765570}
+{"level":"debug","message":"[vite] hot updated: /src/components/TeamTab.tsx","timestamp":1793266765570}
+{"level":"debug","message":"[vite] hot updated: /src/components/MyPayTab.tsx","timestamp":1793266765570}
+{"level":"debug","message":"[vite] hot updated: /src/components/FundPanel.tsx","timestamp":1793266765570}
+{"level":"debug","message":"[vite] hot updated: /src/components/PrepareForm.tsx","timestamp":1793266765570}
+{"level":"log","message":"[vite] server connection lost. Polling for restart...","timestamp":1793266765570}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266816888}
+{"level":"debug","message":"[vite] hot updated: /src/components/Home.tsx","timestamp":1793266818038}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266818038}
+{"level":"debug","message":"[vite] hot updated: /src/components/MyPayTab.tsx","timestamp":1793266818488}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266818488}
+{"level":"debug","message":"[vite] hot updated: /src/components/PayrollsTab.tsx","timestamp":1793266819688}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266819688}
+{"level":"debug","message":"[vite] hot updated: /src/components/BridgePanel.tsx","timestamp":1793266820484}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266820484}
+{"level":"debug","message":"[vite] hot updated: /src/components/CreateCompanySheet.tsx","timestamp":1793266820951}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266820951}
+{"level":"debug","message":"[vite] hot updated: /src/components/FundPanel.tsx","timestamp":1793266821409}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266821409}
+{"level":"debug","message":"[vite] hot updated: /src/components/ui.tsx","timestamp":1793266822187}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266822187}
+{"level":"debug","message":"[vite] hot updated: /src/components/AddFundsSheet.tsx","timestamp":1793266823429}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266823429}
+{"level":"debug","message":"[vite] hot updated: /src/components/PrepareForm.tsx","timestamp":1793266824122}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266824122}
+{"level":"debug","message":"[vite] hot updated: /src/components/TeamTab.tsx","timestamp":1793266825071}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266825071}
+{"level":"debug","message":"[vite] hot updated: /src/components/CompanyView.tsx","timestamp":1793266826659}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266826659}
+{"level":"debug","message":"[vite] hot updated: /src/components/BuyPanel.tsx","timestamp":1793266826668}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266826668}
+{"level":"debug","message":"[vite] hot updated: /src/App.tsx","timestamp":1793266827738}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266827738}
+{"level":"error","message":"Warning: You are calling ReactDOMClient.createRoot() on a container that has already been passed to createRoot() before. Instead, call root.render() on the existing root instead if you want to update it.","timestamp":1793266829089}
+{"level":"debug","message":"[vite] invalidate /src/main.tsx: Could not Fast Refresh (\"true\" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports","timestamp":1793266829089}
+{"level":"debug","message":"[vite] hot updated: /src/main.tsx","timestamp":1793266829089}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266829090}
+{"level":"debug","message":"[vite] hot updated: /src/components/PayrollsTab.tsx","timestamp":1793266829821}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266829821}
+{"level":"debug","message":"[vite] hot updated: /src/components/Home.tsx","timestamp":1793266829822}
+{"level":"debug","message":"[vite] hot updated: /src/components/TeamTab.tsx","timestamp":1793266829822}
+{"level":"debug","message":"[vite] hot updated: /src/components/FundPanel.tsx","timestamp":1793266829822}
+{"level":"debug","message":"[vite] hot updated: /src/components/PrepareForm.tsx","timestamp":1793266829822}
+{"level":"debug","message":"[vite] hot updated: /src/components/CompanyView.tsx","timestamp":1793266829822}
+{"level":"debug","message":"[vite] hot updated: /src/components/MyPayTab.tsx","timestamp":1793266829822}
+{"level":"debug","message":"[vite] hot updated: /src/components/PayrollsTab.tsx","timestamp":1793266829829}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266829829}
+{"level":"debug","message":"[vite] hot updated: /src/components/Home.tsx","timestamp":1793266829829}
+{"level":"debug","message":"[vite] hot updated: /src/components/TeamTab.tsx","timestamp":1793266829829}
+{"level":"debug","message":"[vite] hot updated: /src/components/FundPanel.tsx","timestamp":1793266829829}
+{"level":"debug","message":"[vite] hot updated: /src/components/PrepareForm.tsx","timestamp":1793266829829}
+{"level":"debug","message":"[vite] hot updated: /src/components/CompanyView.tsx","timestamp":1793266829829}
+{"level":"debug","message":"[vite] hot updated: /src/components/MyPayTab.tsx","timestamp":1793266829829}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266829835}
+{"level":"debug","message":"[vite] hot updated: /src/components/PayrollsTab.tsx","timestamp":1793266862367}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266862367}
+{"level":"debug","message":"[vite] hot updated: /src/components/PayrollsTab.tsx","timestamp":1793266862500}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266862500}
+{"level":"debug","message":"[vite] hot updated: /src/components/MyPayTab.tsx","timestamp":1793266863284}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266863284}
+{"level":"debug","message":"[vite] hot updated: /src/components/MyPayTab.tsx","timestamp":1793266863285}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266863285}
+{"level":"debug","message":"[vite] hot updated: /src/components/PrepareForm.tsx","timestamp":1793266884782}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266884783}
+{"level":"debug","message":"[vite] hot updated: /src/components/PrepareForm.tsx","timestamp":1793266884783}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266884783}
+{"level":"debug","message":"[vite] invalidate /src/components/TeamTab.tsx: Could not Fast Refresh (export removed)","timestamp":1793266885348}
+{"level":"debug","message":"[vite] hot updated: /src/components/TeamTab.tsx","timestamp":1793266885348}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266885348}
+{"level":"debug","message":"[vite] invalidate /src/components/TeamTab.tsx: Could not Fast Refresh (export removed)","timestamp":1793266885599}
+{"level":"debug","message":"[vite] hot updated: /src/components/TeamTab.tsx","timestamp":1793266885599}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266885599}
+{"level":"error","message":"[vite] SyntaxError: The requested module '/src/components/TeamTab.tsx?t=1793266883444' does not provide an export named 'TeamTab'","timestamp":1793266886587,"stack":"SyntaxError: The requested module '/src/components/TeamTab.tsx?t=1793266883444' does not provide an export named 'TeamTab'"}
+{"level":"error","message":"[vite] Failed to reload /src/components/CompanyView.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)","timestamp":1793266886587}
+{"level":"debug","message":"[vite] hot updated: /src/components/CompanyView.tsx","timestamp":1793266886588}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266886588}
+{"level":"error","message":"[vite] SyntaxError: The requested module '/src/components/TeamTab.tsx?t=1793266883444' does not provide an export named 'TeamTab'","timestamp":1793266886853,"stack":"SyntaxError: The requested module '/src/components/TeamTab.tsx?t=1793266883444' does not provide an export named 'TeamTab'"}
+{"level":"error","message":"[vite] Failed to reload /src/components/CompanyView.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)","timestamp":1793266886853}
+{"level":"debug","message":"[vite] hot updated: /src/components/CompanyView.tsx","timestamp":1793266886853}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266886853}
+{"level":"debug","message":"[vite] hot updated: /src/components/CompanyView.tsx","timestamp":1793266908870}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266908870}
+{"level":"debug","message":"[vite] hot updated: /src/components/CompanyView.tsx","timestamp":1793266909318}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266909318}
+{"level":"debug","message":"[vite] hot updated: /src/App.tsx","timestamp":1793266909938}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266909938}
+{"level":"debug","message":"[vite] hot updated: /src/App.tsx","timestamp":1793266910199}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266910199}
+{"level":"debug","message":"[vite] hot updated: /src/components/CompanyView.tsx","timestamp":1793266918685}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266918685}
+{"level":"debug","message":"[vite] hot updated: /src/components/CompanyView.tsx","timestamp":1793266918731}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793266918731}
+{"level":"debug","message":"[vite] hot updated: /src/components/TeamTab.tsx","timestamp":1793267164278}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793267164278}
+{"level":"debug","message":"[vite] hot updated: /src/components/ui.tsx","timestamp":1793267164279}
+{"level":"debug","message":"[vite] hot updated: /src/components/FundPanel.tsx","timestamp":1793267164279}
+{"level":"debug","message":"[vite] hot updated: /src/components/PayrollsTab.tsx","timestamp":1793267164279}
+{"level":"debug","message":"[vite] hot updated: /src/components/PrepareForm.tsx","timestamp":1793267164279}
+{"level":"debug","message":"[vite] hot updated: /src/components/MyPayTab.tsx","timestamp":1793267164279}
+{"level":"debug","message":"[vite] hot updated: /src/components/CreateCompanySheet.tsx","timestamp":1793267164279}
+{"level":"debug","message":"[vite] hot updated: /src/components/RefundsPanel.tsx","timestamp":1793267164279}
+{"level":"debug","message":"[vite] hot updated: /src/components/Home.tsx","timestamp":1793267164279}
+{"level":"debug","message":"[vite] hot updated: /src/components/CompanyView.tsx","timestamp":1793267164279}
+{"level":"debug","message":"[vite] hot updated: /src/App.tsx","timestamp":1793267164279}
+{"level":"debug","message":"[vite] hot updated: /src/components/BridgePanel.tsx","timestamp":1793267164279}
+{"level":"debug","message":"[vite] hot updated: /src/components/PayrollsTab.tsx","timestamp":1793267165264}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793267165264}
+{"level":"debug","message":"[vite] hot updated: /src/components/Home.tsx","timestamp":1793267165264}
+{"level":"debug","message":"[vite] hot updated: /src/components/TeamTab.tsx","timestamp":1793267165264}
+{"level":"debug","message":"[vite] hot updated: /src/components/ui.tsx","timestamp":1793267165264}
+{"level":"debug","message":"[vite] hot updated: /src/components/FundPanel.tsx","timestamp":1793267165264}
+{"level":"debug","message":"[vite] hot updated: /src/components/PrepareForm.tsx","timestamp":1793267165264}
+{"level":"debug","message":"[vite] hot updated: /src/components/MyPayTab.tsx","timestamp":1793267165264}
+{"level":"debug","message":"[vite] hot updated: /src/components/BridgePanel.tsx","timestamp":1793267165264}
+{"level":"debug","message":"[vite] hot updated: /src/components/RefundsPanel.tsx","timestamp":1793267165264}
+{"level":"log","message":"[vite] server connection lost. Polling for restart...","timestamp":1793267165264}
+{"level":"debug","message":"[vite] connected.","timestamp":1793267167146}
+{"level":"debug","message":"[vite] hot updated: /src/App.tsx","timestamp":1793267490698}
+{"level":"debug","message":"[vite] hot updated: /src/index.css","timestamp":1793267490698}
+{"level":"debug","message":"[vite] hot updated: /src/components/Home.tsx","timestamp":1793267490698}
+{"level":"debug","message":"[vite] hot updated: /src/components/CompanyView.tsx","timestamp":1793267490698}
+{"level":"debug","message":"[vite] hot updated: /src/components/RefundsPanel.tsx","timestamp":1793267490698}
+{"level":"debug","message":"[vite] hot updated: /src/components/PayrollsTab.tsx","timestamp":1793267490698}
+{"level":"debug","message":"[vite] hot updated: /src/components/TeamTab.tsx","timestamp":1793267490698}
+{"level":"debug","message":"[vite] hot updated: /src/components/PrepareForm.tsx","timestamp":1793267490698}
+{"level":"debug","message":"[vite] hot updated: /src/components/MyPayTab.tsx","timestamp":1793267490698}
+{"level":"debug","message":"[vite] hot updated: /src/components/FundPanel.tsx","timestamp":1793267490698}
+{"level":"debug","message":"[vite] hot updated: /src/components/ui.tsx","timestamp":1793267490698}
+{"level":"debug","message":"[vite] hot updated: /src/components/CreateCompanySheet.tsx","timestamp":1793267490698}
+{"level":"debug","message":"[vite] hot updated: /src/components/BridgePanel.tsx","timestamp":1793267490698}
+{"level":"log","message":"[vite] server connection lost. Polling for restart...","timestamp":1793267491016}
+{"level":"log","message":"[vite] server connection lost. Polling for restart...","timestamp":1793268034176}
+{"level":"debug","message":"[vite] connected.","timestamp":1793268037831}
+{"level":"log","message":"[vite] server connection lost. Polling for restart...","timestamp":1793268107317}
+{"level":"log","message":"[vite] server connection lost. Polling for restart...","timestamp":1793268150901}
+{"level":"log","message":"[vite] server connection lost. Polling for restart...","timestamp":1793268219837}
+{"level":"debug","message":"[vite] connected.","timestamp":1793268223743}
+{"level":"log","message":"[vite] server connection lost. Polling for restart...","timestamp":1793268358678}
+{"level":"log","message":"[vite] server connection lost. Polling for restart...","timestamp":1793268532649}
+{"level":"log","message":"[vite] server connection lost. Polling for restart...","timestamp":1793268666946}
