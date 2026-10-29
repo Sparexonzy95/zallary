@@ -299,14 +299,8 @@ export function CompanyView({ vault, portal }: Props) {
                 <strong className="text-[#38d996]">Active</strong>
               </div>
               <div className="employer-task-hero-metric">
-                <span>Admin Access</span>
-                <strong>{roles.ADMIN ? 'Authorized' : 'Viewer'}</strong>
-              </div>
-              <div className="employer-task-hero-metric">
-                <span>Maker-Checker</span>
-                <strong className={separate.enforced ? 'text-[#38d996]' : 'text-[#FE9E15]'}>
-                  {separate.enforced ? 'Enforced' : 'Relaxed'}
-                </strong>
+                <span>Active access</span>
+                <strong>{roles.ADMIN ? 'Admin' : 'Officer'}</strong>
               </div>
             </div>
           </section>

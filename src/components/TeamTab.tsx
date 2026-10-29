@@ -5,20 +5,17 @@ import {
   Check,
   Landmark,
   PauseOctagon,
-  Percent,
   Play,
   ShieldCheck,
   UserCheck,
   UserMinus,
   UsersRound,
 } from 'lucide-react'
-import { useAccount, useReadContract, useReadContracts } from 'wagmi'
 import { isAddress, type Address } from 'viem'
 import { vaultAbi } from '@/abi/vaultAbi'
-import { CHAIN_ID } from '@/lib/chain'
 import { ROLE, ROLE_LABEL, type MemberRoleKey } from '@/lib/roles'
-import { bpsToPercent, shortAddress } from '@/lib/format'
-import { useRoleMembers, useSeparateApprover } from '@/hooks/data'
+import { shortAddress } from '@/lib/format'
+import { useRoleMembers } from '@/hooks/data'
 import { useTx } from '@/hooks/useTx'
 import { Button, Field, Notice, Skeleton, StatusBadge } from '@/components/ui'
 
@@ -32,7 +29,7 @@ const EDITABLE: readonly MemberRoleKey[] = ['HR', 'FINANCE', 'PAUSER', 'RELAYER'
 const ROLE_DESCRIPTIONS: Record<MemberRoleKey, string> = {
   HR: 'Draft employee rosters, set USDC allocations, and prepare payroll batches for Finance.',
   FINANCE: 'Audit immutable payroll drafts, deposit USDC escrow, and reclaim refunds.',
-  PAUSER: 'Authorize emergency circuit breaker pauses across the entire vault.',
+  PAUSER: 'Authorize emergency pauses across the entire vault.',
   RELAYER: 'Automated on-chain batch submissions and relayer operations.',
   ADMIN: 'Master administrator with timelocked governance transition authority.',
 }
@@ -336,255 +333,7 @@ function RoleAssignmentWizard({
   )
 }
 
-function SeparateApproverCard({ vault, isAdmin }: Props) {
-  const tx = useTx()
-  const separate = useSeparateApprover(vault)
-  if (!separate.supported) return null
-  const next = !separate.enforced
-
-  return (
-    <div className="template-detail-command-panel p-5 sm:p-6 space-y-4 rounded-2xl bg-[#151515] border border-white/10">
-      <div className="template-detail-action-strip flex items-center justify-between pb-3 border-b border-white/10">
-        <div className="flex items-center gap-2.5">
-          <ShieldCheck className="size-5 text-[#FE9E15]" />
-          <div>
-            <h3 className="font-bold text-base text-white font-display">Maker-Checker Segregation Policy</h3>
-            <p className="text-xs text-white/50">
-              Institutional fraud prevention rule enforcing distinct HR and Finance signatories.
-            </p>
-          </div>
-        </div>
-        <span className={`status ${separate.enforced ? 'status-active' : 'status-funding_ready'}`}>
-          {separate.enforced ? 'Enforced' : 'Relaxed'}
-        </span>
-      </div>
-
-      <p className="text-xs text-white/60 leading-relaxed">
-        {separate.enforced
-          ? 'Strict governance enabled: The Finance wallet that executes funding cannot be the same address that drafted the payroll. Dual-role atomic execution is disabled.'
-          : 'Relaxed governance: Any account with Finance authority can fund any draft, including rosters prepared by the same account.'}
-      </p>
-
-      {isAdmin && (
-        <div className="pt-2 flex justify-end">
-          {tx.error && <Notice tone="bad">{tx.error}</Notice>}
-          <Button
-            variant="ghost"
-            loading={tx.busy}
-            onClick={() =>
-              void tx.run(
-                (write) =>
-                  write({
-                    address: vault,
-                    abi: vaultAbi,
-                    functionName: 'setRequireSeparateApprover',
-                    args: [next],
-                  }),
-                {
-                  success: next
-                    ? 'Maker-checker policy strictly enforced on-chain.'
-                    : 'Maker-checker policy relaxed.',
-                },
-              )
-            }
-            className="btn btn-secondary min-h-10 text-xs px-5 font-semibold"
-          >
-            {next
-              ? 'Enable Strict Maker-Checker Separation'
-              : 'Allow Single-Wallet Preparation & Funding'}
-          </Button>
-        </div>
-      )}
-    </div>
-  )
-}
-
-function FeeCard({ vault, isAdmin }: Props) {
-  const tx = useTx()
-  const [percent, setPercent] = useState('')
-  const [recipient, setRecipient] = useState('')
-  const read = useReadContracts({
-    allowFailure: false,
-    query: { refetchInterval: 15_000 },
-    contracts: [
-      { address: vault, abi: vaultAbi, functionName: 'feeBps', chainId: CHAIN_ID },
-      { address: vault, abi: vaultAbi, functionName: 'feeRecipient', chainId: CHAIN_ID },
-    ],
-  })
-  const [feeBps, feeRecipient] = read.data ?? []
-  const bps = Math.round(Number(percent) * 100)
-  const target = recipient || feeRecipient
-  const valid =
-    percent !== '' &&
-    bps >= 0 &&
-    bps <= 500 &&
-    typeof target === 'string' &&
-    isAddress(target)
-
-  const save = () => {
-    if (!valid || typeof target !== 'string' || !isAddress(target)) return
-    void tx.run(
-      (write) =>
-        write({
-          address: vault,
-          abi: vaultAbi,
-          functionName: 'setProtocolFee',
-          args: [BigInt(bps), target],
-        }),
-      {
-        success: 'Protocol fee parameters updated on-chain.',
-        onDone: () => setPercent(''),
-      },
-    )
-  }
-
-  return (
-    <div className="template-detail-command-panel p-5 sm:p-6 space-y-4 rounded-2xl bg-[#151515] border border-white/10">
-      <div className="template-detail-action-strip flex items-center justify-between pb-3 border-b border-white/10">
-        <div className="flex items-center gap-2.5">
-          <Percent className="size-5 text-[#FE9E15]" />
-          <div>
-            <h3 className="font-bold text-base text-white font-display">Protocol Disbursement Fee</h3>
-            <p className="text-xs text-white/50">
-              Levied on top of gross payroll volume upon Finance funding execution (capped at 5%).
-            </p>
-          </div>
-        </div>
-        {typeof feeBps === 'bigint' && (
-          <span className="status status-funding_ready font-mono">{bpsToPercent(feeBps)} at funding</span>
-        )}
-      </div>
-
-      {typeof feeRecipient === 'string' && (
-        <div className="inner flex flex-wrap items-center justify-between gap-2 rounded-xl p-3 text-xs bg-white/[0.02] border border-white/5 font-mono">
-          <span className="text-white/40">Configured Fee Beneficiary:</span>
-          <span className="text-white font-semibold">{shortAddress(feeRecipient)}</span>
-        </div>
-      )}
-
-      {isAdmin && (
-        <div className="space-y-4 pt-2">
-          <div className="grid gap-3 sm:grid-cols-[140px_1fr]">
-            <Field label="New Rate (%)" help="Max 5.00%">
-              <input
-                className="field tabular-nums text-right font-mono"
-                inputMode="decimal"
-                value={percent}
-                onChange={(e) => setPercent(e.target.value.replace(/[^0-9.]/g, ''))}
-                placeholder="0.25"
-              />
-            </Field>
-            <Field label="Beneficiary Address" help="Leave blank to retain current">
-              <input
-                className="field mono text-xs sm:text-sm"
-                value={recipient}
-                onChange={(e) => setRecipient(e.target.value.trim())}
-                placeholder="Keep existing address"
-              />
-            </Field>
-          </div>
-
-          <div className="flex justify-end">
-            <Button
-              variant="ghost"
-              disabled={!valid}
-              loading={tx.busy}
-              onClick={save}
-              className="btn btn-secondary min-h-10 text-xs px-5 font-semibold"
-            >
-              Update Fee Policy
-            </Button>
-          </div>
-        </div>
-      )}
-    </div>
-  )
-}
-
-function PauseCard({ vault }: { vault: Address }) {
-  const { address } = useAccount()
-  const tx = useTx()
-  const paused = useReadContract({
-    address: vault,
-    abi: vaultAbi,
-    functionName: 'paused',
-    chainId: CHAIN_ID,
-    query: { refetchInterval: 10_000 },
-  })
-  const pauser = useReadContract({
-    address: vault,
-    abi: vaultAbi,
-    functionName: 'hasRole',
-    args: [ROLE.PAUSER, address ?? vault],
-    chainId: CHAIN_ID,
-    query: { enabled: Boolean(address) },
-  })
-  const isPaused = paused.data === true
-
-  return (
-    <div className="template-detail-command-panel p-5 sm:p-6 space-y-4 rounded-2xl bg-[#151515] border border-white/10">
-      <div className="template-detail-action-strip flex items-center justify-between pb-3 border-b border-white/10">
-        <div className="flex items-center gap-2.5">
-          <PauseOctagon className="size-5 text-red-500" />
-          <div>
-            <h3 className="font-bold text-base text-white font-display">Emergency Circuit Breaker</h3>
-            <p className="text-xs text-white/50">
-              Freezes payroll preparations, fundings, claims, and treasury distributions in an emergency.
-            </p>
-          </div>
-        </div>
-        <span className={`status ${isPaused ? 'status-failed' : 'status-active'}`}>
-          {isPaused ? 'Vault Paused' : 'Operational'}
-        </span>
-      </div>
-
-      <p className="text-xs text-white/60 leading-relaxed">
-        {isPaused
-          ? 'The vault is currently PAUSED. All state mutations are rejected by the smart contract until unpaused.'
-          : 'All smart contract functions are active. In case of suspected security compromise, authorized Pausers can halt activity immediately.'}
-      </p>
-
-      {tx.error && <Notice tone="bad">{tx.error}</Notice>}
-
-      {pauser.data === true ? (
-        <div className="pt-2 flex justify-end">
-          <Button
-            variant={isPaused ? 'primary' : 'danger'}
-            loading={tx.busy}
-            onClick={() =>
-              void tx.run(
-                (write) =>
-                  write({
-                    address: vault,
-                    abi: vaultAbi,
-                    functionName: isPaused ? 'unpause' : 'pause',
-                  }),
-                { success: isPaused ? 'Vault resumed operational status.' : 'Vault paused.' },
-              )
-            }
-            className={`btn ${isPaused ? 'btn-primary' : 'btn-danger'} min-h-10 text-xs px-5 font-semibold`}
-          >
-            {isPaused ? (
-              <>
-                <Play className="size-4" /> Resume Operations
-              </>
-            ) : (
-              <>
-                <PauseOctagon className="size-4" /> Trigger Emergency Pause
-              </>
-            )}
-          </Button>
-        </div>
-      ) : (
-        <p className="text-xs text-white/40 pt-1 font-mono">
-          Connected wallet does not hold the Pauser role.
-        </p>
-      )}
-    </div>
-  )
-}
-
-/** Full Institution Governance view aligning with Zalary's authentic layout. */
+/** Pure Institution Governance view matching Zalary's authentic layout. */
 export function TeamTab({ vault, isAdmin }: Props) {
   const [showWizard, setShowWizard] = useState(false)
 
@@ -622,13 +371,6 @@ export function TeamTab({ vault, isAdmin }: Props) {
           </div>
         </section>
       )}
-
-      {/* ─── Institutional Security & Protocol Policies ─── */}
-      <div className="space-y-4">
-        <SeparateApproverCard vault={vault} isAdmin={isAdmin} />
-        <FeeCard vault={vault} isAdmin={isAdmin} />
-        <PauseCard vault={vault} />
-      </div>
     </div>
   )
 }
