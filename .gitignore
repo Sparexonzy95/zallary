@@ -1,0 +1,27 @@
+# dependencies
+node_modules/
+
+# secrets
+.env
+.env.*
+!.env.example
+.circle/
+recovery_file*
+
+# build output
+dist/
+contracts/out/
+contracts/cache/
+
+# Arc Studio runtime logs
+traces.jsonl
+console.jsonl
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+
+# Foundry
+cache/
+out/

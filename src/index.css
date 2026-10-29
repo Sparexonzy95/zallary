@@ -1,0 +1,254 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+
+  /* Canvas & surfaces */
+  --bg: #080808;
+  --surface: #151515;
+  --surface-strong: #151515;
+  --elevated: #1a1a1a;
+  --inset: #111111;
+  --surface-muted: #111111;
+
+  /* Ink */
+  --ink: #f4f4f2;
+  --ink-2: #d6d6d2;
+  --muted: #a3a3a0;
+  --subtle: #76766f;
+
+  /* Borders */
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.18);
+  --border-glow: rgba(254, 158, 21, 0.25);
+
+  /* Accent */
+  --accent: #fe9e15;
+  --accent-hover: #ffb347;
+  --accent-dim: rgba(254, 158, 21, 0.08);
+  --accent-soft: rgba(254, 158, 21, 0.14);
+  --on-accent: #080808;
+  --focus: #fe9e15;
+
+  /* Semantic */
+  --success: #38d996;
+  --success-dim: rgba(56, 217, 150, 0.10);
+  --danger: #ff6b6b;
+  --danger-dim: rgba(255, 107, 107, 0.10);
+  --warn: #fe9e15;
+
+  /* Radius */
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 20px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 32px rgba(0, 0, 0, 0.25);
+  --shadow-elevated: 0 4px 16px rgba(0, 0, 0, 0.4), 0 16px 48px rgba(0, 0, 0, 0.3);
+  --shadow-glow: 0 0 20px rgba(254, 158, 21, 0.15);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+  min-height: 100dvh;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.display {
+  font-family: 'Space Grotesk', sans-serif;
+  letter-spacing: -0.03em;
+}
+
+.mono {
+  font-family: 'JetBrains Mono', Menlo, monospace;
+}
+
+/* ---------- Card / surface classes ---------- */
+.glass {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-card);
+}
+
+.glass-elevated {
+  background: var(--elevated);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-elevated);
+}
+
+.inner {
+  background: var(--inset);
+  border: 1px solid var(--border);
+}
+
+/* Gradient border card — used for hero / featured areas */
+.gradient-border {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid transparent;
+  background-clip: padding-box;
+}
+
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(254, 158, 21, 0.3),
+    rgba(254, 158, 21, 0.05) 40%,
+    rgba(255, 255, 255, 0.06) 60%,
+    rgba(254, 158, 21, 0.15)
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* ---------- Form fields ---------- */
+.field {
+  width: 100%;
+  min-height: 44px;
+  border-radius: var(--radius-sm);
+  padding: 0 14px;
+  font-size: 14px;
+  color: var(--ink);
+  background: var(--inset);
+  border: 1px solid var(--border);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.field::placeholder {
+  color: var(--subtle);
+}
+
+select.field option {
+  background: var(--elevated);
+  color: var(--ink);
+}
+
+.field:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(254, 158, 21, 0.15);
+}
+
+.field:hover:not(:focus) {
+  border-color: var(--border-strong);
+}
+
+textarea.field {
+  padding: 12px 14px;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+/* ---------- Scrollbar ---------- */
+.scroll-x {
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.scroll-x::-webkit-scrollbar {
+  display: none;
+}
+
+/* ---------- Shimmer skeleton ---------- */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--inset) 25%,
+    rgba(255, 255, 255, 0.04) 50%,
+    var(--inset) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+}
+
+/* ---------- Ambient glow (behind hero) ---------- */
+.glow-orb {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(254, 158, 21, 0.12) 0%, transparent 70%);
+  filter: blur(80px);
+  pointer-events: none;
+}
+
+/* ---------- Gradient text ---------- */
+.gradient-text {
+  background: linear-gradient(135deg, var(--ink) 0%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ---------- Progress bar ---------- */
+.progress-bar {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--inset);
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-hover));
+  transition: width 0.4s ease;
+}
+
+/* ---------- Step indicator dot ---------- */
+.step-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 2px solid var(--border-strong);
+  transition: all 0.2s;
+}
+
+.step-dot.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 8px rgba(254, 158, 21, 0.4);
+}
+
+.step-dot.done {
+  background: var(--success);
+  border-color: var(--success);
+}
+
+/* ---------- Divider ---------- */
+.divider {
+  height: 1px;
+  background: var(--border);
+}
+
+/* ---------- Motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
