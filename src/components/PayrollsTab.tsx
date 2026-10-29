@@ -9,16 +9,17 @@ import {
 import { vaultAbi } from '@/abi/vaultAbi'
 import { formatDate, shortId, usdc } from '@/lib/format'
 import { STATUS_NAMES } from '@/lib/roles'
-import { usePayrollLabels, usePayrolls, type PayrollRow } from '@/hooks/data'
+import { useNowSeconds, usePayrollLabels, usePayrolls, type PayrollRow } from '@/hooks/data'
 import { useTx } from '@/hooks/useTx'
 import { EmptyState, Notice, Skeleton, StatusBadge } from '@/components/ui'
 import { FundPanel } from '@/components/FundPanel'
+import { RefundsPanel } from '@/components/RefundsPanel'
 
 interface Props {
   vault: Address
   isHR: boolean
   isFinance: boolean
-  initialFilter?: 'all' | 'draft' | 'funded' | 'completed' | 'cancelled'
+  initialFilter?: 'all' | 'draft' | 'funded' | 'completed' | 'cancelled' | 'reclaims'
   hideFilters?: boolean
   title?: string
   eyebrow?: string
@@ -129,15 +130,28 @@ export function PayrollsTab({
   isFinance,
   initialFilter = 'all',
   hideFilters = false,
-  title = 'Your Payroll',
-  eyebrow = 'Payroll queue',
+  title,
+  eyebrow,
 }: Props) {
   const payrolls = usePayrolls(vault)
   const { labels } = usePayrollLabels(vault)
+  const now = useNowSeconds()
   const [search, setSearch] = useState('')
   const [statusFilter, setStatusFilter] = useState<string>(initialFilter)
 
+  const cardTitle = title ?? (isFinance ? 'Ready Payroll' : 'Your Payroll')
+  const cardEyebrow = eyebrow ?? (isFinance ? 'Funding operations' : 'Payroll queue')
+
   const rows = useMemo(() => payrolls.data ?? [], [payrolls.data])
+
+  const expiredCount = useMemo(() => {
+    return rows.filter(
+      (row) =>
+        STATUS_NAMES[row.meta.status] === 'Funded' &&
+        row.meta.remainingEscrow > 0n &&
+        BigInt(now) > row.meta.deadline,
+    ).length
+  }, [rows, now])
 
   const filteredRows = useMemo(() => {
     const query = search.trim().toLowerCase()
@@ -174,23 +188,35 @@ export function PayrollsTab({
     )
   }, [rows])
 
-  const filterTabs = [
-    { key: 'all', label: `All (${counts.all})` },
-    { key: 'draft', label: `Draft (${counts.draft})` },
-    { key: 'funded', label: `Funded (${counts.funded})` },
-    { key: 'completed', label: `Completed (${counts.completed})` },
-    ...(counts.cancelled > 0 ? [{ key: 'cancelled', label: `Cancelled (${counts.cancelled})` }] : []),
-  ]
+  const filterTabs = useMemo(() => {
+    if (isFinance) {
+      return [
+        { key: 'all', label: `All (${counts.all})` },
+        { key: 'draft', label: `Ready to Fund (${counts.draft})` },
+        { key: 'funded', label: `Funded (${counts.funded})` },
+        { key: 'completed', label: `Completed (${counts.completed})` },
+        ...(counts.cancelled > 0 ? [{ key: 'cancelled', label: `Cancelled (${counts.cancelled})` }] : []),
+        { key: 'reclaims', label: `Reclaims (${expiredCount})` },
+      ]
+    }
+    return [
+      { key: 'all', label: `All (${counts.all})` },
+      { key: 'draft', label: `Draft (${counts.draft})` },
+      { key: 'funded', label: `Funded (${counts.funded})` },
+      { key: 'completed', label: `Completed (${counts.completed})` },
+      ...(counts.cancelled > 0 ? [{ key: 'cancelled', label: `Cancelled (${counts.cancelled})` }] : []),
+    ]
+  }, [isFinance, counts, expiredCount])
 
   return (
     <section className="employer-task-card employer-payroll-board">
       <div className="employer-task-card-head">
         <div>
-          <span>{eyebrow}</span>
-          <h2>{title}</h2>
+          <span>{cardEyebrow}</span>
+          <h2>{cardTitle}</h2>
         </div>
         <span className="employer-task-count">
-          {filteredRows.length} item{filteredRows.length === 1 ? '' : 's'}
+          {statusFilter === 'reclaims' ? `${expiredCount} reclaimable` : `${filteredRows.length} item${filteredRows.length === 1 ? '' : 's'}`}
         </span>
       </div>
 
@@ -220,19 +246,23 @@ export function PayrollsTab({
         )}
       </div>
 
-      {payrolls.isLoading ? (
+      {statusFilter === 'reclaims' ? (
+        <RefundsPanel vault={vault} />
+      ) : payrolls.isLoading ? (
         <div className="space-y-3 p-2">
           <Skeleton className="h-16 rounded-xl" />
           <Skeleton className="h-16 rounded-xl" />
         </div>
       ) : rows.length === 0 ? (
         <EmptyState
-          title="No payroll runs yet"
-          body="Create a draft payroll batch to upload allocations and submit for Finance funding."
+          title={isFinance ? 'No runs ready for Finance' : 'No payroll runs yet'}
+          body={isFinance ? 'Approve USDC and fund payroll runs after HR marks them ready.' : 'Create a draft payroll batch to upload allocations and submit for Finance funding.'}
         />
       ) : filteredRows.length === 0 ? (
         <p className="muted employer-task-empty text-center py-6 text-xs text-white/40 font-mono">
-          No payroll matches your current search or filter.
+          {statusFilter === 'draft'
+            ? 'No payroll runs are currently awaiting funding.'
+            : 'No payroll matches your current search or filter.'}
         </p>
       ) : (
         <div className="employer-task-payroll-list">

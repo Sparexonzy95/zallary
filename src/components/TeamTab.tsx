@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import {
-  CheckCircle2,
+  ArrowLeft,
+  ArrowRight,
+  Check,
   Landmark,
   PauseOctagon,
   Percent,
@@ -8,7 +10,6 @@ import {
   ShieldCheck,
   UserCheck,
   UserMinus,
-  UserPlus,
   UsersRound,
 } from 'lucide-react'
 import { useAccount, useReadContract, useReadContracts } from 'wagmi'
@@ -26,10 +27,10 @@ interface Props {
   isAdmin: boolean
 }
 
-const EDITABLE: readonly MemberRoleKey[] = ['HR', 'FINANCE', 'RELAYER', 'PAUSER']
+const EDITABLE: readonly MemberRoleKey[] = ['HR', 'FINANCE', 'PAUSER', 'RELAYER']
 
 const ROLE_DESCRIPTIONS: Record<MemberRoleKey, string> = {
-  HR: 'Draft employee rosters, set allocations, and submit batches for Finance audit.',
+  HR: 'Draft employee rosters, set USDC allocations, and prepare payroll batches for Finance.',
   FINANCE: 'Audit immutable payroll drafts, deposit USDC escrow, and reclaim refunds.',
   PAUSER: 'Authorize emergency circuit breaker pauses across the entire vault.',
   RELAYER: 'Automated on-chain batch submissions and relayer operations.',
@@ -54,15 +55,12 @@ function RoleMembersList({
   }
 
   const list = members.data ?? []
-
-  if (list.length === 0) {
-    return null
-  }
+  if (list.length === 0) return null
 
   return (
     <div className="space-y-2">
       {list.map((member) => (
-        <div key={member} className="institution-member-row">
+        <div key={`${role}-${member}`} className="institution-member-row">
           <span className="institution-member-icon">
             {role === 'ADMIN' ? (
               <ShieldCheck size={16} className="text-[#FE9E15]" />
@@ -110,14 +108,27 @@ function RoleMembersList({
   )
 }
 
-function GrantRoleWizard({ vault }: { vault: Address }) {
+function RoleAssignmentWizard({
+  vault,
+  onComplete,
+}: {
+  vault: Address
+  onComplete: () => void
+}) {
   const tx = useTx()
   const [role, setRole] = useState<MemberRoleKey>('HR')
+  const [step, setStep] = useState<0 | 1 | 2>(0)
   const [input, setInput] = useState('')
   const valid = isAddress(input)
 
+  const steps = [
+    { title: 'Role', caption: ROLE_LABEL[role] },
+    { title: 'Wallet', caption: valid ? shortAddress(input) : 'Target Address' },
+    { title: 'Submit', caption: 'On-chain' },
+  ]
+
   const submit = () => {
-    if (!isAddress(input)) return
+    if (!valid) return
     void tx.run(
       (write) =>
         write({
@@ -128,103 +139,199 @@ function GrantRoleWizard({ vault }: { vault: Address }) {
         }),
       {
         success: `${ROLE_LABEL[role]} role granted on-chain!`,
-        onDone: () => setInput(''),
+        onDone: () => {
+          setInput('')
+          onComplete()
+        },
       },
     )
   }
 
   return (
-    <div className="employer-task-card template-detail-command-panel p-5 sm:p-6 space-y-5 rounded-2xl bg-[#151515] border border-white/10">
-      <div className="template-detail-action-strip flex items-center justify-between pb-3 border-b border-white/10">
-        <div className="flex items-center gap-2.5">
-          <UserPlus className="size-5 text-[#FE9E15]" />
-          <div>
-            <h3 className="font-bold text-base text-white font-display">Assign New Role</h3>
-            <p className="text-xs text-white/50">
-              Enforce segregation of duties by assigning HR and Finance to distinct wallets.
-            </p>
+    <div className="template-detail-command-panel p-5 sm:p-6 space-y-5 rounded-2xl bg-[#151515] border border-white/10">
+      <div className="institution-panel-head">
+        <div>
+          <span className="institution-panel-kicker">Role Delegation</span>
+          <h2>Assign New Role</h2>
+        </div>
+        <button
+          type="button"
+          className="btn btn-secondary !min-h-9 !py-1 text-xs px-3 font-semibold flex items-center gap-1.5"
+          onClick={onComplete}
+        >
+          <ArrowLeft size={14} /> Back to Directory
+        </button>
+      </div>
+
+      <div className="role-assignment-steps" aria-label="Role assignment progress">
+        {steps.map((s, index) => {
+          const stepIndex = index as 0 | 1 | 2
+          const active = step === stepIndex
+          const complete = step > stepIndex
+          return (
+            <button
+              type="button"
+              key={s.title}
+              className={`role-assignment-step${active ? ' active' : ''}${complete ? ' complete' : ''}`}
+              onClick={() => {
+                if (stepIndex === 2 && !valid) return
+                setStep(stepIndex)
+              }}
+              disabled={stepIndex === 2 && !valid}
+            >
+              <span>{complete ? <Check size={13} strokeWidth={2.2} /> : `0${index + 1}`}</span>
+              <strong>{s.title}</strong>
+              <small>{s.caption}</small>
+            </button>
+          )
+        })}
+      </div>
+
+      {step === 0 && (
+        <div className="role-assignment-panel space-y-4">
+          <div className="role-assignment-panel-head">
+            <span>Step 1 of 3</span>
+            <h2>Select Responsibility</h2>
+          </div>
+          <div className="role-choice-grid grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {EDITABLE.map((key) => {
+              const active = role === key
+              return (
+                <button
+                  type="button"
+                  key={key}
+                  className={`role-choice-card${active ? ' active' : ''}`}
+                  onClick={() => setRole(key)}
+                >
+                  <span className="role-choice-icon">
+                    {key === 'HR' ? (
+                      <UsersRound size={17} />
+                    ) : key === 'FINANCE' ? (
+                      <Landmark size={17} />
+                    ) : key === 'PAUSER' ? (
+                      <PauseOctagon size={17} />
+                    ) : (
+                      <Play size={17} />
+                    )}
+                  </span>
+                  <div className="space-y-0.5 min-w-0">
+                    <strong className="text-sm font-semibold text-white block">{ROLE_LABEL[key]}</strong>
+                    <small className="text-xs text-white/50 block line-clamp-2">{ROLE_DESCRIPTIONS[key]}</small>
+                  </div>
+                </button>
+              )
+            })}
+          </div>
+          <div className="pt-2 flex justify-end">
+            <Button
+              type="button"
+              className="btn btn-primary min-h-10 text-xs px-5 font-semibold flex items-center gap-1.5"
+              onClick={() => setStep(1)}
+            >
+              Continue to Wallet <ArrowRight size={14} />
+            </Button>
           </div>
         </div>
-        <span className="employer-task-count font-mono text-xs">Admin Action</span>
-      </div>
+      )}
 
-      {/* Role Choice Cards */}
-      <div className="space-y-2">
-        <span className="text-xs font-mono uppercase tracking-wider text-white/50 block">1. Select Responsibility</span>
-        <div className="role-choice-grid grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {EDITABLE.map((key) => {
-            const active = role === key
-            return (
-              <button
-                type="button"
-                key={key}
-                className={`role-choice-card${active ? ' active' : ''}`}
-                onClick={() => setRole(key)}
-              >
-                <span className="role-choice-icon">
-                  {key === 'HR' ? (
-                    <UsersRound size={17} />
-                  ) : key === 'FINANCE' ? (
-                    <Landmark size={17} />
-                  ) : key === 'PAUSER' ? (
-                    <PauseOctagon size={17} />
-                  ) : (
-                    <Play size={17} />
-                  )}
-                </span>
-                <div className="space-y-0.5 min-w-0">
-                  <div className="flex items-center justify-between gap-1">
-                    <strong className="text-sm font-semibold text-white block">{ROLE_LABEL[key]}</strong>
-                    {active && <span className="status status-funding_ready !py-0.5 !px-1.5 text-[10px]">Selected</span>}
-                  </div>
-                  <small className="text-xs text-white/50 block line-clamp-2">{ROLE_DESCRIPTIONS[key]}</small>
-                </div>
-              </button>
-            )
-          })}
+      {step === 1 && (
+        <div className="role-assignment-panel space-y-4">
+          <div className="role-assignment-panel-head">
+            <span>Step 2 of 3</span>
+            <h2>Enter Officer Wallet Address</h2>
+          </div>
+          <Field label={`${ROLE_LABEL[role]} Wallet Address`} help="Arc Testnet account or corporate multisig">
+            <input
+              className="field mono text-xs sm:text-sm"
+              value={input}
+              onChange={(e) => setInput(e.target.value.trim())}
+              placeholder="0x… account address"
+              spellCheck={false}
+              autoFocus
+            />
+          </Field>
+          {input.length > 0 && !valid && (
+            <p className="text-xs text-red-400 font-mono">
+              Please enter a valid Ethereum-compatible account address.
+            </p>
+          )}
+          <div className="role-access-note">
+            Delegated {ROLE_LABEL[role]} permissions will be cryptographically registered on Circle Arc Testnet.
+          </div>
+          <div className="pt-2 flex justify-between items-center">
+            <Button
+              type="button"
+              variant="secondary"
+              className="btn btn-secondary min-h-10 text-xs px-4 font-semibold"
+              onClick={() => setStep(0)}
+            >
+              <ArrowLeft size={14} /> Back
+            </Button>
+            <Button
+              type="button"
+              disabled={!valid}
+              className="btn btn-primary min-h-10 text-xs px-5 font-semibold flex items-center gap-1.5"
+              onClick={() => setStep(2)}
+            >
+              Review Assignment <ArrowRight size={14} />
+            </Button>
+          </div>
         </div>
-      </div>
+      )}
 
-      {/* Wallet Input */}
-      <div className="space-y-2 pt-1">
-        <span className="text-xs font-mono uppercase tracking-wider text-white/50 block">2. Officer Account</span>
-        <Field label={`${ROLE_LABEL[role]} Wallet Address`} help="Arc Testnet account or multisig">
-          <input
-            className="field mono text-xs sm:text-sm"
-            value={input}
-            onChange={(e) => setInput(e.target.value.trim())}
-            placeholder="0x… account address"
-            spellCheck={false}
-          />
-        </Field>
-        {input.length > 0 && !valid && (
-          <p className="text-xs text-red-400 px-1 font-mono">
-            Please enter a valid Ethereum-compatible address.
-          </p>
-        )}
-      </div>
+      {step === 2 && (
+        <div className="role-assignment-panel space-y-4">
+          <div className="role-assignment-panel-head">
+            <span>Step 3 of 3</span>
+            <h2>Review & Submit On-Chain</h2>
+          </div>
+          <div className="create-payroll-review-list">
+            <div className="review-row">
+              <span>Role Delegation</span>
+              <strong>{ROLE_LABEL[role]}</strong>
+            </div>
+            <div className="review-row">
+              <span>Officer Wallet</span>
+              <strong className="font-mono">{shortAddress(input)}</strong>
+            </div>
+            <div className="review-row">
+              <span>Network</span>
+              <strong className="text-[#38d996]">Circle Arc Testnet</strong>
+            </div>
+            <div className="review-row">
+              <span>Authorization</span>
+              <strong>Institution Admin</strong>
+            </div>
+          </div>
 
-      <div className="role-access-note">
-        Delegated {ROLE_LABEL[role]} permissions activate for this officer once signed on Circle Arc Testnet.
-      </div>
+          {tx.error && <Notice tone="bad">{tx.error}</Notice>}
 
-      {tx.error && <Notice tone="bad">{tx.error}</Notice>}
-
-      <div className="pt-2 flex justify-end">
-        <Button
-          disabled={!valid}
-          loading={tx.busy}
-          onClick={submit}
-          className="btn btn-primary min-h-11 text-xs px-5 font-semibold"
-        >
-          <UserCheck className="size-4" />
-          {tx.status === 'wallet'
-            ? 'Confirm in Wallet…'
-            : tx.status === 'confirming'
-              ? 'Confirming on Arc…'
-              : `Assign ${ROLE_LABEL[role]} Role`}
-        </Button>
-      </div>
+          <div className="pt-2 flex justify-between items-center">
+            <Button
+              type="button"
+              variant="secondary"
+              className="btn btn-secondary min-h-10 text-xs px-4 font-semibold"
+              onClick={() => setStep(1)}
+              disabled={tx.busy}
+            >
+              <ArrowLeft size={14} /> Edit Address
+            </Button>
+            <Button
+              disabled={!valid}
+              loading={tx.busy}
+              onClick={submit}
+              className="btn btn-primary min-h-11 text-xs px-6 font-semibold"
+            >
+              <UserCheck className="size-4" />
+              {tx.status === 'wallet'
+                ? 'Confirm in Wallet…'
+                : tx.status === 'confirming'
+                  ? 'Confirming on Arc…'
+                  : `Assign ${ROLE_LABEL[role]} on Arc`}
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
@@ -236,7 +343,7 @@ function SeparateApproverCard({ vault, isAdmin }: Props) {
   const next = !separate.enforced
 
   return (
-    <div className="employer-task-card template-detail-command-panel p-5 sm:p-6 space-y-4 rounded-2xl bg-[#151515] border border-white/10">
+    <div className="template-detail-command-panel p-5 sm:p-6 space-y-4 rounded-2xl bg-[#151515] border border-white/10">
       <div className="template-detail-action-strip flex items-center justify-between pb-3 border-b border-white/10">
         <div className="flex items-center gap-2.5">
           <ShieldCheck className="size-5 text-[#FE9E15]" />
@@ -280,7 +387,7 @@ function SeparateApproverCard({ vault, isAdmin }: Props) {
                 },
               )
             }
-            className="btn btn-secondary min-h-11 text-xs px-5 font-semibold"
+            className="btn btn-secondary min-h-10 text-xs px-5 font-semibold"
           >
             {next
               ? 'Enable Strict Maker-Checker Separation'
@@ -332,7 +439,7 @@ function FeeCard({ vault, isAdmin }: Props) {
   }
 
   return (
-    <div className="employer-task-card template-detail-command-panel p-5 sm:p-6 space-y-4 rounded-2xl bg-[#151515] border border-white/10">
+    <div className="template-detail-command-panel p-5 sm:p-6 space-y-4 rounded-2xl bg-[#151515] border border-white/10">
       <div className="template-detail-action-strip flex items-center justify-between pb-3 border-b border-white/10">
         <div className="flex items-center gap-2.5">
           <Percent className="size-5 text-[#FE9E15]" />
@@ -383,7 +490,7 @@ function FeeCard({ vault, isAdmin }: Props) {
               disabled={!valid}
               loading={tx.busy}
               onClick={save}
-              className="btn btn-secondary min-h-11 text-xs px-5 font-semibold"
+              className="btn btn-secondary min-h-10 text-xs px-5 font-semibold"
             >
               Update Fee Policy
             </Button>
@@ -415,7 +522,7 @@ function PauseCard({ vault }: { vault: Address }) {
   const isPaused = paused.data === true
 
   return (
-    <div className="employer-task-card template-detail-command-panel p-5 sm:p-6 space-y-4 rounded-2xl bg-[#151515] border border-white/10">
+    <div className="template-detail-command-panel p-5 sm:p-6 space-y-4 rounded-2xl bg-[#151515] border border-white/10">
       <div className="template-detail-action-strip flex items-center justify-between pb-3 border-b border-white/10">
         <div className="flex items-center gap-2.5">
           <PauseOctagon className="size-5 text-red-500" />
@@ -455,7 +562,7 @@ function PauseCard({ vault }: { vault: Address }) {
                 { success: isPaused ? 'Vault resumed operational status.' : 'Vault paused.' },
               )
             }
-            className={`btn ${isPaused ? 'btn-primary' : 'btn-danger'} min-h-11 text-xs px-5 font-semibold`}
+            className={`btn ${isPaused ? 'btn-primary' : 'btn-danger'} min-h-10 text-xs px-5 font-semibold`}
           >
             {isPaused ? (
               <>
@@ -477,76 +584,51 @@ function PauseCard({ vault }: { vault: Address }) {
   )
 }
 
-/** Role assignment and member lists. */
-export function RolesSection({ vault, isAdmin }: Props) {
-  const hrMembers = useRoleMembers(vault, ROLE.HR)
-  const financeMembers = useRoleMembers(vault, ROLE.FINANCE)
-  const separate = useSeparateApprover(vault)
+/** Full Institution Governance view aligning with Zalary's authentic layout. */
+export function TeamTab({ vault, isAdmin }: Props) {
+  const [showWizard, setShowWizard] = useState(false)
 
   return (
     <div className="space-y-6">
-      {/* ─── Governance Overview Cards ─── */}
-      <div className="role-complete-panel p-5 rounded-2xl bg-[#151515] border border-white/10 space-y-5">
-        <div className="role-complete-head flex items-start gap-3 pb-3 border-b border-white/10">
-          <span className="role-complete-icon mt-0.5">
-            <CheckCircle2 size={18} />
-          </span>
-          <div>
-            <span>Institution Governance</span>
-            <h2>Active Roles & Delegations</h2>
-            <p>
-              Manage authorized keyholders across payroll preparation, treasury funding, and emergency controls.
-            </p>
+      {/* ─── Active Access / Roles Directory ─── */}
+      {showWizard && isAdmin ? (
+        <RoleAssignmentWizard
+          vault={vault}
+          onComplete={() => setShowWizard(false)}
+        />
+      ) : (
+        <section className="template-detail-command-panel institution-profile-panel p-5 sm:p-6 space-y-4 rounded-2xl bg-[#151515] border border-white/10">
+          <div className="institution-panel-head">
+            <div>
+              <span className="institution-panel-kicker">Members</span>
+              <h2>Active Access</h2>
+            </div>
+            {isAdmin && (
+              <button
+                type="button"
+                className="btn run-detail-primary-action institution-panel-action !min-h-9 !py-1 text-xs px-3 font-semibold flex items-center gap-1.5"
+                onClick={() => setShowWizard(true)}
+              >
+                <UsersRound size={15} />
+                Manage Roles
+              </button>
+            )}
           </div>
-        </div>
 
-        <div className="role-complete-grid">
-          <div className="role-complete-card">
-            <span>HR Officers</span>
-            <strong>{hrMembers.data?.length ?? 0} active</strong>
+          <div className="institution-member-list">
+            {(['ADMIN', 'HR', 'FINANCE', 'PAUSER', 'RELAYER'] as const).map((role) => (
+              <RoleMembersList key={role} vault={vault} role={role} isAdmin={isAdmin} />
+            ))}
           </div>
-          <div className="role-complete-card">
-            <span>Finance Officers</span>
-            <strong>{financeMembers.data?.length ?? 0} active</strong>
-          </div>
-          <div className="role-complete-card">
-            <span>Maker-Checker</span>
-            <strong className={separate.enforced ? 'text-[#38d996]' : 'text-[#FE9E15]'}>
-              {separate.enforced ? 'Enforced' : 'Relaxed'}
-            </strong>
-          </div>
-        </div>
+        </section>
+      )}
+
+      {/* ─── Institutional Security & Protocol Policies ─── */}
+      <div className="space-y-4">
+        <SeparateApproverCard vault={vault} isAdmin={isAdmin} />
+        <FeeCard vault={vault} isAdmin={isAdmin} />
+        <PauseCard vault={vault} />
       </div>
-
-      {/* ─── Role Wizard (Admin Only) ─── */}
-      {isAdmin && <GrantRoleWizard vault={vault} />}
-
-      {/* ─── Authorized Members List ─── */}
-      <div className="employer-task-card template-detail-command-panel p-5 sm:p-6 space-y-4 rounded-2xl bg-[#151515] border border-white/10">
-        <div className="template-detail-action-strip flex items-center justify-between pb-3 border-b border-white/10">
-          <div>
-            <h3 className="font-bold text-base text-white font-display">Authorized Directory</h3>
-            <p className="text-xs text-white/50">All wallets currently holding on-chain governance or operational permissions.</p>
-          </div>
-        </div>
-
-        <div className="space-y-3">
-          {(['ADMIN', 'HR', 'FINANCE', 'PAUSER', 'RELAYER'] as const).map((role) => (
-            <RoleMembersList key={role} vault={vault} role={role} isAdmin={isAdmin} />
-          ))}
-        </div>
-      </div>
-    </div>
-  )
-}
-
-/** Approval rule, fee and emergency pause. */
-export function PoliciesSection({ vault, isAdmin }: Props) {
-  return (
-    <div className="space-y-6">
-      <SeparateApproverCard vault={vault} isAdmin={isAdmin} />
-      <FeeCard vault={vault} isAdmin={isAdmin} />
-      <PauseCard vault={vault} />
     </div>
   )
 }

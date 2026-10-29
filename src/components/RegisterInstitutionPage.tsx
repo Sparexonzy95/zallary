@@ -95,7 +95,7 @@ export function RegisterInstitutionPage({ onCreated, onBack }: Props) {
             </button>
           )}
           <div className="employer-kicker">Institution</div>
-          <h1>Register Institution Vault</h1>
+          <h1>Register institution</h1>
           <p>
             Deploy an institutional payroll escrow vault on Circle Arc Testnet.
           </p>
@@ -162,188 +162,173 @@ export function RegisterInstitutionPage({ onCreated, onBack }: Props) {
             {/* ─── Slide 1: Wallet Verification ─── */}
             <div className="employer-onboarding-slide">
               <Card
-                className="employer-onboarding-card employer-onboarding-wallet-verified-card p-6"
-              >
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h3 className="text-xl font-bold font-display text-white">Wallet Verified</h3>
-                      <p className="text-xs text-white/50 mt-1">
-                        This wallet will be assigned master Administrator and emergency Pauser authorizations on deployment.
-                      </p>
-                    </div>
-                    <div className="employer-onboarding-wallet-card">
-                      <strong>{address ? shortAddress(address) : 'Not Connected'}</strong>
-                      <span className="employer-onboarding-wallet-icon" aria-label="Verified wallet">
-                        <Wallet size={18} strokeWidth={1.8} aria-hidden="true" />
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="inner rounded-2xl p-4 flex items-start gap-3 bg-white/[0.02] border border-white/5 text-xs text-white/60 leading-relaxed">
-                    <ShieldCheck className="size-4 text-[#38d996] shrink-0 mt-0.5" />
-                    <span>
-                      Smart vaults are fully decentralized and non-custodial. As creator, you retain governance controls and can delegate HR and Finance operational roles to separate keyholders.
+                className="employer-onboarding-card employer-onboarding-wallet-verified-card"
+                title="Wallet verified"
+                subtitle="This wallet is attached to your Zalary institution workspace."
+                actions={
+                  <div className="employer-onboarding-wallet-card">
+                    <strong>{address ? shortAddress(address) : 'Not Connected'}</strong>
+                    <span className="employer-onboarding-wallet-icon" aria-label="Verified wallet">
+                      <Wallet size={18} strokeWidth={1.8} aria-hidden="true" />
                     </span>
                   </div>
+                }
+              >
+                <div className="inner rounded-2xl p-4 flex items-start gap-3 bg-white/[0.02] border border-white/5 text-xs text-white/60 leading-relaxed my-4">
+                  <ShieldCheck className="size-4 text-[#38d996] shrink-0 mt-0.5" />
+                  <span>
+                    Smart vaults are fully decentralized and non-custodial. As creator, you retain governance controls and can delegate HR and Finance operational roles to separate keyholders.
+                  </span>
+                </div>
 
-                  <div className="employer-onboarding-slide-actions pt-2 flex justify-end">
-                    <Button
-                      type="button"
-                      disabled={!isConnected}
-                      onClick={() => setStep(1)}
-                      className="btn btn-primary"
-                    >
-                      Continue to Profile
-                      <ArrowRight size={15} strokeWidth={1.8} />
-                    </Button>
-                  </div>
+                <div className="employer-onboarding-slide-actions pt-2 flex justify-end">
+                  <Button
+                    type="button"
+                    disabled={!isConnected}
+                    onClick={() => setStep(1)}
+                    className="btn btn-primary"
+                  >
+                    Continue to Profile
+                    <ArrowRight size={15} strokeWidth={1.8} />
+                  </Button>
                 </div>
               </Card>
             </div>
 
             {/* ─── Slide 2: Institution Profile ─── */}
             <div className="employer-onboarding-slide">
-              <Card className="employer-onboarding-card p-6">
-                <div className="space-y-5">
-                  <div>
-                    <h3 className="text-xl font-bold font-display text-white">Institution Profile</h3>
-                    <p className="text-xs text-white/50 mt-1">
-                      Set organization identity, protocol disbursement fee rate, and governance transition timelock.
-                    </p>
-                  </div>
+              <Card
+                className="employer-onboarding-card"
+                title="Institution profile"
+                subtitle="Treasury parameters and timelock settings for payroll operations."
+              >
+                <div className="form-stack space-y-4 my-4">
+                  <Field label="Institution name">
+                    <input
+                      className="field"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder="Acme Inc."
+                      required
+                      maxLength={64}
+                    />
+                  </Field>
 
-                  <div className="form-stack space-y-4">
-                    <Field label="Organization / Company Name">
-                      <input
-                        className="field"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        placeholder="e.g. Acme Treasury Labs"
-                        required
-                        maxLength={64}
-                      />
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <Field label="Protocol disbursement fee" help="Max 5.00% (Added at funding)">
+                      <div className="relative">
+                        <input
+                          className="field pr-8 tabular-nums text-right font-mono"
+                          inputMode="decimal"
+                          value={feePercent}
+                          onChange={(e) => setFeePercent(e.target.value.replace(/[^0-9.]/g, ''))}
+                        />
+                        <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-white/40 font-mono">
+                          %
+                        </span>
+                      </div>
                     </Field>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <Field label="Protocol Disbursement Fee" help="Max 5.00% (Added at funding)">
-                        <div className="relative">
-                          <input
-                            className="field pr-8 tabular-nums text-right font-mono"
-                            inputMode="decimal"
-                            value={feePercent}
-                            onChange={(e) => setFeePercent(e.target.value.replace(/[^0-9.]/g, ''))}
-                          />
-                          <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-white/40 font-mono">
-                            %
-                          </span>
-                        </div>
-                      </Field>
-
-                      <Field label="Security Timelock Delay" help="Admin transition delay in hours">
-                        <div className="relative">
-                          <input
-                            className="field pr-12 tabular-nums text-right font-mono"
-                            inputMode="numeric"
-                            value={delayHours}
-                            onChange={(e) => setDelayHours(e.target.value.replace(/[^0-9.]/g, ''))}
-                          />
-                          <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-white/40 font-mono">
-                            hrs
-                          </span>
-                        </div>
-                      </Field>
-                    </div>
-
-                    <Field label="Fee Beneficiary Wallet" help="Receives protocol fee at funding execution">
-                      <input
-                        className="field mono text-xs sm:text-sm"
-                        value={recipient}
-                        onChange={(e) => setRecipient(e.target.value.trim())}
-                        placeholder={address ?? '0x...'}
-                      />
+                    <Field label="Security timelock delay" help="Admin transition delay in hours">
+                      <div className="relative">
+                        <input
+                          className="field pr-12 tabular-nums text-right font-mono"
+                          inputMode="numeric"
+                          value={delayHours}
+                          onChange={(e) => setDelayHours(e.target.value.replace(/[^0-9.]/g, ''))}
+                        />
+                        <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-white/40 font-mono">
+                          hrs
+                        </span>
+                      </div>
                     </Field>
                   </div>
 
-                  <div className="employer-onboarding-slide-actions pt-2 flex items-center justify-between">
-                    <Button type="button" variant="ghost" onClick={() => setStep(0)}>
-                      <ArrowLeft size={15} strokeWidth={1.8} />
-                      Back
-                    </Button>
-                    <Button
-                      type="button"
-                      disabled={!detailsReady}
-                      onClick={() => setStep(2)}
-                      className="btn btn-primary"
-                    >
-                      Review Registration
-                      <ArrowRight size={15} strokeWidth={1.8} />
-                    </Button>
-                  </div>
+                  <Field label="Fee beneficiary wallet" help="Receives protocol fee at funding execution">
+                    <input
+                      className="field mono text-xs sm:text-sm"
+                      value={recipient}
+                      onChange={(e) => setRecipient(e.target.value.trim())}
+                      placeholder={address ?? '0x...'}
+                    />
+                  </Field>
+                </div>
+
+                <div className="employer-onboarding-slide-actions pt-2 flex items-center justify-between">
+                  <Button type="button" variant="ghost" onClick={() => setStep(0)}>
+                    <ArrowLeft size={15} strokeWidth={1.8} />
+                    Back
+                  </Button>
+                  <Button
+                    type="button"
+                    disabled={!detailsReady}
+                    onClick={() => setStep(2)}
+                    className="btn btn-primary"
+                  >
+                    Review Registration
+                    <ArrowRight size={15} strokeWidth={1.8} />
+                  </Button>
                 </div>
               </Card>
             </div>
 
             {/* ─── Slide 3: Review & Submit ─── */}
             <div className="employer-onboarding-slide">
-              <Card className="employer-onboarding-card p-6">
-                <div className="space-y-5">
-                  <div>
-                    <h3 className="text-xl font-bold font-display text-white">Review & Deploy</h3>
-                    <p className="text-xs text-white/50 mt-1">
-                      Zalary prepares the on-chain deployment transaction and your connected wallet signs it on Circle Arc.
-                    </p>
-                  </div>
-
+              <Card
+                className="employer-onboarding-card"
+                title="Submit registration"
+                subtitle="Zalary prepares the transaction and your wallet signs it on Circle Arc."
+              >
+                <div className="form-stack my-4">
                   <div className="create-payroll-review-list">
-                    <div className="review-row flex items-center justify-between border-b border-white/5 p-3 text-xs">
-                      <span className="text-white/50">Institution Name</span>
-                      <strong className="text-white font-semibold font-display text-sm">{name || 'Not set'}</strong>
+                    <div className="review-row">
+                      <span>Institution</span>
+                      <strong>{name || 'Not set'}</strong>
                     </div>
-                    <div className="review-row flex items-center justify-between border-b border-white/5 p-3 text-xs">
-                      <span className="text-white/50">Creator & Master Admin</span>
-                      <strong className="font-mono text-white/80">{address ? shortAddress(address) : 'Not connected'}</strong>
+                    <div className="review-row">
+                      <span>Admin wallet</span>
+                      <strong>{address ? shortAddress(address) : 'Not connected'}</strong>
                     </div>
-                    <div className="review-row flex items-center justify-between border-b border-white/5 p-3 text-xs">
-                      <span className="text-white/50">Fee Beneficiary</span>
-                      <strong className="font-mono text-white/80">{shortAddress(feeRecipient)}</strong>
+                    <div className="review-row">
+                      <span>Fee beneficiary</span>
+                      <strong>{shortAddress(feeRecipient)}</strong>
                     </div>
-                    <div className="review-row flex items-center justify-between border-b border-white/5 p-3 text-xs">
-                      <span className="text-white/50">Protocol Fee Rate</span>
-                      <strong className="font-mono text-[#FE9E15]">{feePercent}%</strong>
+                    <div className="review-row">
+                      <span>Protocol fee</span>
+                      <strong>{feePercent}%</strong>
                     </div>
-                    <div className="review-row flex items-center justify-between border-b border-white/5 p-3 text-xs">
-                      <span className="text-white/50">Admin Timelock</span>
-                      <strong className="font-mono text-white/80">{delayHours} Hours</strong>
+                    <div className="review-row">
+                      <span>Security delay</span>
+                      <strong>{delayHours} Hours</strong>
                     </div>
-                    <div className="review-row flex items-center justify-between p-3 text-xs">
-                      <span className="text-white/50">Settlement Network</span>
-                      <strong className="text-[#38d996] font-mono">Circle Arc Testnet (USDC)</strong>
+                    <div className="review-row">
+                      <span>Settlement network</span>
+                      <strong className="text-[#38d996]">Circle Arc Testnet (USDC)</strong>
                     </div>
                   </div>
+                </div>
 
-                  {tx.error && <Notice tone="bad">{tx.error}</Notice>}
+                {tx.error && <Notice tone="bad">{tx.error}</Notice>}
 
-                  <div className="employer-onboarding-slide-actions pt-2 flex items-center justify-between">
-                    <Button type="button" variant="ghost" onClick={() => setStep(1)} disabled={tx.busy}>
-                      <ArrowLeft size={15} strokeWidth={1.8} />
-                      Back
-                    </Button>
-                    <Button
-                      type="button"
-                      disabled={!detailsReady || tx.busy}
-                      loading={tx.busy}
-                      onClick={deploy}
-                      className="btn btn-primary"
-                    >
-                      <Send size={15} strokeWidth={1.8} />
-                      {tx.status === 'wallet'
-                        ? 'Confirm in Wallet…'
-                        : tx.status === 'confirming'
-                          ? 'Deploying on Arc…'
-                          : 'Register with Wallet'}
-                    </Button>
-                  </div>
+                <div className="employer-onboarding-slide-actions pt-2 flex items-center justify-between">
+                  <Button type="button" variant="ghost" onClick={() => setStep(1)} disabled={tx.busy}>
+                    <ArrowLeft size={15} strokeWidth={1.8} />
+                    Back
+                  </Button>
+                  <Button
+                    type="button"
+                    disabled={!detailsReady || tx.busy}
+                    loading={tx.busy}
+                    onClick={deploy}
+                    className="btn btn-primary"
+                  >
+                    <Send size={15} strokeWidth={1.8} />
+                    {tx.status === 'wallet'
+                      ? 'Confirm in Wallet…'
+                      : tx.status === 'confirming'
+                        ? 'Deploying on Arc…'
+                        : 'Register with wallet'}
+                  </Button>
                 </div>
               </Card>
             </div>

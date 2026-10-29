@@ -6,9 +6,37 @@ import { shortAddress } from '@/lib/format'
 
 /* ─── Card ─── */
 
-export function Card({ children, className = '', glow }: { children: ReactNode; className?: string; glow?: boolean }) {
+export function Card({
+  title,
+  subtitle,
+  eyebrow,
+  children,
+  glass,
+  actions,
+  className = '',
+  glow,
+}: {
+  title?: ReactNode
+  subtitle?: ReactNode
+  eyebrow?: ReactNode
+  children: ReactNode
+  glass?: boolean
+  actions?: ReactNode
+  className?: string
+  glow?: boolean
+}) {
   return (
-    <section className={`glass rounded-3xl p-5 ${glow ? 'gradient-border' : ''} ${className}`}>
+    <section className={`card ${glass ? 'glass glass-card' : ''} ${glow ? 'gradient-border' : ''} ${className}`.trim()}>
+      {(title || subtitle || eyebrow || actions) && (
+        <div className="card-head">
+          <div>
+            {eyebrow && <p className="eyebrow">{eyebrow}</p>}
+            {title && <h3>{title}</h3>}
+            {subtitle && <p className="muted">{subtitle}</p>}
+          </div>
+          {actions && <div>{actions}</div>}
+        </div>
+      )}
       {children}
     </section>
   )
@@ -16,7 +44,7 @@ export function Card({ children, className = '', glow }: { children: ReactNode; 
 
 /* ─── Button ─── */
 
-type Variant = 'primary' | 'ghost' | 'danger'
+type Variant = 'primary' | 'secondary' | 'ghost' | 'danger'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: Variant
@@ -26,6 +54,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const VARIANT_CLASSES: Record<Variant, string> = {
   primary: 'btn-primary',
+  secondary: 'btn-secondary',
   ghost: 'btn-ghost',
   danger: 'btn-danger',
 }
