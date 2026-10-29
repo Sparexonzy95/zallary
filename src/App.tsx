@@ -12,8 +12,11 @@ import { AppShell, type NavItem } from '@/components/AppShell'
 import { CompanyView } from '@/components/CompanyView'
 import { CreateCompanySheet } from '@/components/CreateCompanySheet'
 import { Home } from '@/components/Home'
+import { NewLandingPage } from '@/components/zalary/NewLandingPage'
+import { DecryptHoverText } from '@/components/DecryptHoverText'
 
 interface Route {
+  view: 'landing' | 'app'
   vault: Address | null
   portal: Portal | null
 }
@@ -22,14 +25,43 @@ const readRoute = (): Route => {
   const params = new URLSearchParams(window.location.search)
   const company = params.get('company')
   const portal = params.get('portal')
-  return { vault: company && isAddress(company) ? company : null, portal: isPortal(portal) ? portal : null }
+  const app = params.get('app')
+  const hasVault = company && isAddress(company)
+
+  if (hasVault) {
+    return {
+      view: 'app',
+      vault: company,
+      portal: isPortal(portal) ? portal : null,
+    }
+  }
+
+  if (app === 'true') {
+    return {
+      view: 'app',
+      vault: null,
+      portal: null,
+    }
+  }
+
+  return {
+    view: 'landing',
+    vault: null,
+    portal: null,
+  }
 }
 
 const routeUrl = (route: Route) => {
-  if (!route.vault) return window.location.pathname
-  const params = new URLSearchParams({ company: route.vault })
-  if (route.portal) params.set('portal', route.portal)
-  return `?${params.toString()}`
+  if (route.view === 'landing' && !route.vault) return window.location.pathname
+  const params = new URLSearchParams()
+  if (route.vault) {
+    params.set('company', route.vault)
+    if (route.portal) params.set('portal', route.portal)
+  } else if (route.view === 'app') {
+    params.set('app', 'true')
+  }
+  const str = params.toString()
+  return str ? `?${str}` : window.location.pathname
 }
 
 export default function App() {
@@ -53,14 +85,20 @@ export default function App() {
   }, [])
 
   const nav: NavItem[] = [
-    { key: 'companies', label: 'All companies', icon: Building2, active: !route.vault, onSelect: () => go({ vault: null, portal: null }) },
+    {
+      key: 'companies',
+      label: 'All companies',
+      icon: Building2,
+      active: !route.vault,
+      onSelect: () => go({ view: 'app', vault: null, portal: null }),
+    },
     ...(route.vault
       ? PORTALS.filter((item) => canOpen(item, roles)).map((item) => ({
           key: item.key,
           label: item.label,
           icon: item.icon,
           active: (route.portal ?? defaultPortal(roles)) === item.key,
-          onSelect: () => go({ vault: route.vault, portal: item.key }),
+          onSelect: () => go({ view: 'app', vault: route.vault, portal: item.key }),
         }))
       : []),
   ]
@@ -69,28 +107,46 @@ export default function App() {
 
   return (
     <AddFundsContext.Provider value={addFunds}>
-      <AppShell
-        nav={nav}
-        heading={route.vault ? 'Company' : 'Zalary'}
-        showAddFunds={isConnected}
-        onAddFunds={addFunds.open}
-        onHome={() => go({ vault: null, portal: null })}
-      >
-        {wrongChain && (
-          <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-            <Notice tone="warn">Your wallet is on another network. Zalary runs on {CHAIN_NAME}.</Notice>
-            <Button loading={isPending} onClick={() => switchChain({ chainId: CHAIN_ID })}>
-              Switch to {CHAIN_NAME}
-            </Button>
-          </div>
-        )}
-        {route.vault ? (
-          <CompanyView key={route.vault} vault={route.vault} portal={route.portal} />
-        ) : (
-          <Home onOpen={(vault) => go({ vault, portal: null })} onCreate={() => setCreating(true)} />
-        )}
-      </AppShell>
-      <CreateCompanySheet open={creating} onClose={() => setCreating(false)} onCreated={(vault) => go({ vault, portal: null })} />
+      <DecryptHoverText />
+
+      {route.view === 'landing' && !route.vault ? (
+        <NewLandingPage
+          onLaunchApp={() => go({ view: 'app', vault: null, portal: null })}
+          onHome={() => go({ view: 'landing', vault: null, portal: null })}
+        />
+      ) : (
+        <AppShell
+          nav={nav}
+          heading={route.vault ? 'Company' : 'Zalary'}
+          showAddFunds={isConnected}
+          onAddFunds={addFunds.open}
+          onHome={() => go({ view: 'app', vault: null, portal: null })}
+          onBackToLanding={() => go({ view: 'landing', vault: null, portal: null })}
+        >
+          {wrongChain && (
+            <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+              <Notice tone="warn">Your wallet is on another network. Zalary runs on {CHAIN_NAME}.</Notice>
+              <Button loading={isPending} onClick={() => switchChain({ chainId: CHAIN_ID })}>
+                Switch to {CHAIN_NAME}
+              </Button>
+            </div>
+          )}
+          {route.vault ? (
+            <CompanyView key={route.vault} vault={route.vault} portal={route.portal} />
+          ) : (
+            <Home
+              onOpen={(vault) => go({ view: 'app', vault, portal: null })}
+              onCreate={() => setCreating(true)}
+            />
+          )}
+        </AppShell>
+      )}
+
+      <CreateCompanySheet
+        open={creating}
+        onClose={() => setCreating(false)}
+        onCreated={(vault) => go({ view: 'app', vault, portal: null })}
+      />
       <AddFundsSheet open={addingFunds} onClose={() => setAddingFunds(false)} />
     </AddFundsContext.Provider>
   )
