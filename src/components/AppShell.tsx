@@ -1,19 +1,20 @@
 import React, { useEffect, useState, type ReactNode } from 'react'
 import { useAccount, useDisconnect } from 'wagmi'
 import {
-  ArrowLeft,
   Building2,
-  ChevronLeft,
-  ChevronRight,
   Menu,
   Plus,
-  Wallet,
   X,
   type LucideIcon,
-  LogOut,
 } from 'lucide-react'
 import { ConnectKitButton } from 'connectkit'
 import { Button } from '@/components/ui'
+import {
+  CollapseIcon,
+  ExpandIcon,
+  LogoutBoldIcon,
+  WalletBoldIcon,
+} from '@/components/icons'
 
 const LOGO = '/assets/landing/logo_zalary2_mm8mlp.png'
 const DASHBOARD_DECRYPT_CHARS = '01ZALARYARCTESTNET#$%'
@@ -34,7 +35,6 @@ interface Props {
   showAddFunds: boolean
   onAddFunds: () => void
   onHome: () => void
-  onBackToLanding?: () => void
   children: ReactNode
 }
 
@@ -98,7 +98,6 @@ export function AppShell({
   showAddFunds,
   onAddFunds,
   onHome,
-  onBackToLanding,
   children,
 }: Props) {
   const { address, isConnected } = useAccount()
@@ -152,9 +151,9 @@ export function AppShell({
             title={sidebarCollapsed ? 'Expand menu' : 'Collapse menu'}
           >
             {sidebarCollapsed ? (
-              <ChevronRight size={18} strokeWidth={2} />
+              <ExpandIcon width={18} height={18} />
             ) : (
-              <ChevronLeft size={18} strokeWidth={2} />
+              <CollapseIcon width={18} height={18} />
             )}
           </button>
 
@@ -196,22 +195,6 @@ export function AppShell({
           </div>
         )}
 
-        {onBackToLanding && (
-          <div className="px-3 pt-3">
-            <button
-              type="button"
-              onClick={() => {
-                onBackToLanding()
-                setSidebarOpen(false)
-              }}
-              className="flex w-full items-center gap-2 rounded-lg border border-white/5 bg-white/[0.03] px-3 py-2 text-xs font-medium text-white/60 transition hover:border-white/10 hover:bg-white/[0.06] hover:text-white"
-            >
-              <ArrowLeft size={14} />
-              {!sidebarCollapsed && <span>Landing Page</span>}
-            </button>
-          </div>
-        )}
-
         <nav className="sidebar-nav">
           <div className="sidebar-menu-label">Menu</div>
 
@@ -247,7 +230,7 @@ export function AppShell({
 
           <div className="sidebar-profile sidebar-footer-wallet">
             <div className="sidebar-profile-avatar">
-              <Wallet size={18} strokeWidth={1.8} />
+              <WalletBoldIcon width={18} height={18} />
             </div>
             <div className="sidebar-profile-info">
               <div className="sidebar-profile-name">
@@ -274,7 +257,7 @@ export function AppShell({
                 className="sidebar-nav-item sidebar-footer-action sidebar-disconnect-btn"
                 onClick={() => disconnect()}
               >
-                <LogOut size={16} strokeWidth={1.8} />
+                <LogoutBoldIcon width={18} height={18} />
                 <span>Disconnect</span>
               </button>
             </>

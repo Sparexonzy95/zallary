@@ -88,9 +88,9 @@ export function Home({ onOpen, onCreate }: Props) {
         {/* ─── Hero Header ─── */}
         <section className="employer-task-hero">
           <div className="employer-task-hero-copy">
-            <span className="employer-task-kicker">Institutional Workspaces</span>
+            <span className="employer-task-kicker">Workspaces</span>
             <h1>
-              Company <span>Vaults</span>
+              Institution <span>Vaults</span>
             </h1>
             <p className="employer-task-hero-subtitle">
               Manage corporate payroll vaults, maker-checker delegations, and private USDC settlements on Circle Arc Testnet.
@@ -99,7 +99,7 @@ export function Home({ onOpen, onCreate }: Props) {
 
           <div className="employer-task-hero-metrics" aria-label="Portfolio summary">
             <div className="employer-task-hero-metric">
-              <span>Active Vaults</span>
+              <span>Active Institutions</span>
               <strong>{allCompanies.length}</strong>
             </div>
             <div className="employer-task-hero-metric">
@@ -114,10 +114,10 @@ export function Home({ onOpen, onCreate }: Props) {
                 type="button"
                 onClick={onCreate}
                 disabled={!FACTORY_ADDRESS}
-                className="employer-task-primary-action decrypt-hover-btn"
+                className="employer-task-primary-action"
               >
                 <Plus size={15} strokeWidth={2} />
-                New Company
+                Register Institution
               </button>
             ) : (
               <ConnectKitButton.Custom>
@@ -125,7 +125,7 @@ export function Home({ onOpen, onCreate }: Props) {
                   <button
                     type="button"
                     onClick={show}
-                    className="employer-task-primary-action decrypt-hover-btn"
+                    className="employer-task-primary-action"
                   >
                     Connect Wallet
                   </button>
@@ -141,7 +141,7 @@ export function Home({ onOpen, onCreate }: Props) {
             <div className="employer-task-card-head">
               <div>
                 <span>Workspaces</span>
-                <h2>Company Directory</h2>
+                <h2>Institution Directory</h2>
               </div>
               <span className="employer-task-count">
                 {filteredCompanies.length} item{filteredCompanies.length === 1 ? '' : 's'}
@@ -252,7 +252,7 @@ export function Home({ onOpen, onCreate }: Props) {
               className="employer-task-primary-action employer-sidebar-new-payroll"
             >
               <Plus size={15} strokeWidth={2} />
-              New Company
+              Register Institution
             </button>
           )}
 

@@ -113,7 +113,7 @@ export default function App() {
         })),
         {
           key: 'companies',
-          label: 'All Companies',
+          label: 'Workspaces',
           icon: Building2,
           active: false,
           onSelect: () => go({ view: 'app', vault: null, portal: null }),
@@ -122,14 +122,14 @@ export default function App() {
     : [
         {
           key: 'companies',
-          label: 'All Companies',
+          label: 'Workspaces',
           icon: Building2,
           active: route.view !== 'register',
           onSelect: () => go({ view: 'app', vault: null, portal: null }),
         },
         {
           key: 'create_company',
-          label: 'Deploy Company',
+          label: 'Register Institution',
           icon: Plus,
           active: route.view === 'register',
           onSelect: () => go({ view: 'register', vault: null, portal: null }),
@@ -155,7 +155,6 @@ export default function App() {
           showAddFunds={isConnected}
           onAddFunds={addFunds.open}
           onHome={() => go({ view: 'app', vault: null, portal: null })}
-          onBackToLanding={() => go({ view: 'landing', vault: null, portal: null })}
         >
           {wrongChain && (
             <div className="mb-5 flex flex-wrap items-center justify-between gap-3">

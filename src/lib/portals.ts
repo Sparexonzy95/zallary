@@ -1,7 +1,7 @@
-import { CircleDollarSign, Landmark, ListChecks, ShieldCheck, type LucideIcon } from 'lucide-react'
+import { Building2, CircleDollarSign, Landmark, ListChecks, type LucideIcon } from 'lucide-react'
 import type { RoleKey } from '@/lib/roles'
 
-export type Portal = 'hr' | 'finance' | 'employee' | 'institution'
+export type Portal = 'institution' | 'hr' | 'finance' | 'employee'
 
 export interface PortalInfo {
   key: Portal
@@ -13,10 +13,10 @@ export interface PortalInfo {
 }
 
 export const PORTALS: readonly PortalInfo[] = [
+  { key: 'institution', label: 'Institution', blurb: 'Manage role assignments and safety policies', icon: Building2, role: 'ADMIN' },
   { key: 'hr', label: 'HR Payroll', blurb: 'Draft and manage employee payroll rosters', icon: ListChecks, role: 'HR' },
   { key: 'finance', label: 'Finance', blurb: 'Review, fund, and reclaim escrowed payroll', icon: Landmark, role: 'FINANCE' },
   { key: 'employee', label: 'Claim Salary', blurb: 'Inspect and claim your earned payouts', icon: CircleDollarSign },
-  { key: 'institution', label: 'Governance', blurb: 'Manage role assignments and safety policies', icon: ShieldCheck, role: 'ADMIN' },
 ]
 
 export const canOpen = (portal: PortalInfo, roles: Record<RoleKey, boolean>) => !portal.role || roles[portal.role]
@@ -24,8 +24,8 @@ export const canOpen = (portal: PortalInfo, roles: Record<RoleKey, boolean>) => 
 export const isPortal = (value: string | null): value is Portal => PORTALS.some((portal) => portal.key === value)
 
 export function defaultPortal(roles: Record<RoleKey, boolean>): Portal {
+  if (roles.ADMIN) return 'institution'
   if (roles.HR) return 'hr'
   if (roles.FINANCE) return 'finance'
-  if (roles.ADMIN) return 'institution'
   return 'employee'
 }
