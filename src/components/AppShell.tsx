@@ -267,34 +267,45 @@ export function AppShell({
 
       {/* ─── Main Content ─── */}
       <div className="app-content">
-        {/* Topbar Header */}
-        <header className="flex h-16 items-center justify-between border-b border-white/10 px-4 sm:px-6">
-          <div className="flex items-center gap-3">
+        {/* Mobile topbar (shown on small screens <= 768px via .app-mobile-topbar) */}
+        <div className="app-mobile-topbar">
+          <button
+            type="button"
+            onClick={onHome}
+            className="inline-flex items-center"
+            style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
+          >
+            <img src={LOGO} alt="Zalary" style={{ maxHeight: '24px', width: 'auto', objectFit: 'contain' }} />
+          </button>
+          <div className="flex items-center gap-2">
+            <ConnectKitButton />
             <button
               type="button"
               onClick={() => setSidebarOpen((open) => !open)}
-              className="flex size-10 items-center justify-center rounded-lg border border-white/10 text-white/70 transition-colors hover:bg-white/10 hover:text-white lg:hidden"
+              className="mobile-menu-toggle"
               aria-label="Toggle menu"
             >
-              {sidebarOpen ? <X size={18} /> : <Menu size={18} />}
+              {sidebarOpen ? <X size={18} strokeWidth={1.8} /> : <Menu size={18} strokeWidth={1.8} />}
             </button>
+          </div>
+        </div>
 
-            <div className="hidden items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 font-mono text-[11px] text-white/70 sm:flex">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#38d996] animate-pulse" />
-              Arc Testnet
-            </div>
+        {/* Desktop topbar header */}
+        <header className="topbar hidden md:flex">
+          <div className="flex items-center gap-3">
+            <div className="badge">Circle Arc Testnet</div>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="topbar-right">
             {showAddFunds && (
               <Button
-                variant="ghost"
+                variant="secondary"
                 onClick={onAddFunds}
-                className="!px-3"
+                className="btn btn-sm btn-subtle flex items-center gap-1.5 !min-h-9"
                 aria-label="Add USDC"
               >
-                <Plus className="size-4 text-[#FE9E15]" />{' '}
-                <span className="hidden sm:inline">Add USDC</span>
+                <Plus size={14} className="text-[#FE9E15]" />
+                <span>Add USDC</span>
               </Button>
             )}
 

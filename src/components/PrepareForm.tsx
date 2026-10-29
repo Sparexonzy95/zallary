@@ -246,7 +246,6 @@ export function PrepareForm({
             <div className="create-payroll-basics-grid grid sm:grid-cols-2 gap-4">
               <Field label="Payroll Batch Name" help="Local device tag for tracking">
                 <input
-                  className="field"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="e.g. October 2026 Core Contributors"
@@ -254,7 +253,7 @@ export function PrepareForm({
               </Field>
               <Field label="Claim Expiration Deadline" help="Expiry timestamp for reclaims">
                 <input
-                  className="field tabular-nums"
+                  className="tabular-nums"
                   type="datetime-local"
                   value={deadline}
                   onChange={(e) => setDeadline(e.target.value)}
@@ -306,7 +305,7 @@ export function PrepareForm({
                     <span className="text-xs text-white/40 font-mono">Format: address, amount</span>
                   </div>
                   <textarea
-                    className="field mono min-h-28 text-xs leading-relaxed"
+                    className="mono min-h-28 text-xs leading-relaxed"
                     value={pasteText}
                     onChange={(e) => setPasteText(e.target.value)}
                     placeholder="0x95222290DD7278Aa3Ddd389Cc1E1d165CC4BAfe5, 4500.00&#10;0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC, 3200.50"
@@ -352,7 +351,7 @@ export function PrepareForm({
                         <div className="sm:col-span-2">
                           <Field label="Recipient Wallet Address" error={error}>
                             <input
-                              className="field mono text-xs sm:text-sm"
+                              className="mono text-xs sm:text-sm"
                               aria-label={`Employee ${index + 1} wallet address`}
                               value={row.address}
                               onChange={(e) => update(row.key, { address: e.target.value.trim() })}
@@ -366,7 +365,7 @@ export function PrepareForm({
                           <Field label="Allocation">
                             <div className="relative">
                               <input
-                                className="field pr-14 tabular-nums text-right text-xs sm:text-sm"
+                                className="pr-14 tabular-nums text-right text-xs sm:text-sm"
                                 aria-label={`Employee ${index + 1} amount in USDC`}
                                 inputMode="decimal"
                                 value={row.amount}
@@ -440,7 +439,7 @@ export function PrepareForm({
             )}
 
             {/* ─── Direct Execution Box ─── */}
-            {(mode === 'direct' || isFinance) && isFinance && !separate.enforced && (
+            {mode === 'direct' && isFinance && !separate.enforced && (
               <div className="inner rounded-2xl p-4 sm:p-5 space-y-4 border border-white/10 bg-white/[0.02]">
                 <div className="flex items-center gap-2 text-xs font-semibold text-[#FE9E15]">
                   <Zap className="size-4" />

@@ -7,7 +7,7 @@ import {
   Plus,
   Shield,
 } from 'lucide-react'
-import { useCompanies, useNowSeconds, usePayrolls, useRoles, useSeparateApprover } from '@/hooks/data'
+import { useCompanies, useNowSeconds, usePayrolls, useRoles } from '@/hooks/data'
 import { PORTALS, canOpen, defaultPortal, type Portal } from '@/lib/portals'
 import { ROLE_LABEL, STATUS_NAMES } from '@/lib/roles'
 import { shortAddress, usdc } from '@/lib/format'
@@ -28,11 +28,9 @@ export function CompanyView({ vault, portal }: Props) {
   const companies = useCompanies(address)
   const { roles, isLoading } = useRoles(vault, address)
   const payrolls = usePayrolls(vault)
-  const separate = useSeparateApprover(vault)
   const nowSec = useNowSeconds()
 
   const [isCreatingHR, setIsCreatingHR] = useState(false)
-  const [isDirectFunding, setIsDirectFunding] = useState(false)
 
   const company = companies.data?.find((c) => c.vault.toLowerCase() === vault.toLowerCase())
 
@@ -224,7 +222,7 @@ export function CompanyView({ vault, portal }: Props) {
           <div className="employer-task-dashboard">
             <section className="employer-task-hero">
               <div className="employer-task-hero-copy">
-                <span className="employer-task-kicker">Finance · {company?.name || 'Company'}</span>
+                <span className="employer-task-kicker">Finance</span>
                 <h1>
                   Funding <span>queue</span>
                 </h1>
@@ -242,42 +240,16 @@ export function CompanyView({ vault, portal }: Props) {
                   <span>Total required</span>
                   <strong className="text-[#FE9E15]">{usdc(financeMetrics.readyTotal)} USDC</strong>
                 </div>
-                <div className="employer-task-hero-metric">
-                  <span>Total volume</span>
-                  <strong>{usdc(financeMetrics.totalVolume)} USDC</strong>
-                </div>
               </div>
-
-              {roles.HR && !separate.enforced && (
-                <div className="employer-task-actions">
-                  <button
-                    type="button"
-                    className="employer-task-primary-action"
-                    onClick={() => setIsDirectFunding((v) => !v)}
-                  >
-                    {isDirectFunding ? 'View Funding Queue' : 'Direct Fund'}
-                  </button>
-                </div>
-              )}
             </section>
 
-            <main className="employer-task-main" style={isDirectFunding ? { gridColumn: '1 / -1' } : undefined}>
-              {isDirectFunding ? (
-                <PrepareForm
-                  vault={vault}
-                  isFinance={true}
-                  mode="direct"
-                  onCancel={() => setIsDirectFunding(false)}
-                  onSuccess={() => setIsDirectFunding(false)}
-                />
-              ) : (
-                <PayrollsTab
-                  vault={vault}
-                  isHR={false}
-                  isFinance={true}
-                  initialFilter="all"
-                />
-              )}
+            <main className="employer-task-main">
+              <PayrollsTab
+                vault={vault}
+                isHR={false}
+                isFinance={true}
+                initialFilter="draft"
+              />
             </main>
           </div>
         </div>

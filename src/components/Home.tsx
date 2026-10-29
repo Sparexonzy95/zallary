@@ -4,7 +4,6 @@ import {
   ChevronRight,
   Plus,
   Search,
-  SlidersHorizontal,
 } from 'lucide-react'
 import { useAccount } from 'wagmi'
 import { ConnectKitButton } from 'connectkit'
@@ -148,25 +147,18 @@ export function Home({ onOpen, onCreate }: Props) {
               </span>
             </div>
 
-            <div className="employer-task-board-tools">
-              <label className="employer-task-search">
-                <Search size={17} strokeWidth={1.8} />
+            <div className="employer-payroll-toolbar employer-task-toolbar">
+              <label className="employer-payroll-search employer-task-search">
+                <Search size={15} strokeWidth={2} />
                 <input
+                  type="search"
                   value={search}
                   onChange={(event) => setSearch(event.target.value)}
-                  placeholder="Search companies by name or address..."
+                  placeholder="Search institutions by name or address..."
                 />
               </label>
 
               <div className="employer-payroll-filter-area employer-task-filter-area">
-                <button
-                  type="button"
-                  className="employer-payroll-filter-trigger"
-                  aria-label="Filter companies"
-                >
-                  <SlidersHorizontal size={15} strokeWidth={1.9} />
-                  <span>{filterOptions.find((o) => o.value === filter)?.label}</span>
-                </button>
                 <div className="filter-tabs employer-payroll-filters employer-task-filters">
                   {filterOptions.map((option) => (
                     <button
@@ -210,7 +202,7 @@ export function Home({ onOpen, onCreate }: Props) {
                         onClick={onCreate}
                         className="btn btn-primary mt-4"
                       >
-                        <Plus className="mr-2 size-4" /> Create Company Vault
+                        <Plus className="mr-2 size-4" /> Register Institution Vault
                       </button>
                     )
                   }

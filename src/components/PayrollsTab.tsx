@@ -191,8 +191,8 @@ export function PayrollsTab({
   const filterTabs = useMemo(() => {
     if (isFinance) {
       return [
-        { key: 'all', label: `All (${counts.all})` },
         { key: 'draft', label: `Ready to Fund (${counts.draft})` },
+        { key: 'all', label: `All (${counts.all})` },
         { key: 'funded', label: `Funded (${counts.funded})` },
         { key: 'completed', label: `Completed (${counts.completed})` },
         ...(counts.cancelled > 0 ? [{ key: 'cancelled', label: `Cancelled (${counts.cancelled})` }] : []),
@@ -220,10 +220,11 @@ export function PayrollsTab({
         </span>
       </div>
 
-      <div className="employer-task-board-tools">
-        <label className="employer-task-search">
-          <Search size={17} strokeWidth={1.8} />
+      <div className="employer-payroll-toolbar employer-task-toolbar">
+        <label className="employer-payroll-search employer-task-search">
+          <Search size={15} strokeWidth={2} />
           <input
+            type="search"
             value={search}
             onChange={(event) => setSearch(event.target.value)}
             placeholder="Search payroll..."
@@ -231,17 +232,19 @@ export function PayrollsTab({
         </label>
 
         {!hideFilters && (
-          <div className="filter-tabs employer-payroll-filters employer-task-filters">
-            {filterTabs.map((option) => (
-              <button
-                key={option.key}
-                type="button"
-                className={`filter-tab${statusFilter === option.key ? ' active' : ''}`}
-                onClick={() => setStatusFilter(option.key)}
-              >
-                {option.label}
-              </button>
-            ))}
+          <div className="employer-payroll-filter-area employer-task-filter-area">
+            <div className="filter-tabs employer-payroll-filters employer-task-filters">
+              {filterTabs.map((option) => (
+                <button
+                  key={option.key}
+                  type="button"
+                  className={`filter-tab${statusFilter === option.key ? ' active' : ''}`}
+                  onClick={() => setStatusFilter(option.key)}
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
           </div>
         )}
       </div>

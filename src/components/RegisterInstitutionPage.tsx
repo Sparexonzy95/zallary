@@ -202,10 +202,9 @@ export function RegisterInstitutionPage({ onCreated, onBack }: Props) {
                 title="Institution profile"
                 subtitle="Treasury parameters and timelock settings for payroll operations."
               >
-                <div className="form-stack space-y-4 my-4">
+                <div className="form-stack my-4">
                   <Field label="Institution name">
                     <input
-                      className="field"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       placeholder="Acme Inc."
@@ -214,48 +213,42 @@ export function RegisterInstitutionPage({ onCreated, onBack }: Props) {
                     />
                   </Field>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <Field label="Protocol disbursement fee" help="Max 5.00% (Added at funding)">
-                      <div className="relative">
-                        <input
-                          className="field pr-8 tabular-nums text-right font-mono"
-                          inputMode="decimal"
-                          value={feePercent}
-                          onChange={(e) => setFeePercent(e.target.value.replace(/[^0-9.]/g, ''))}
-                        />
-                        <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-white/40 font-mono">
-                          %
-                        </span>
-                      </div>
-                    </Field>
-
-                    <Field label="Security timelock delay" help="Admin transition delay in hours">
-                      <div className="relative">
-                        <input
-                          className="field pr-12 tabular-nums text-right font-mono"
-                          inputMode="numeric"
-                          value={delayHours}
-                          onChange={(e) => setDelayHours(e.target.value.replace(/[^0-9.]/g, ''))}
-                        />
-                        <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-white/40 font-mono">
-                          hrs
-                        </span>
-                      </div>
-                    </Field>
-                  </div>
-
-                  <Field label="Fee beneficiary wallet" help="Receives protocol fee at funding execution">
+                  <Field label="Protocol disbursement fee (%)" help="0.00% to 5.00% levied on gross payroll at funding">
                     <input
-                      className="field mono text-xs sm:text-sm"
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      max="5"
+                      value={feePercent}
+                      onChange={(e) => setFeePercent(e.target.value)}
+                      placeholder="0.25"
+                      required
+                    />
+                  </Field>
+
+                  <Field label="Security timelock delay (hours)" help="Timelocked governance transition delay">
+                    <input
+                      type="number"
+                      min="0"
+                      value={delayHours}
+                      onChange={(e) => setDelayHours(e.target.value)}
+                      placeholder="24"
+                      required
+                    />
+                  </Field>
+
+                  <Field label="Fee beneficiary wallet" help="Address receiving protocol fees upon funding">
+                    <input
                       value={recipient}
                       onChange={(e) => setRecipient(e.target.value.trim())}
                       placeholder={address ?? '0x...'}
+                      spellCheck={false}
                     />
                   </Field>
                 </div>
 
                 <div className="employer-onboarding-slide-actions pt-2 flex items-center justify-between">
-                  <Button type="button" variant="ghost" onClick={() => setStep(0)}>
+                  <Button type="button" variant="secondary" onClick={() => setStep(0)}>
                     <ArrowLeft size={15} strokeWidth={1.8} />
                     Back
                   </Button>
@@ -311,7 +304,7 @@ export function RegisterInstitutionPage({ onCreated, onBack }: Props) {
                 {tx.error && <Notice tone="bad">{tx.error}</Notice>}
 
                 <div className="employer-onboarding-slide-actions pt-2 flex items-center justify-between">
-                  <Button type="button" variant="ghost" onClick={() => setStep(1)} disabled={tx.busy}>
+                  <Button type="button" variant="secondary" onClick={() => setStep(1)} disabled={tx.busy}>
                     <ArrowLeft size={15} strokeWidth={1.8} />
                     Back
                   </Button>

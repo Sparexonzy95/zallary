@@ -10,7 +10,6 @@ import { Button, Notice } from '@/components/ui'
 import { AddFundsSheet } from '@/components/AddFundsSheet'
 import { AppShell, type NavItem } from '@/components/AppShell'
 import { CompanyView } from '@/components/CompanyView'
-import { CreateCompanySheet } from '@/components/CreateCompanySheet'
 import { Home } from '@/components/Home'
 import { RegisterInstitutionPage } from '@/components/RegisterInstitutionPage'
 import { NewLandingPage } from '@/components/zalary/NewLandingPage'
@@ -80,7 +79,6 @@ export default function App() {
   const { address, chainId, isConnected } = useAccount()
   const { switchChain, isPending } = useSwitchChain()
   const [route, setRoute] = useState<Route>(readRoute)
-  const [creating, setCreating] = useState(false)
   const [addingFunds, setAddingFunds] = useState(false)
   const addFunds = useMemo(() => ({ open: () => setAddingFunds(true) }), [])
   const { roles } = useRoles(route.vault ?? undefined, address)
@@ -185,11 +183,6 @@ export default function App() {
         </AppShell>
       )}
 
-      <CreateCompanySheet
-        open={creating}
-        onClose={() => setCreating(false)}
-        onCreated={(vault) => go({ view: 'app', vault, portal: 'institution' })}
-      />
       <AddFundsSheet open={addingFunds} onClose={() => setAddingFunds(false)} />
     </AddFundsContext.Provider>
   )

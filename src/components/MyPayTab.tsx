@@ -171,9 +171,24 @@ export function MyPayTab({ vault }: { vault: Address }) {
               </span>
             </div>
 
-            <div className="employer-task-board-tools">
-              <label className="employer-task-search">
-                <Search size={17} strokeWidth={1.8} />
+            <div
+              className="employer-payroll-toolbar employer-task-toolbar"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'flex-end',
+                width: '100%',
+              }}
+            >
+              <label
+                className="employer-payroll-search employer-task-search"
+                style={{
+                  marginInlineStart: 'auto',
+                  maxWidth: '360px',
+                  width: '100%',
+                }}
+              >
+                <Search size={15} strokeWidth={2} />
                 <input
                   type="search"
                   value={search}
