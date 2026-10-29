@@ -2,7 +2,6 @@ import { useAccount, usePublicClient } from 'wagmi'
 import { useQuery } from '@tanstack/react-query'
 import {
   ArrowDownLeft,
-  Calendar,
   Coins,
   History,
   Sparkles,
@@ -13,7 +12,7 @@ import { CHAIN_ID } from '@/lib/chain'
 import { formatDate, shortId, usdc } from '@/lib/format'
 import { usePayrollLabels } from '@/hooks/data'
 import { useTx } from '@/hooks/useTx'
-import { Button, Card, EmptyState, Notice, Skeleton } from '@/components/ui'
+import { Button, EmptyState, Notice, Skeleton } from '@/components/ui'
 
 export function MyPayTab({ vault }: { vault: Address }) {
   const { address } = useAccount()
@@ -73,8 +72,8 @@ export function MyPayTab({ vault }: { vault: Address }) {
   if (pay.isLoading) {
     return (
       <div className="space-y-4">
-        <Skeleton className="h-44 rounded-3xl" />
-        <Skeleton className="h-44 rounded-3xl" />
+        <Skeleton className="h-44 rounded-2xl" />
+        <Skeleton className="h-44 rounded-2xl" />
       </div>
     )
   }
@@ -86,22 +85,22 @@ export function MyPayTab({ vault }: { vault: Address }) {
   return (
     <div className="space-y-6">
       {/* ─── Hero Balance Escrow Card ─── */}
-      <Card glow className="relative overflow-hidden p-6 sm:p-8">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="space-y-1">
-            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[var(--accent)]">
+      <div className="employer-task-card p-6 sm:p-8">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+          <div className="space-y-2">
+            <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[#FE9E15]">
               <Coins className="size-4" /> Available for Immediate Withdrawal
             </div>
 
-            <div className="flex items-baseline gap-2 pt-2">
-              <span className="display text-4xl sm:text-6xl font-bold tracking-tight tabular-nums text-[var(--ink)]">
+            <div className="flex items-baseline gap-2 pt-1">
+              <span className="font-display text-4xl sm:text-6xl font-bold tracking-tight tabular-nums text-white">
                 {usdc(claimable)}
               </span>
-              <span className="text-xl sm:text-2xl font-bold text-[var(--accent)]">USDC</span>
+              <span className="text-xl sm:text-2xl font-bold text-[#FE9E15]">USDC</span>
             </div>
 
-            <div className="flex items-center gap-2 pt-1 text-xs text-[var(--muted)]">
-              <History className="size-3.5 text-[var(--subtle)]" />
+            <div className="flex items-center gap-2 pt-1 font-mono text-xs text-white/50">
+              <History className="size-3.5 text-white/40" />
               <span>
                 {data && data.lifetime > 0n
                   ? `${usdc(data.lifetime)} USDC lifetime claimed to this wallet`
@@ -111,7 +110,7 @@ export function MyPayTab({ vault }: { vault: Address }) {
           </div>
 
           {/* Claim Action */}
-          <div className="sm:max-w-xs w-full pt-2 sm:pt-0">
+          <div className="sm:max-w-xs w-full">
             <Button
               full
               disabled={claimable === 0n}
@@ -127,7 +126,7 @@ export function MyPayTab({ vault }: { vault: Address }) {
                   { success: 'Salary transferred to your wallet!' },
                 )
               }
-              className="py-4 text-base"
+              className="py-4 text-base !bg-[#FE9E15] !text-black hover:!bg-[#FE9E15]/90 font-semibold"
             >
               <ArrowDownLeft className="size-5" />
               {claimAll.status === 'wallet'
@@ -146,79 +145,79 @@ export function MyPayTab({ vault }: { vault: Address }) {
         )}
 
         {(data?.rows.length ?? 0) > 50 && (
-          <p className="mt-3 text-xs text-[var(--subtle)]">
+          <p className="mt-3 font-mono text-xs text-white/40">
             Large allocations process in 50-batch segments. After this transaction, trigger once more to claim remainder.
           </p>
         )}
-      </Card>
+      </div>
 
       {/* ─── Itemized Payroll Allocations ─── */}
-      <Card className="space-y-4">
-        <div className="flex items-center justify-between pb-2 border-b border-[var(--border)]">
+      <div className="employer-task-card employer-payroll-board">
+        <div className="employer-task-card-head">
           <div className="flex items-center gap-2">
-            <Sparkles className="size-4 text-[var(--accent)]" />
-            <h3 className="display text-lg font-bold">Unclaimed Payroll Allocations</h3>
+            <Sparkles className="size-4 text-[#FE9E15]" />
+            <div>
+              <span className="font-mono text-xs uppercase tracking-wider text-[#FE9E15]">Claimable Runs</span>
+              <h2>Unclaimed Payroll Allocations</h2>
+            </div>
           </div>
-          <span className="text-xs text-[var(--muted)]">
+          <span className="employer-task-count">
             {data?.rows.length ?? 0} {data?.rows.length === 1 ? 'batch' : 'batches'}
           </span>
         </div>
 
-        <div>
+        <div className="p-4 sm:p-5">
           {(data?.rows.length ?? 0) === 0 ? (
-            <EmptyState
-              title="No pending salary allocations"
-              body="When Finance funds an authorized payroll batch that designates your address, it will be immediately claimable here."
-            />
+            <div className="py-6">
+              <EmptyState
+                title="No pending salary allocations"
+                body="When Finance funds an authorized payroll batch designating your address, it will be immediately claimable here."
+              />
+            </div>
           ) : (
-            <ul className="space-y-3">
+            <div className="employer-task-payroll-list">
               {data?.rows.map((row) => (
-                <li
+                <div
                   key={row.id}
-                  className="inner flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-2xl p-4 sm:p-5 transition-all hover:border-[var(--border-strong)]"
+                  className="employer-task-payroll-row"
                 >
-                  <div className="space-y-1">
-                    <div className="display font-bold text-base">
-                      {labels[row.id] ?? `Payroll Batch ${shortId(row.id)}`}
-                    </div>
-                    <div className="flex items-center gap-2 text-xs text-[var(--muted)] tabular-nums">
-                      <Calendar className="size-3.5 text-[var(--subtle)]" />
-                      <span>Reclamation deadline: {formatDate(row.deadline)}</span>
-                    </div>
+                  <span className="employer-task-row-copy">
+                    <strong>{labels[row.id] ?? `Payroll Batch ${shortId(row.id)}`}</strong>
+                    <span className="font-mono text-xs text-white/50">
+                      Reclamation deadline: {formatDate(row.deadline)}
+                    </span>
+                  </span>
+
+                  <div className="font-display text-lg font-bold tabular-nums text-white">
+                    {usdc(row.amount)}{' '}
+                    <span className="text-xs font-normal text-white/50">USDC</span>
                   </div>
 
-                  <div className="flex items-center justify-between sm:justify-end gap-4 border-t border-[var(--border)] pt-3 sm:border-0 sm:pt-0">
-                    <div className="display text-lg sm:text-xl font-bold tabular-nums">
-                      {usdc(row.amount)}{' '}
-                      <span className="text-xs font-normal text-[var(--muted)]">USDC</span>
-                    </div>
-
-                    <Button
-                      variant="ghost"
-                      className="!min-h-10 text-xs px-4"
-                      loading={claimOne.busy}
-                      onClick={() =>
-                        void claimOne.run(
-                          (write) =>
-                            write({
-                              address: vault,
-                              abi: vaultAbi,
-                              functionName: 'claimPayrollSalary',
-                              args: [row.id],
-                            }),
-                          { success: 'Batch salary claimed to your wallet!' },
-                        )
-                      }
-                    >
-                      Claim Batch
-                    </Button>
-                  </div>
-                </li>
+                  <Button
+                    variant="ghost"
+                    className="!min-h-9 text-xs px-3"
+                    loading={claimOne.busy}
+                    onClick={() =>
+                      void claimOne.run(
+                        (write) =>
+                          write({
+                            address: vault,
+                            abi: vaultAbi,
+                            functionName: 'claimPayrollSalary',
+                            args: [row.id],
+                          }),
+                        { success: 'Batch salary claimed to your wallet!' },
+                      )
+                    }
+                  >
+                    Claim Batch
+                  </Button>
+                </div>
               ))}
-            </ul>
+            </div>
           )}
         </div>
-      </Card>
+      </div>
     </div>
   )
 }

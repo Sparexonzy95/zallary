@@ -66,27 +66,30 @@ export function FundPanel({ vault, id, meta }: Props) {
   const blocked = preparedByMe || expired
 
   return (
-    <div className="space-y-4 rounded-2xl border border-[var(--border)] bg-[var(--inset)] p-4 sm:p-5">
-      <div className="flex items-center justify-between pb-3 border-b border-[var(--border)]">
-        <div className="flex items-center gap-2">
-          <FileCheck2 className="size-4 text-[var(--accent)]" />
-          <h4 className="display text-base font-bold">Finance Audit & Escrow Execution</h4>
+    <div className="employer-task-card template-detail-command-panel run-detail-command-panel p-5 sm:p-6 space-y-5 rounded-2xl bg-[#151515] border border-white/10">
+      <div className="template-detail-action-strip run-detail-action-strip flex items-center justify-between pb-3 border-b border-white/10">
+        <div className="flex items-center gap-2.5">
+          <FileCheck2 className="size-5 text-[#FE9E15]" />
+          <div>
+            <strong className="text-base text-white font-display block">Finance Audit & Escrow Execution</strong>
+            <span className="text-xs text-white/50 block">Direct Treasury Funding on Arc Testnet</span>
+          </div>
         </div>
-        <span className="text-xs text-[var(--muted)]">Direct Treasury Funding</span>
+        <span className="status status-funding_ready">Ready for Funding</span>
       </div>
 
       {/* ─── Employees Roster Table ─── */}
       <div className="space-y-2">
-        <div className="flex items-center justify-between text-xs text-[var(--muted)] px-1">
-          <span className="font-semibold uppercase tracking-wider">Recipients ({employees?.length ?? 0})</span>
-          <span className="font-semibold uppercase tracking-wider">Allocation (USDC)</span>
+        <div className="flex items-center justify-between text-xs text-white/50 px-1 font-mono uppercase tracking-wider">
+          <span>Recipients ({employees?.length ?? 0})</span>
+          <span>Allocation (USDC)</span>
         </div>
 
-        <div className="inner max-h-48 overflow-y-auto rounded-xl p-2.5 divide-y divide-[var(--border)] text-sm">
+        <div className="inner max-h-48 overflow-y-auto rounded-xl p-2.5 divide-y divide-white/5 text-sm bg-white/[0.02] border border-white/5">
           {employees?.map((employee, index) => (
             <div key={employee} className="flex items-center justify-between py-2 px-1.5 first:pt-0 last:pb-0">
-              <span className="mono text-xs text-[var(--ink-2)]">{shortAddress(employee)}</span>
-              <span className="mono text-xs tabular-nums font-semibold">
+              <span className="mono text-xs text-white/70">{shortAddress(employee)}</span>
+              <span className="mono text-xs tabular-nums font-semibold text-white">
                 {allocations.data?.[index] ? `${usdc(allocations.data[index].amount)} USDC` : '…'}
               </span>
             </div>
@@ -95,25 +98,25 @@ export function FundPanel({ vault, id, meta }: Props) {
       </div>
 
       {/* ─── Financial Accounting Summary ─── */}
-      <dl className="inner rounded-xl p-4 space-y-2 text-sm">
-        <div className="flex justify-between text-[var(--muted)]">
+      <dl className="inner rounded-xl p-4 space-y-2.5 text-sm bg-white/[0.02] border border-white/10">
+        <div className="flex justify-between text-white/60">
           <dt>Total Salary Allocations</dt>
-          <dd className="tabular-nums font-medium text-[var(--ink)]">{usdc(meta.totalFunded)} USDC</dd>
+          <dd className="tabular-nums font-medium text-white font-mono">{usdc(meta.totalFunded)} USDC</dd>
         </div>
-        <div className="flex justify-between text-[var(--muted)]">
+        <div className="flex justify-between text-white/60">
           <dt>Protocol Fee ({bpsToPercent(feeBps)})</dt>
-          <dd className="tabular-nums font-medium text-[var(--ink)]">{usdc(fee)} USDC</dd>
+          <dd className="tabular-nums font-medium text-white font-mono">{usdc(fee)} USDC</dd>
         </div>
-        <div className="divider my-1" />
+        <div className="h-px bg-white/10 my-1" />
         <div className="flex justify-between font-bold text-base">
-          <dt>Total Treasury Deduction</dt>
-          <dd className="display text-lg text-[var(--accent)] tabular-nums">{usdc(charge)} USDC</dd>
+          <dt className="text-white">Total Treasury Deduction</dt>
+          <dd className="display text-lg text-[#FE9E15] tabular-nums font-mono">{usdc(charge)} USDC</dd>
         </div>
-        <div className="flex justify-between text-xs text-[var(--subtle)] pt-1">
+        <div className="flex justify-between text-xs text-white/40 pt-1 font-mono">
           <dt className="flex items-center gap-1.5">
             <Wallet className="size-3.5" /> Your USDC Balance
           </dt>
-          <dd className="tabular-nums font-semibold text-[var(--ink-2)]">{usdc(balance)} USDC</dd>
+          <dd className="tabular-nums font-semibold text-white/80">{usdc(balance)} USDC</dd>
         </div>
       </dl>
 
@@ -133,7 +136,7 @@ export function FundPanel({ vault, id, meta }: Props) {
       {!enoughBalance && !blocked && (
         <Notice tone="warn">
           Treasury balance is short by {usdc(charge - balance)} USDC.{' '}
-          <button onClick={addFunds.open} className="font-semibold underline hover:text-[var(--ink)]">
+          <button onClick={addFunds.open} className="font-semibold underline hover:text-white">
             Add USDC to Wallet
           </button>
         </Notice>
@@ -150,6 +153,7 @@ export function FundPanel({ vault, id, meta }: Props) {
             full
             disabled={blocked || !enoughBalance}
             loading={approve.busy}
+            className="btn btn-primary min-h-12 text-sm font-semibold"
             onClick={() =>
               void approve.run(
                 (write) =>
@@ -174,6 +178,7 @@ export function FundPanel({ vault, id, meta }: Props) {
             full
             disabled={blocked || !enoughBalance}
             loading={fund.busy}
+            className="btn btn-primary min-h-12 text-sm font-semibold"
             onClick={() =>
               void fund.run(
                 (write) =>
@@ -195,7 +200,7 @@ export function FundPanel({ vault, id, meta }: Props) {
           </Button>
         )}
 
-        <p className="text-[11px] text-[var(--subtle)] text-center leading-normal">
+        <p className="text-[11px] text-white/40 text-center leading-normal">
           Vault approval is restricted to the exact audited sum ({usdc(charge)} USDC). Tokens transfer directly into the company's segregated escrow.
         </p>
       </div>

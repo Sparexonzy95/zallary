@@ -99,7 +99,7 @@ export function BuyPanel() {
       )}
 
       {!showWidget && (
-        <Button full loading={busy} disabled={!address} onClick={() => void start()}>
+        <Button full loading={busy} disabled={!address} className="btn btn-primary min-h-12 text-sm font-semibold" onClick={() => void start()}>
           <CreditCard className="size-4" />
           {phase === 'signing'
             ? 'Sign Verification in Wallet…'

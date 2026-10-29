@@ -14,8 +14,8 @@ export function AddFundsSheet({ open, onClose }: { open: boolean; onClose: () =>
   ]
 
   return (
-    <Sheet open={open} onClose={onClose} title="Add USDC to Arc">
-      <div role="tablist" className="inner mb-4 flex gap-1 rounded-2xl p-1.5">
+    <Sheet open={open} onClose={onClose} title="Add USDC to Arc Testnet">
+      <div role="tablist" className="filter-tabs employer-payroll-filters mb-5">
         {tabs.map((item) => {
           const active = tab === item.key
           return (
@@ -24,16 +24,7 @@ export function AddFundsSheet({ open, onClose }: { open: boolean; onClose: () =>
               role="tab"
               aria-selected={active}
               onClick={() => setTab(item.key)}
-              className="flex min-h-11 flex-1 items-center justify-center gap-2 rounded-xl px-2 text-xs font-semibold transition-all duration-200 sm:text-sm"
-              style={
-                active
-                  ? {
-                      background: 'var(--accent)',
-                      color: 'var(--on-accent)',
-                      boxShadow: '0 2px 8px rgba(254, 158, 21, 0.25)',
-                    }
-                  : { color: 'var(--ink-2)' }
-              }
+              className={`filter-tab${active ? ' active' : ''} flex-1 flex items-center justify-center gap-2`}
             >
               <item.icon className="size-4 shrink-0" />
               <span>{item.label}</span>

@@ -89,6 +89,56 @@ export function Label({ children, hint }: { children: ReactNode; hint?: string }
   )
 }
 
+/* ─── Field ─── */
+
+export function Field({
+  label,
+  help,
+  error,
+  children,
+  className = '',
+}: {
+  label: ReactNode
+  help?: ReactNode
+  error?: string
+  children: ReactNode
+  className?: string
+}) {
+  return (
+    <label className={`field ${className}`.trim()}>
+      <span className="text-xs font-semibold uppercase tracking-[0.08em]" style={{ color: 'var(--muted)' }}>
+        {label}
+      </span>
+      {children}
+      {help && (
+        <span className="text-[11px]" style={{ color: 'var(--subtle)' }}>
+          {help}
+        </span>
+      )}
+      {error && <span className="text-xs" style={{ color: 'var(--danger)' }}>{error}</span>}
+    </label>
+  )
+}
+
+/* ─── StatCard ─── */
+
+export function StatCard({
+  value,
+  label,
+  accent,
+}: {
+  value: ReactNode
+  label: string
+  accent?: boolean
+}) {
+  return (
+    <div className={`stat-card${accent ? ' accent-card' : ''}`}>
+      <div className="stat-value">{value}</div>
+      <div className="stat-label">{label}</div>
+    </div>
+  )
+}
+
 /* ─── AddressLink ─── */
 
 export function AddressLink({ address, label }: { address: string; label?: string }) {

@@ -11,7 +11,7 @@ import { formatDate, shortId, usdc } from '@/lib/format'
 import { STATUS_NAMES } from '@/lib/roles'
 import { useNowSeconds, usePayrollLabels, usePayrolls, type PayrollRow } from '@/hooks/data'
 import { useTx } from '@/hooks/useTx'
-import { AddressLink, Badge, Button, Card, EmptyState, Notice, Skeleton } from '@/components/ui'
+import { AddressLink, Button, EmptyState, Notice, Skeleton } from '@/components/ui'
 
 function ExpiredPayroll({
   vault,
@@ -67,21 +67,21 @@ function ExpiredPayroll({
   if (open.length === 0) return null
 
   return (
-    <li className="inner rounded-2xl p-4 sm:p-5 space-y-3">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-[var(--border)]">
+    <li className="inner rounded-2xl p-4 sm:p-5 space-y-3 bg-[#151515] border border-white/10">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-white/10">
         <div className="flex items-center gap-2">
-          <span className="display font-bold text-base">
+          <span className="font-bold text-base text-white font-display">
             {label ?? `Payroll Batch ${shortId(row.id)}`}
           </span>
-          <Badge tone="warn">Expired</Badge>
+          <span className="status status-cancelled">Expired</span>
         </div>
-        <div className="flex items-center gap-1.5 text-xs text-[var(--muted)] tabular-nums">
-          <Clock className="size-3.5 text-[var(--subtle)]" />
+        <div className="flex items-center gap-1.5 text-xs text-white/50 tabular-nums font-mono">
+          <Clock className="size-3.5 text-white/40" />
           <span>Deadline passed on {formatDate(row.meta.deadline)}</span>
         </div>
       </div>
 
-      <ul className="divide-y divide-[var(--border)]">
+      <ul className="divide-y divide-white/5">
         {open.map(({ employee, allocation }) => (
           <li
             key={employee}
@@ -91,15 +91,15 @@ function ExpiredPayroll({
               <AddressLink address={employee} />
             </div>
 
-            <div className="flex items-center justify-between sm:justify-end gap-3 border-t border-[var(--border)] pt-2 sm:border-0 sm:pt-0">
-              <span className="display text-base font-bold tabular-nums">
+            <div className="flex items-center justify-between sm:justify-end gap-3 border-t border-white/5 pt-2 sm:border-0 sm:pt-0">
+              <span className="text-base font-bold tabular-nums text-white font-mono">
                 {usdc(allocation?.amount ?? 0n)}{' '}
-                <span className="text-xs font-normal text-[var(--muted)]">USDC</span>
+                <span className="text-xs font-normal text-white/50">USDC</span>
               </span>
 
               <Button
                 variant="ghost"
-                className="!min-h-10 text-xs px-3"
+                className="btn btn-secondary !min-h-10 text-xs px-3 font-semibold"
                 loading={tx.busy}
                 onClick={() =>
                   void tx.run(
@@ -145,13 +145,13 @@ export function RefundsPanel({ vault }: { vault: Address }) {
   )
 
   return (
-    <Card className="space-y-4">
-      <div className="flex items-center justify-between pb-2 border-b border-[var(--border)]">
-        <div className="flex items-center gap-2">
-          <Landmark className="size-5 text-[var(--accent)]" />
+    <div className="employer-task-card p-5 sm:p-6 space-y-4 rounded-2xl bg-[#151515] border border-white/10">
+      <div className="template-detail-action-strip flex items-center justify-between pb-3 border-b border-white/10">
+        <div className="flex items-center gap-2.5">
+          <Landmark className="size-5 text-[#FE9E15]" />
           <div>
-            <h3 className="display text-lg font-bold">Treasury Reclamation</h3>
-            <p className="text-xs text-[var(--muted)]">
+            <h3 className="text-base font-bold font-display text-white">Treasury Reclamation</h3>
+            <p className="text-xs text-white/50">
               Recover unclaimed salary allocations from batches that surpassed their deadline.
             </p>
           </div>
@@ -179,6 +179,6 @@ export function RefundsPanel({ vault }: { vault: Address }) {
           ))}
         </ul>
       </div>
-    </Card>
+    </div>
   )
 }

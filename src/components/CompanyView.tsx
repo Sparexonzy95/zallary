@@ -1,18 +1,17 @@
 import { useState } from 'react'
 import { useAccount } from 'wagmi'
 import type { Address } from 'viem'
-import { Building2, Shield } from 'lucide-react'
+import { Shield } from 'lucide-react'
 import { useCompanies, useRoles } from '@/hooks/data'
 import { PORTALS, canOpen, defaultPortal, type Portal } from '@/lib/portals'
 import { ROLE_LABEL, type RoleKey } from '@/lib/roles'
-import { usdc } from '@/lib/format'
-import { AddressLink, Badge, Card, Notice, Skeleton } from '@/components/ui'
+import { shortAddress, usdc } from '@/lib/format'
+import { AddressLink, Card, Notice, Skeleton } from '@/components/ui'
 import { MyPayTab } from '@/components/MyPayTab'
 import { PayrollsTab } from '@/components/PayrollsTab'
 import { PrepareForm } from '@/components/PrepareForm'
 import { RefundsPanel } from '@/components/RefundsPanel'
 import { PoliciesSection, RolesSection } from '@/components/TeamTab'
-import { Tabs } from '@/components/Tabs'
 
 interface Props {
   vault: Address
@@ -43,70 +42,60 @@ export function CompanyView({ vault, portal }: Props) {
   const myAssignedRoles = (Object.keys(roles) as RoleKey[]).filter((key) => roles[key])
 
   return (
-    <div className="space-y-6">
-      {/* ─── Institutional Vault Header ─── */}
-      <div className="glass rounded-3xl p-6 sm:p-7 relative overflow-hidden">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="space-y-2 min-w-0">
-            <div className="flex items-center gap-2">
-              <span className="flex size-7 items-center justify-center rounded-lg bg-[var(--accent-dim)] text-[var(--accent)]">
-                <Building2 className="size-4" />
+    <div className="stack dashboard-shell dashboard-shell-employer employer-dashboard-premium employer-dashboard-redesign template-detail-page institution-workspace-page space-y-6">
+      {/* ─── Institutional Vault Hero ─── */}
+      <section className="employer-task-hero template-detail-hero">
+        <div className="employer-task-hero-copy template-detail-hero-copy">
+          <span className="employer-task-kicker">Company Payroll Vault</span>
+          <h1>{company?.name ?? 'Company Workspace'}</h1>
+          <p className="employer-task-hero-subtitle">
+            Connected as {shortAddress(address ?? '')} on Circle Arc Testnet.
+          </p>
+          <div className="flex flex-wrap items-center gap-2 pt-2">
+            <AddressLink address={vault} />
+            {myAssignedRoles.map((key) => (
+              <span
+                key={key}
+                className={`status ${key === 'ADMIN' ? 'status-active' : 'status-funding_ready'}`}
+              >
+                {ROLE_LABEL[key]}
               </span>
-              <span className="text-xs font-semibold uppercase tracking-wider text-[var(--subtle)]">
-                Company Payroll Vault
-              </span>
-            </div>
-
-            <h1 className="display text-3xl sm:text-4xl font-bold tracking-tight text-balance">
-              {company?.name ?? 'Company Vault'}
-            </h1>
-
-            <div className="flex flex-wrap items-center gap-2 pt-1">
-              <AddressLink address={vault} />
-              {myAssignedRoles.map((key) => (
-                <Badge key={key} tone={key === 'ADMIN' ? 'info' : 'neutral'}>
-                  {ROLE_LABEL[key]}
-                </Badge>
-              ))}
-              {myAssignedRoles.length === 0 && isConnected && (
-                <Badge tone="neutral">Employee</Badge>
-              )}
-            </div>
-          </div>
-
-          {/* Quick status box on the right */}
-          <div className="inner flex flex-wrap sm:flex-col items-start sm:items-end justify-between gap-2 rounded-2xl p-4 sm:min-w-44">
-            <div className="text-left sm:text-right">
-              <p className="text-[11px] font-semibold uppercase tracking-wider text-[var(--subtle)]">
-                Your Claimable Pay
-              </p>
-              <p className="display text-xl font-bold tabular-nums text-[var(--success)]">
-                {company?.claimable ? usdc(company.claimable) : '0.00'} <span className="text-xs font-normal text-[var(--muted)]">USDC</span>
-              </p>
-            </div>
-            <div className="flex items-center gap-1.5 text-xs text-[var(--subtle)]">
-              <span className="size-2 rounded-full bg-[var(--success)]" />
-              <span>Live on Arc</span>
-            </div>
+            ))}
+            {myAssignedRoles.length === 0 && isConnected && (
+              <span className="status status-scheduled">Employee</span>
+            )}
           </div>
         </div>
-      </div>
+
+        <div className="employer-task-hero-metrics template-detail-hero-metrics" aria-label="Vault summary">
+          <div className="employer-task-hero-metric">
+            <span>Vault Address</span>
+            <strong>{shortAddress(vault)}</strong>
+          </div>
+          <div className="employer-task-hero-metric">
+            <span>Your Claimable</span>
+            <strong className="text-[#38d996]">
+              {company?.claimable ? usdc(company.claimable) : '0.00'} USDC
+            </strong>
+          </div>
+        </div>
+      </section>
 
       {/* ─── Portal Area Subhead ─── */}
-      <div className="px-1 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 px-1">
         <div>
           <div className="flex items-center gap-2">
-            <info.icon className="size-5 text-[var(--accent)]" />
-            <h2 className="display text-xl font-bold">{info.label}</h2>
+            <info.icon className="size-5 text-[#FE9E15]" />
+            <h2 className="text-xl font-bold font-display text-white">{info.label}</h2>
           </div>
-          <p className="text-sm mt-0.5" style={{ color: 'var(--muted)' }}>
+          <p className="text-sm text-white/50 mt-0.5">
             {info.blurb}
           </p>
         </div>
 
         {info.role && (
-          <div className="flex items-center gap-1.5 text-xs text-[var(--subtle)]">
-            <Shield className="size-3.5 text-[var(--muted)]" />
+          <div className="flex items-center gap-1.5 text-xs text-white/40 font-mono">
+            <Shield className="size-3.5 text-[#FE9E15]" />
             <span>Requires {ROLE_LABEL[info.role]} authorization</span>
           </div>
         )}
@@ -123,11 +112,11 @@ export function CompanyView({ vault, portal }: Props) {
         </div>
       ) : !allowed ? (
         <Card className="py-10 text-center">
-          <div className="flex size-12 items-center justify-center rounded-full bg-[var(--danger-dim)] text-[var(--danger)] mx-auto mb-3">
+          <div className="flex size-12 items-center justify-center rounded-full bg-red-500/10 text-red-500 mx-auto mb-3">
             <Shield className="size-6" />
           </div>
-          <h3 className="display text-lg font-bold">Access Restricted</h3>
-          <p className="mt-1 text-sm max-w-md mx-auto text-pretty" style={{ color: 'var(--muted)' }}>
+          <h3 className="text-lg font-bold font-display">Access Restricted</h3>
+          <p className="mt-1 text-sm max-w-md mx-auto text-white/50">
             Your connected wallet does not hold the {info.role ? ROLE_LABEL[info.role] : ''} role required to view or execute actions in this section.
           </p>
         </Card>
@@ -135,21 +124,40 @@ export function CompanyView({ vault, portal }: Props) {
         <PayrollsTab vault={vault} isHR={roles.HR} isFinance={false} showPrepare title="HR Payroll Drafts & Batches" />
       ) : active === 'finance' ? (
         <div className="space-y-5">
-          <Tabs tabs={financeTabs} value={financeTab} onChange={setFinanceTab} />
+          <div className="filter-tabs employer-payroll-filters">
+            {financeTabs.map((tab) => (
+              <button
+                key={tab.key}
+                type="button"
+                className={`filter-tab${financeTab === tab.key ? ' active' : ''}`}
+                onClick={() => setFinanceTab(tab.key)}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
           {financeTab === 'fund' && <PayrollsTab vault={vault} isHR={false} isFinance title="Pending & Funded Payrolls" />}
           {financeTab === 'refunds' && <RefundsPanel vault={vault} />}
           {financeTab === 'onestep' && roles.HR && <PrepareForm vault={vault} isFinance mode="direct" />}
         </div>
       ) : active === 'institution' ? (
         <div className="space-y-5">
-          <Tabs
-            tabs={[
-              { key: 'roles', label: 'Role Assignments' },
-              { key: 'policies', label: 'Security & Protocol Policies' },
-            ]}
-            value={governanceTab}
-            onChange={setGovernanceTab}
-          />
+          <div className="filter-tabs employer-payroll-filters">
+            <button
+              type="button"
+              className={`filter-tab${governanceTab === 'roles' ? ' active' : ''}`}
+              onClick={() => setGovernanceTab('roles')}
+            >
+              Role Assignments
+            </button>
+            <button
+              type="button"
+              className={`filter-tab${governanceTab === 'policies' ? ' active' : ''}`}
+              onClick={() => setGovernanceTab('policies')}
+            >
+              Security & Protocol Policies
+            </button>
+          </div>
           {governanceTab === 'roles' ? <RolesSection vault={vault} isAdmin={roles.ADMIN} /> : <PoliciesSection vault={vault} isAdmin={roles.ADMIN} />}
         </div>
       ) : (

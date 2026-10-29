@@ -189,6 +189,7 @@ export function BridgePanel() {
         full
         disabled={!address || !enough}
         loading={busy}
+        className="btn btn-primary min-h-12 text-sm font-semibold"
         onClick={() => void bridge()}
       >
         {busy ? 'Bridging in progress…' : 'Bridge USDC to Arc'}
