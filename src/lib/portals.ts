@@ -1,4 +1,4 @@
-import { Landmark, ShieldCheck, UserRound, Users, type LucideIcon } from 'lucide-react'
+import { CircleDollarSign, Landmark, ListChecks, ShieldCheck, type LucideIcon } from 'lucide-react'
 import type { RoleKey } from '@/lib/roles'
 
 export type Portal = 'hr' | 'finance' | 'employee' | 'institution'
@@ -13,10 +13,10 @@ export interface PortalInfo {
 }
 
 export const PORTALS: readonly PortalInfo[] = [
-  { key: 'hr', label: 'HR payroll', blurb: 'Prepare payroll drafts', icon: Users, role: 'HR' },
-  { key: 'finance', label: 'Finance and treasury', blurb: 'Review, fund and refund payroll', icon: Landmark, role: 'FINANCE' },
-  { key: 'employee', label: 'My pay', blurb: 'Claim your salary', icon: UserRound },
-  { key: 'institution', label: 'Governance', blurb: 'Roles, fees and safety', icon: ShieldCheck, role: 'ADMIN' },
+  { key: 'hr', label: 'HR Payroll', blurb: 'Draft and manage employee payroll rosters', icon: ListChecks, role: 'HR' },
+  { key: 'finance', label: 'Finance', blurb: 'Review, fund, and reclaim escrowed payroll', icon: Landmark, role: 'FINANCE' },
+  { key: 'employee', label: 'Claim Salary', blurb: 'Inspect and claim your earned payouts', icon: CircleDollarSign },
+  { key: 'institution', label: 'Governance', blurb: 'Manage role assignments and safety policies', icon: ShieldCheck, role: 'ADMIN' },
 ]
 
 export const canOpen = (portal: PortalInfo, roles: Record<RoleKey, boolean>) => !portal.role || roles[portal.role]

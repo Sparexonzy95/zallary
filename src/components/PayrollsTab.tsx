@@ -1,36 +1,27 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import type { Address } from 'viem'
 import {
-  Calendar,
   CheckCircle2,
   ChevronUp,
-  FileSpreadsheet,
-  Users,
+  Search,
   XCircle,
 } from 'lucide-react'
 import { vaultAbi } from '@/abi/vaultAbi'
 import { formatDate, shortId, usdc } from '@/lib/format'
 import { STATUS_NAMES } from '@/lib/roles'
-import { usePayrollLabels, usePayrolls, useSeparateApprover, type PayrollRow } from '@/hooks/data'
+import { usePayrollLabels, usePayrolls, type PayrollRow } from '@/hooks/data'
 import { useTx } from '@/hooks/useTx'
-import { Button, EmptyState, Notice, Skeleton } from '@/components/ui'
+import { EmptyState, Notice, Skeleton, StatusBadge } from '@/components/ui'
 import { FundPanel } from '@/components/FundPanel'
-import { PrepareForm } from '@/components/PrepareForm'
 
 interface Props {
   vault: Address
   isHR: boolean
   isFinance: boolean
-  showPrepare?: boolean
+  initialFilter?: 'all' | 'draft' | 'funded' | 'completed' | 'cancelled'
+  hideFilters?: boolean
   title?: string
-}
-
-const STATUS_CLASS: Record<string, string> = {
-  Draft: 'status-draft',
-  Funded: 'status-funded',
-  Completed: 'status-completed',
-  Refunded: 'status-scheduled',
-  Cancelled: 'status-failed',
+  eyebrow?: string
 }
 
 function Row({
@@ -59,121 +50,76 @@ function Row({
       : 0
 
   return (
-    <li className="employer-task-card p-5 transition-all duration-200">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        {/* Info left */}
-        <div className="min-w-0 space-y-1.5">
-          <div className="flex items-center gap-2.5 flex-wrap">
-            <span className="font-display text-base font-bold text-white">
-              {label ?? `Payroll Batch ${shortId(row.id)}`}
-            </span>
-            <span className={`status ${STATUS_CLASS[status] ?? 'status-draft'}`}>
-              {status}
-            </span>
-          </div>
+    <div className="space-y-2">
+      <div className="employer-task-payroll-row">
+        <span className="employer-task-row-copy">
+          <strong>{label ?? `Payroll Batch ${shortId(row.id)}`}</strong>
+          <span>
+            Deadline: {formatDate(row.meta.deadline)} · {usdc(row.meta.totalFunded)} USDC
+            {funded && ` (${percentClaimed}% claimed)`}
+          </span>
+        </span>
 
-          <div className="flex flex-wrap items-center gap-3 font-mono text-xs text-white/50 tabular-nums">
-            <span className="flex items-center gap-1">
-              <Users className="size-3.5 text-white/40" />
-              {row.meta.employeeCount} {row.meta.employeeCount === 1 ? 'employee' : 'employees'}
-            </span>
-            <span className="flex items-center gap-1">
-              <Calendar className="size-3.5 text-white/40" />
-              Claim by {formatDate(row.meta.deadline)}
-            </span>
-            <span className="text-white/40">ID: {shortId(row.id)}</span>
-          </div>
-        </div>
+        <StatusBadge value={status} />
 
-        {/* Amount right */}
-        <div className="flex sm:flex-col items-center sm:items-end justify-between border-t border-white/10 pt-3 sm:border-0 sm:pt-0">
-          <div className="font-display text-xl sm:text-2xl font-bold tabular-nums text-white">
-            {usdc(row.meta.totalFunded)}{' '}
-            <span className="text-xs font-normal text-white/50">USDC</span>
-          </div>
-          {funded && (
-            <p className="font-mono text-xs text-[#38d996] tabular-nums">
-              {usdc(claimed)} claimed ({percentClaimed}%)
-            </p>
+        <div className="flex items-center gap-2">
+          {isDraft && isFinance && (
+            <button
+              type="button"
+              className="employer-task-primary-action !min-h-8 !py-1 text-xs px-3 font-semibold flex items-center gap-1.5"
+              onClick={() => setOpen((v) => !v)}
+            >
+              {open ? <ChevronUp size={14} /> : <CheckCircle2 size={14} />}
+              <span>{open ? 'Close' : 'Review & Fund'}</span>
+            </button>
+          )}
+
+          {isDraft && isHR && (
+            <button
+              type="button"
+              className="btn btn-danger !min-h-8 !py-1 text-xs px-2.5 font-semibold flex items-center gap-1"
+              disabled={cancel.busy}
+              onClick={() =>
+                void cancel.run(
+                  (write) =>
+                    write({
+                      address: vault,
+                      abi: vaultAbi,
+                      functionName: 'cancelPayrollDraft',
+                      args: [row.id],
+                    }),
+                  {
+                    success: 'Payroll draft cancelled on-chain.',
+                  },
+                )
+              }
+            >
+              <XCircle size={14} />
+              <span>Cancel</span>
+            </button>
+          )}
+
+          {!isDraft && (
+            <span className="employer-task-view-link">
+              {status === 'Completed' ? 'Settled' : 'Funded'}
+            </span>
           )}
         </div>
       </div>
 
-      {/* Progress Bar for funded batches */}
-      {funded && (
-        <div className="mt-3.5 space-y-1.5">
-          <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/10">
-            <div
-              className="h-full rounded-full transition-all duration-500"
-              style={{
-                width: `${Math.min(100, Math.max(0, percentClaimed))}%`,
-                background:
-                  status === 'Completed'
-                    ? '#38d996'
-                    : 'linear-gradient(90deg, #FE9E15, #ffb347)',
-              }}
-            />
-          </div>
-        </div>
-      )}
-
-      {/* Action buttons */}
-      {isDraft && (isHR || isFinance) && (
-        <div className="mt-4 flex flex-wrap items-center gap-2 pt-3 border-t border-white/10">
-          {isFinance && (
-            <Button
-              className="btn btn-primary !min-h-10 text-xs px-4 font-semibold"
-              onClick={() => setOpen((v) => !v)}
-            >
-              {open ? (
-                <>
-                  <ChevronUp className="size-3.5" /> Hide Review
-                </>
-              ) : (
-                <>
-                  <CheckCircle2 className="size-3.5" /> Review & Fund
-                </>
-              )}
-            </Button>
-          )}
-
-          <Button
-            variant="danger"
-            className="btn btn-danger !min-h-10 text-xs px-4 font-semibold"
-            loading={cancel.busy}
-            onClick={() =>
-              void cancel.run(
-                (write) =>
-                  write({
-                    address: vault,
-                    abi: vaultAbi,
-                    functionName: 'cancelPayrollDraft',
-                    args: [row.id],
-                  }),
-                {
-                  success: 'Payroll draft cancelled on-chain.',
-                },
-              )
-            }
-          >
-            <XCircle className="size-3.5" /> Cancel Draft
-          </Button>
-        </div>
-      )}
-
       {cancel.error && (
-        <div className="mt-3">
+        <div className="mt-2">
           <Notice tone="bad">{cancel.error}</Notice>
         </div>
       )}
 
       {/* Expandable Finance Review Screen */}
       {open && isDraft && isFinance && (
-        <div className="mt-4 pt-4 border-t border-white/10">
+        <div className="mt-3">
           <FundPanel vault={vault} id={row.id} meta={row.meta} />
         </div>
       )}
-    </li>
+    </div>
   )
 }
 
@@ -181,81 +127,127 @@ export function PayrollsTab({
   vault,
   isHR,
   isFinance,
-  showPrepare = false,
-  title = 'Payrolls',
+  initialFilter = 'all',
+  hideFilters = false,
+  title = 'Your Payroll',
+  eyebrow = 'Payroll queue',
 }: Props) {
   const payrolls = usePayrolls(vault)
-  const separate = useSeparateApprover(vault)
   const { labels } = usePayrollLabels(vault)
+  const [search, setSearch] = useState('')
+  const [statusFilter, setStatusFilter] = useState<string>(initialFilter)
+
+  const rows = useMemo(() => payrolls.data ?? [], [payrolls.data])
+
+  const filteredRows = useMemo(() => {
+    const query = search.trim().toLowerCase()
+    return rows.filter((row) => {
+      const status = (STATUS_NAMES[row.meta.status] ?? 'Draft').toLowerCase()
+      const label = (labels[row.id] ?? '').toLowerCase()
+      const id = row.id.toLowerCase()
+
+      const matchesSearch =
+        !query || label.includes(query) || id.includes(query)
+
+      const matchesStatus =
+        statusFilter === 'all' ||
+        (statusFilter === 'draft' && status === 'draft') ||
+        (statusFilter === 'funded' && status === 'funded') ||
+        (statusFilter === 'completed' && status === 'completed') ||
+        (statusFilter === 'cancelled' && status === 'cancelled')
+
+      return matchesSearch && matchesStatus
+    })
+  }, [rows, search, statusFilter, labels])
+
+  const counts = useMemo(() => {
+    return rows.reduce(
+      (acc, row) => {
+        const s = (STATUS_NAMES[row.meta.status] ?? 'Draft').toLowerCase()
+        if (s === 'draft') acc.draft += 1
+        else if (s === 'funded') acc.funded += 1
+        else if (s === 'completed') acc.completed += 1
+        else if (s === 'cancelled') acc.cancelled += 1
+        return acc
+      },
+      { all: rows.length, draft: 0, funded: 0, completed: 0, cancelled: 0 },
+    )
+  }, [rows])
+
+  const filterTabs = [
+    { key: 'all', label: `All (${counts.all})` },
+    { key: 'draft', label: `Draft (${counts.draft})` },
+    { key: 'funded', label: `Funded (${counts.funded})` },
+    { key: 'completed', label: `Completed (${counts.completed})` },
+    ...(counts.cancelled > 0 ? [{ key: 'cancelled', label: `Cancelled (${counts.cancelled})` }] : []),
+  ]
 
   return (
-    <div className="space-y-6">
-      {showPrepare && isHR && (
-        <>
-          {separate.enforced && (
-            <Notice tone="warn">
-              Maker-checker enforcement is active: A different Finance account must review and fund any payroll you draft.
-            </Notice>
-          )}
-          <PrepareForm vault={vault} isFinance={isFinance} />
-        </>
-      )}
-
-      <div className="employer-task-card employer-payroll-board">
-        <div className="employer-task-card-head">
-          <div className="flex items-center gap-2">
-            <FileSpreadsheet className="size-5 text-[#FE9E15]" />
-            <div>
-              <span className="font-mono text-xs uppercase tracking-wider text-[#FE9E15]">Payroll Batches</span>
-              <h2>{title}</h2>
-            </div>
-          </div>
-          {payrolls.data && (
-            <span className="employer-task-count">
-              {payrolls.data.length} record{payrolls.data.length === 1 ? '' : 's'}
-            </span>
-          )}
+    <section className="employer-task-card employer-payroll-board">
+      <div className="employer-task-card-head">
+        <div>
+          <span>{eyebrow}</span>
+          <h2>{title}</h2>
         </div>
-
-        <div className="p-4 sm:p-5">
-          {payrolls.isLoading && (
-            <div className="space-y-3">
-              <Skeleton className="h-24 rounded-xl" />
-              <Skeleton className="h-24 rounded-xl" />
-            </div>
-          )}
-
-          {payrolls.isError && (
-            <Notice tone="bad">Could not query payroll batches from the vault. Check connection.</Notice>
-          )}
-
-          {!payrolls.isLoading && (payrolls.data?.length ?? 0) === 0 && (
-            <div className="py-6">
-              <EmptyState
-                title="No payroll batches found"
-                body={
-                  isHR
-                    ? 'Prepare your first payroll draft above. Once submitted, Finance can review, audit, and fund it.'
-                    : 'HR prepares payroll drafts. Once created, they appear here for Finance audit and funding.'
-                }
-              />
-            </div>
-          )}
-
-          <ul className="space-y-3">
-            {payrolls.data?.map((row) => (
-              <Row
-                key={row.id}
-                vault={vault}
-                row={row}
-                label={labels[row.id]}
-                isHR={isHR}
-                isFinance={isFinance}
-              />
-            ))}
-          </ul>
-        </div>
+        <span className="employer-task-count">
+          {filteredRows.length} item{filteredRows.length === 1 ? '' : 's'}
+        </span>
       </div>
-    </div>
+
+      <div className="employer-task-board-tools">
+        <label className="employer-task-search">
+          <Search size={17} strokeWidth={1.8} />
+          <input
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+            placeholder="Search payroll..."
+          />
+        </label>
+
+        {!hideFilters && (
+          <div className="filter-tabs employer-payroll-filters employer-task-filters">
+            {filterTabs.map((option) => (
+              <button
+                key={option.key}
+                type="button"
+                className={`filter-tab${statusFilter === option.key ? ' active' : ''}`}
+                onClick={() => setStatusFilter(option.key)}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {payrolls.isLoading ? (
+        <div className="space-y-3 p-2">
+          <Skeleton className="h-16 rounded-xl" />
+          <Skeleton className="h-16 rounded-xl" />
+        </div>
+      ) : rows.length === 0 ? (
+        <EmptyState
+          title="No payroll runs yet"
+          body="Create a draft payroll batch to upload allocations and submit for Finance funding."
+        />
+      ) : filteredRows.length === 0 ? (
+        <p className="muted employer-task-empty text-center py-6 text-xs text-white/40 font-mono">
+          No payroll matches your current search or filter.
+        </p>
+      ) : (
+        <div className="employer-task-payroll-list">
+          {filteredRows.map((row) => (
+            <Row
+              key={row.id}
+              vault={vault}
+              row={row}
+              label={labels[row.id]}
+              isHR={isHR}
+              isFinance={isFinance}
+            />
+          ))}
+        </div>
+      )}
+    </section>
   )
 }

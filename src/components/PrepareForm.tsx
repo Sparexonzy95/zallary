@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import {
+  ArrowLeft,
   ClipboardPaste,
   FileText,
   Plus,
@@ -38,10 +39,14 @@ export function PrepareForm({
   vault,
   isFinance,
   mode = 'draft',
+  onCancel,
+  onSuccess,
 }: {
   vault: Address
   isFinance: boolean
   mode?: 'draft' | 'direct'
+  onCancel?: () => void
+  onSuccess?: () => void
 }) {
   const { address } = useAccount()
   const tx = useTx()
@@ -173,6 +178,7 @@ export function PrepareForm({
           if (name.trim()) setLabel(id, name.trim())
           setRows([blankRow()])
           setName('')
+          onSuccess?.()
         },
       },
     )
@@ -201,33 +207,34 @@ export function PrepareForm({
           if (name.trim()) setLabel(id, name.trim())
           setRows([blankRow()])
           setName('')
+          onSuccess?.()
         },
       },
     )
   }
 
   return (
-    <div className="stack create-payroll-page employer-dashboard-redesign space-y-6">
+    <div className="stack create-payroll-page employer-dashboard-redesign space-y-4">
+      {onCancel && (
+        <button
+          type="button"
+          onClick={onCancel}
+          className="template-detail-back-link inline-flex items-center gap-1.5 text-xs font-semibold text-white/50 hover:text-white transition-colors"
+        >
+          <ArrowLeft size={14} />
+          <span>Back to Payroll Batches</span>
+        </button>
+      )}
+
       <div className="create-payroll-form create-payroll-form-redesigned">
         <section className="employer-task-card create-payroll-card">
           <div className="create-payroll-card-body space-y-6 p-5 sm:p-7">
-            {/* ─── Hero Header ─── */}
-            <section className="create-payroll-hero pb-4 border-b border-white/10">
-              <div className="create-payroll-hero-copy">
-                <span className="create-payroll-hero-eyebrow font-mono text-xs uppercase tracking-wider text-[#FE9E15]">
-                  {mode === 'direct' ? 'Dual-Role Execution' : 'Maker-Checker Workflow'}
-                </span>
-                <h2 className="text-2xl font-bold font-display text-white mt-1">
-                  {mode === 'direct' ? 'Create & Fund ' : 'Draft New '}
-                  <span className="text-[#FE9E15]">Payroll Batch</span>
-                </h2>
-                <p className="employer-task-hero-subtitle text-xs text-white/50 mt-1">
-                  {mode === 'direct'
-                    ? 'Prepares allocations and deposits USDC into escrow in one unified transaction.'
-                    : 'Saves an immutable on-chain draft. No funds move until Finance audits.'}
-                </p>
+            {mode === 'direct' && (
+              <div className="pb-3 border-b border-white/10">
+                <span className="font-mono text-xs uppercase tracking-wider text-[#FE9E15] block">Dual-Role Execution</span>
+                <h2 className="text-xl font-bold font-display text-white mt-0.5">Direct Creation & Immediate Funding</h2>
               </div>
-            </section>
+            )}
 
             {mode === 'direct' && separate.enforced && (
               <Notice tone="warn">

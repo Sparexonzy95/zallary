@@ -273,3 +273,30 @@ export function StatBlock({ label, value, sub }: { label: string; value: ReactNo
     </div>
   )
 }
+
+/* ─── StatusBadge (Zalary institutional status pill) ─── */
+
+export function StatusBadge({ value }: { value?: string | null }) {
+  const normalized = String(value ?? 'unknown')
+    .toLowerCase()
+    .replace(/\s+/g, '_')
+  const display =
+    {
+      active: 'Active',
+      completed: 'Completed',
+      complete: 'Completed',
+      finalized: 'Completed',
+      finalised: 'Completed',
+      finalized_success: 'Completed',
+      finalised_success: 'Completed',
+      scheduled: 'Scheduled',
+      draft: 'Draft',
+      failed: 'Failed',
+      cancelled: 'Cancelled',
+      funding_ready: 'Ready',
+      pending_funding: 'Pending funding',
+      funded: 'Funded',
+      claim: 'Claimable',
+    }[normalized] ?? normalized.replace(/_/g, ' ')
+  return <span className={`status status-${normalized}`}>{display}</span>
+}

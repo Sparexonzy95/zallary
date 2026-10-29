@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useAccount, useSwitchChain } from 'wagmi'
 import { isAddress, type Address } from 'viem'
-import { Building2 } from 'lucide-react'
+import { Building2, Plus } from 'lucide-react'
 import { CHAIN_ID, CHAIN_NAME } from '@/lib/chain'
 import { AddFundsContext } from '@/lib/addFunds'
 import { PORTALS, canOpen, defaultPortal, isPortal, type Portal } from '@/lib/portals'
-import { useRoles } from '@/hooks/data'
+import { useCompanies, useRoles } from '@/hooks/data'
 import { Button, Notice } from '@/components/ui'
 import { AddFundsSheet } from '@/components/AddFundsSheet'
 import { AppShell, type NavItem } from '@/components/AppShell'
@@ -72,6 +72,12 @@ export default function App() {
   const [addingFunds, setAddingFunds] = useState(false)
   const addFunds = useMemo(() => ({ open: () => setAddingFunds(true) }), [])
   const { roles } = useRoles(route.vault ?? undefined, address)
+  const companies = useCompanies(address)
+
+  const currentCompany = useMemo(
+    () => companies.data?.find((c) => c.vault.toLowerCase() === route.vault?.toLowerCase()),
+    [companies.data, route.vault],
+  )
 
   useEffect(() => {
     const onPop = () => setRoute(readRoute())
@@ -84,24 +90,39 @@ export default function App() {
     setRoute(next)
   }, [])
 
-  const nav: NavItem[] = [
-    {
-      key: 'companies',
-      label: 'All companies',
-      icon: Building2,
-      active: !route.vault,
-      onSelect: () => go({ view: 'app', vault: null, portal: null }),
-    },
-    ...(route.vault
-      ? PORTALS.filter((item) => canOpen(item, roles)).map((item) => ({
+  const nav: NavItem[] = route.vault
+    ? [
+        ...PORTALS.filter((item) => canOpen(item, roles)).map((item) => ({
           key: item.key,
           label: item.label,
           icon: item.icon,
           active: (route.portal ?? defaultPortal(roles)) === item.key,
           onSelect: () => go({ view: 'app', vault: route.vault, portal: item.key }),
-        }))
-      : []),
-  ]
+        })),
+        {
+          key: 'companies',
+          label: 'All Companies',
+          icon: Building2,
+          active: false,
+          onSelect: () => go({ view: 'app', vault: null, portal: null }),
+        },
+      ]
+    : [
+        {
+          key: 'companies',
+          label: 'All Companies',
+          icon: Building2,
+          active: true,
+          onSelect: () => go({ view: 'app', vault: null, portal: null }),
+        },
+        {
+          key: 'create_company',
+          label: 'Deploy Company',
+          icon: Plus,
+          active: false,
+          onSelect: () => setCreating(true),
+        },
+      ]
 
   const wrongChain = isConnected && chainId !== CHAIN_ID
 
@@ -117,7 +138,8 @@ export default function App() {
       ) : (
         <AppShell
           nav={nav}
-          heading={route.vault ? 'Company' : 'Zalary'}
+          heading={currentCompany ? currentCompany.name : 'Zalary'}
+          companyName={currentCompany?.name}
           showAddFunds={isConnected}
           onAddFunds={addFunds.open}
           onHome={() => go({ view: 'app', vault: null, portal: null })}
@@ -132,7 +154,12 @@ export default function App() {
             </div>
           )}
           {route.vault ? (
-            <CompanyView key={route.vault} vault={route.vault} portal={route.portal} />
+            <CompanyView
+              key={route.vault}
+              vault={route.vault}
+              portal={route.portal}
+              onBackToCompanies={() => go({ view: 'app', vault: null, portal: null })}
+            />
           ) : (
             <Home
               onOpen={(vault) => go({ view: 'app', vault, portal: null })}

@@ -2,6 +2,7 @@ import React, { useEffect, useState, type ReactNode } from 'react'
 import { useAccount, useDisconnect } from 'wagmi'
 import {
   ArrowLeft,
+  Building2,
   ChevronLeft,
   ChevronRight,
   Menu,
@@ -29,6 +30,7 @@ export interface NavItem {
 interface Props {
   nav: NavItem[]
   heading?: string
+  companyName?: string
   showAddFunds: boolean
   onAddFunds: () => void
   onHome: () => void
@@ -92,6 +94,7 @@ function DecryptNavLabel({ label, active }: { label: string; active: boolean }) 
 
 export function AppShell({
   nav,
+  companyName,
   showAddFunds,
   onAddFunds,
   onHome,
@@ -166,6 +169,32 @@ export function AppShell({
         </div>
 
         <div className="sidebar-divider-h" />
+
+        {companyName && (
+          <div className="px-3 pt-3">
+            <div className="rounded-xl border border-white/5 bg-white/[0.03] p-2.5 flex items-center justify-between">
+              <div className="min-w-0 flex items-center gap-2">
+                <Building2 className="size-4 text-[#FE9E15] shrink-0" />
+                {!sidebarCollapsed && (
+                  <div className="min-w-0">
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-white/40 block">Workspace</span>
+                    <strong className="text-xs font-semibold text-white truncate block">{companyName}</strong>
+                  </div>
+                )}
+              </div>
+              {!sidebarCollapsed && (
+                <button
+                  type="button"
+                  onClick={onHome}
+                  className="text-[11px] text-[#FE9E15] hover:underline shrink-0 ml-1 font-mono"
+                  title="Switch Company"
+                >
+                  Switch
+                </button>
+              )}
+            </div>
+          </div>
+        )}
 
         {onBackToLanding && (
           <div className="px-3 pt-3">
