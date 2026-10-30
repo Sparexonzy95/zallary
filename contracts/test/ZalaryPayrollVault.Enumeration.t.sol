@@ -182,15 +182,14 @@ contract ZalaryPayrollVaultEnumerationTest is ZalaryPayrollVaultTestBase {
 
     // ------------------------------------------------------ role: constructor
 
-    function test_Roles_ConstructorAdminIsDefaultAdminAndPauser() public view {
+    function test_Roles_ConstructorAdminIsDefaultAdminOnlyNoPauser() public view {
         assertEq(vault.roleMemberCount(ADMIN_ROLE), 1);
-        assertEq(vault.roleMemberCount(PAUSER), 1);
+        assertEq(vault.roleMemberCount(PAUSER), 0);
         address[] memory a = _members(ADMIN_ROLE);
         address[] memory p = _members(PAUSER);
         assertEq(a.length, 1);
-        assertEq(p.length, 1);
+        assertEq(p.length, 0);
         assertEq(a[0], admin);
-        assertEq(p[0], admin);
     }
 
     function test_Roles_FreshVaultHasNoOperationalMembers() public {
@@ -199,7 +198,8 @@ contract ZalaryPayrollVaultEnumerationTest is ZalaryPayrollVaultTestBase {
         assertEq(v.roleMemberCount(FIN), 0);
         assertEq(v.roleMemberCount(RELAYER), 0);
         assertEq(v.roleMemberCount(ADMIN_ROLE), 1);
-        assertEq(v.roleMemberCount(PAUSER), 1);
+        assertEq(v.roleMemberCount(PAUSER), 0);
+        assertEq(v.getRoleMembers(PAUSER, 0, 10).length, 0);
         assertEq(v.getRoleMembers(HR, 0, 10).length, 0);
     }
 
@@ -242,9 +242,9 @@ contract ZalaryPayrollVaultEnumerationTest is ZalaryPayrollVaultTestBase {
         address x = makeAddr("x");
         vm.prank(admin);
         vault.grantRole(PAUSER, x);
-        assertEq(vault.roleMemberCount(PAUSER), 2);
+        assertEq(vault.roleMemberCount(PAUSER), 1);
         assertTrue(_contains(_members(PAUSER), x));
-        assertTrue(_contains(_members(PAUSER), admin));
+        assertFalse(_contains(_members(PAUSER), admin));
     }
 
     function test_GrantRole_DuplicateDoesNotDuplicate() public {
@@ -303,8 +303,12 @@ contract ZalaryPayrollVaultEnumerationTest is ZalaryPayrollVaultTestBase {
     }
 
     function test_RenounceRole_PauserRemovesPauserOnly() public {
+        address x = makeAddr("x");
         vm.prank(admin);
-        vault.renounceRole(PAUSER, admin);
+        vault.grantRole(PAUSER, x);
+        assertEq(vault.roleMemberCount(PAUSER), 1);
+        vm.prank(x);
+        vault.renounceRole(PAUSER, x);
         assertEq(vault.roleMemberCount(PAUSER), 0);
         assertEq(vault.roleMemberCount(ADMIN_ROLE), 1);
         assertTrue(vault.hasRole(ADMIN_ROLE, admin));
@@ -422,7 +426,7 @@ contract ZalaryPayrollVaultEnumerationTest is ZalaryPayrollVaultTestBase {
 
     // --------------------------------------------- default admin 2-step transfer
 
-    function test_DefaultAdminTransfer_MovesAdminMembershipKeepsPauser() public {
+    function test_DefaultAdminTransfer_MovesAdminMembershipNoPauserEnumerated() public {
         address newAdmin = makeAddr("newAdmin");
         vm.prank(admin);
         vault.beginDefaultAdminTransfer(newAdmin);
@@ -443,12 +447,25 @@ contract ZalaryPayrollVaultEnumerationTest is ZalaryPayrollVaultTestBase {
         assertFalse(vault.hasRole(ADMIN_ROLE, admin));
         assertTrue(vault.hasRole(ADMIN_ROLE, newAdmin));
 
-        // Old admin keeps PAUSER_ROLE; new admin does not gain it.
-        assertEq(vault.roleMemberCount(PAUSER), 1);
-        address[] memory p = _members(PAUSER);
-        assertEq(p[0], admin);
-        assertTrue(vault.hasRole(PAUSER, admin));
+        // Nobody holds PAUSER_ROLE before or after; admin pause power is derived from DEFAULT_ADMIN_ROLE.
+        assertEq(vault.roleMemberCount(PAUSER), 0);
+        assertEq(_members(PAUSER).length, 0);
+        assertFalse(vault.hasRole(PAUSER, admin));
         assertFalse(vault.hasRole(PAUSER, newAdmin));
+    }
+
+    function test_DefaultAdminTransfer_ExplicitPauserKeptAndEnumerated() public {
+        address newAdmin = makeAddr("newAdmin");
+        address x = makeAddr("x");
+        vm.startPrank(admin);
+        vault.grantRole(PAUSER, x);
+        vault.beginDefaultAdminTransfer(newAdmin);
+        vm.stopPrank();
+        skip(uint256(ADMIN_DELAY) + 1);
+        vm.prank(newAdmin);
+        vault.acceptDefaultAdminTransfer();
+        assertEq(vault.roleMemberCount(PAUSER), 1);
+        assertEq(_members(PAUSER)[0], x);
     }
 
     function test_DefaultAdminTransfer_NotMovedBeforeDelayElapses() public {
@@ -485,7 +502,7 @@ contract ZalaryPayrollVaultEnumerationTest is ZalaryPayrollVaultTestBase {
         vault.renounceRole(ADMIN_ROLE, admin);
         assertEq(vault.roleMemberCount(ADMIN_ROLE), 0);
         assertEq(vault.getRoleMembers(ADMIN_ROLE, 0, 10).length, 0);
-        assertEq(vault.roleMemberCount(PAUSER), 1); // pauser untouched
+        assertEq(vault.roleMemberCount(PAUSER), 0); // no pauser ever granted
     }
 
     function test_DefaultAdminTransfer_NewAdminCanThenManageRolesAndEnumeration() public {

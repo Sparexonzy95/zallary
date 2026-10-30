@@ -118,13 +118,32 @@ contract ZalaryPayrollVaultRefundTest is ZalaryPayrollVaultTestBase {
         assertEq(usdc.balanceOf(fin), A_AMT);
     }
 
-    function test_Refund_RevertsWhenPaused() public {
+    function test_Refund_SucceedsWhenPaused() public {
         _fundedSimple(id1);
         _expire(id1);
         vm.prank(admin);
         vault.pause();
         vm.prank(fin);
-        vm.expectRevert(Pausable.EnforcedPause.selector);
+        vm.expectEmit(true, true, true, true, address(vault));
+        emit ZalaryPayrollVault.LeftoverRefunded(id1, fin, alice, A_AMT);
+        vault.refundLeftover(id1, alice);
+        assertEq(usdc.balanceOf(fin), A_AMT);
+        assertEq(vault.totalEscrowed(), B_AMT);
+        assertEq(vault.getClaimableBalance(alice), 0);
+        assertTrue(vault.paused());
+    }
+
+    function test_Refund_PausedStillRequiresFinanceAndExpiry() public {
+        _fundedSimple(id1);
+        vm.prank(admin);
+        vault.pause();
+        uint64 dl = _deadline(id1);
+        vm.prank(fin);
+        vm.expectRevert(abi.encodeWithSelector(ZalaryPayrollVault.PayrollNotExpired.selector, id1, dl));
+        vault.refundLeftover(id1, alice);
+        _expire(id1);
+        vm.prank(rando);
+        vm.expectRevert(ZalaryPayrollVault.NotFinance.selector);
         vault.refundLeftover(id1, alice);
     }
 

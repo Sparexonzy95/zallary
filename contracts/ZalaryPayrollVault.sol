@@ -11,8 +11,13 @@ import {EnumerableSet} from "@openzeppelin/contracts/utils/structs/EnumerableSet
 /// @title ZalaryPayrollVault
 /// @notice Institutional pull-payment payroll escrow using the ERC-20 interface to USDC.
 /// Separate approval is off by default: Finance may fund any draft, including its own.
-/// The admin can require a different Finance account to fund each draft via fundPayroll;
-/// dual-role fundPayrollDirect remains exempt.
+/// The admin can require a different Finance account to fund each draft via fundPayroll.
+/// With requireSeparateApprover enabled, fundPayrollDirect always reverts SelfApprovalNotAllowed
+/// for otherwise valid calls; when disabled, it works for an account holding both HR and Finance.
+/// Pause stops new drafts and funding only; employees can always claim and refunds still settle.
+/// Pause authority belongs to the current default admin or explicitly assigned PAUSER_ROLE holders.
+/// No PAUSER_ROLE is granted at construction, so outgoing admins lose admin-derived pause power
+/// on handover; a separately assigned PAUSER_ROLE remains until revoked or renounced.
 /// @dev Amounts are raw six-decimal USDC units. Requires the canonical, non-fee-on-transfer
 /// USDC implementation. No native-currency interface is used. Claims remain available
 /// after expiry until Finance refunds the allocation. At transaction boundaries,
@@ -24,6 +29,9 @@ import {EnumerableSet} from "@openzeppelin/contracts/utils/structs/EnumerableSet
 /// the vault address, claims and refunds revert and no on-chain function can override it.
 /// Operators should monitor and maintain a recovery procedure with the issuer;
 /// one vault per institution limits the blast radius.
+/// @custom:security Accepted limitation: refunds are paid to the original funding wallet.
+/// If the USDC issuer blocklists that wallet, its refunds revert until the issuer acts;
+/// other employees' claims are unaffected.
 contract ZalaryPayrollVault is AccessControlDefaultAdminRules, Pausable, ReentrancyGuard {
     using SafeERC20 for IERC20;
     using EnumerableSet for EnumerableSet.Bytes32Set;
@@ -35,7 +43,8 @@ contract ZalaryPayrollVault is AccessControlDefaultAdminRules, Pausable, Reentra
     bytes32 public constant FINANCE_ROLE = keccak256("FINANCE_ROLE");
     /// @notice Role permitted to trigger claims on behalf of employees.
     bytes32 public constant RELAYER_ROLE = keccak256("RELAYER_ROLE");
-    /// @notice Role permitted to pause and unpause operations.
+    /// @notice Assignable emergency-operator role; the current default admin can also pause and unpause.
+    /// @dev Pausing stops new drafts and funding only, never claims or refunds.
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     /// @notice Maximum protocol fee in basis points (5%).
     uint256 public constant MAX_FEE_BPS = 500;
@@ -107,7 +116,7 @@ contract ZalaryPayrollVault is AccessControlDefaultAdminRules, Pausable, Reentra
     bytes32[] private _payrollIds;
     /// @dev Current members of each role, including constructor grants and default-admin transfers.
     mapping(bytes32 => EnumerableSet.AddressSet) private _roleMembers;
-    /// @notice Whether standard draft funding requires a Finance account other than its creator; off by default.
+    /// @notice Whether funding requires a Finance account other than the draft creator; off by default.
     bool public requireSeparateApprover;
 
     /// @notice A required address was zero.
@@ -144,7 +153,7 @@ contract ZalaryPayrollVault is AccessControlDefaultAdminRules, Pausable, Reentra
     error DuplicateEmployee(address employee);
     /// @notice The allocation sum differs from the declared total.
     error TotalAmountMismatch(uint256 supplied, uint256 computed);
-    /// @notice A draft creator cannot approve funding on the standard funding path.
+    /// @notice A draft creator cannot approve funding when separate approval is required.
     error SelfApprovalNotAllowed();
     /// @notice Refunds require a timestamp strictly greater than the deadline.
     error PayrollNotExpired(bytes32 payrollId, uint64 deadline);
@@ -202,9 +211,19 @@ contract ZalaryPayrollVault is AccessControlDefaultAdminRules, Pausable, Reentra
         _;
     }
 
-    /// @notice Initializes the fixed token, delayed administrator, pauser, and fee configuration.
+    /// @dev Restricts entry to an explicitly assigned pauser or the current default admin.
+    modifier onlyPauserOrAdmin() {
+        if (!hasRole(PAUSER_ROLE, msg.sender) && !hasRole(DEFAULT_ADMIN_ROLE, msg.sender)) {
+            revert AccessControlUnauthorizedAccount(msg.sender, PAUSER_ROLE);
+        }
+        _;
+    }
+
+    /// @notice Initializes the fixed token, delayed administrator, and fee configuration.
+    /// @dev The current default admin can pause without PAUSER_ROLE and may assign it to emergency operators.
+    /// Admin-derived pause authority follows default-admin transfers automatically.
     /// @param usdc Canonical USDC ERC-20 address (six decimals).
-    /// @param admin Initial administrator; receives PAUSER_ROLE but not HR or Finance.
+    /// @param admin Initial administrator; receives no PAUSER_ROLE, HR, or Finance grant.
     /// @param adminDelay Delay in seconds for default-administrator handover.
     /// @param feeRecipient_ Initial recipient of protocol fees.
     /// @param feeBps_ Initial protocol fee in basis points, capped at 500.
@@ -216,10 +235,10 @@ contract ZalaryPayrollVault is AccessControlDefaultAdminRules, Pausable, Reentra
         USDC = IERC20(usdc);
         feeRecipient = feeRecipient_;
         feeBps = feeBps_;
-        _grantRole(PAUSER_ROLE, admin);
     }
 
     /// @notice Creates an immutable draft without moving tokens or crediting claimable balances.
+    /// @dev Blocked while paused; pause stops new drafts and funding only, not claims or refunds.
     /// @param payrollId Unique nonzero identifier, never reusable even after cancellation.
     /// @param deadline Future expiry timestamp for Finance refunds.
     /// @param employees Distinct nonzero salary recipients, capped at 200.
@@ -246,17 +265,20 @@ contract ZalaryPayrollVault is AccessControlDefaultAdminRules, Pausable, Reentra
     /// By default Finance may fund any draft, including one it prepared itself.
     /// The admin can enable requireSeparateApprover so a Finance account other than the
     /// draft creator must fund each draft through this function.
-    /// @dev Pulls USDC from msg.sender (the Finance wallet). Finance should approve the vault
+    /// @dev Blocked while paused; pause stops new drafts and funding only, not claims or refunds.
+    /// Pulls USDC from msg.sender (the Finance wallet). Finance should approve the vault
     /// only for the exact reviewed total+fee; the allowance is the natural bound if the fee
     /// changes before funding. Refunds go to the wallet that funded the payroll.
     /// @param payrollId Identifier of the draft to fund.
     function fundPayroll(bytes32 payrollId) external onlyFinance nonReentrant whenNotPaused {
-        _fundPayroll(payrollId, false);
+        _fundPayroll(payrollId);
     }
 
     /// @notice Creates and funds a payroll atomically, exclusively for deliberately dual-role accounts.
-    /// @dev Subject to the same `requireSeparateApprover` policy as `fundPayroll`: when the admin enables it, this
-    /// atomic path reverts because the caller would approve its own payroll.
+    /// @dev Blocked while paused; pause stops new drafts and funding only, not claims or refunds.
+    /// Subject to the same `requireSeparateApprover` policy as `fundPayroll`: when enabled, this
+    /// atomic path always reverts SelfApprovalNotAllowed for otherwise valid calls because the caller
+    /// would approve its own payroll; when disabled, an account holding both HR and Finance can use it.
     /// @param payrollId Unique nonzero payroll identifier.
     /// @param deadline Future refund-expiry timestamp.
     /// @param employees Distinct nonzero employee addresses.
@@ -268,14 +290,15 @@ contract ZalaryPayrollVault is AccessControlDefaultAdminRules, Pausable, Reentra
     ) external onlyFinance nonReentrant whenNotPaused {
         if (!hasRole(HR_ROLE, msg.sender)) revert NotHR();
         _createPayrollDraft(payrollId, deadline, employees, amounts, totalAmount);
-        _fundPayroll(payrollId, false);
+        _fundPayroll(payrollId);
     }
 
-    /// @notice Refunds one expired, unpaid allocation to its original funding wallet.
+    /// @notice Refunds one expired, unpaid allocation to its original funding wallet, even while paused.
+    /// @dev Pause stops new drafts and funding only; refunds still settle and employees can always claim.
     /// @param payrollId Funded payroll identifier.
     /// @param employee Employee whose unpaid allocation should be refunded.
     function refundLeftover(bytes32 payrollId, address employee)
-        external onlyFinance nonReentrant whenNotPaused
+        external onlyFinance nonReentrant
     {
         PayrollMeta storage payroll = _requirePayroll(payrollId);
         if (payroll.status != PayrollStatus.FUNDED) revert InvalidPayrollStatus(payrollId, payroll.status);
@@ -293,22 +316,25 @@ contract ZalaryPayrollVault is AccessControlDefaultAdminRules, Pausable, Reentra
     }
 
     /// @notice Claims up to 50 open payroll allocations to the caller's own wallet.
-    /// @dev Call repeatedly when more than 50 allocations remain; expiry does not block claims.
-    function claimSalary() external nonReentrant whenNotPaused {
+    /// @dev Call repeatedly when more than 50 allocations remain; expiry and pause do not block claims.
+    /// Pause stops new drafts and funding only; employees can always claim and refunds still settle.
+    function claimSalary() external nonReentrant {
         _claimAll(msg.sender, msg.sender);
     }
 
-    /// @notice Lets an employee or an authorized relayer trigger a payment only to that employee.
+    /// @notice Lets an employee or an authorized relayer trigger a payment only to that employee, even while paused.
+    /// @dev Pause stops new drafts and funding only; employees can always claim and refunds still settle.
     /// @param employee Nonzero employee whose open allocations should be claimed, up to 50.
-    function claimSalaryFor(address employee) external nonReentrant whenNotPaused {
+    function claimSalaryFor(address employee) external nonReentrant {
         if (employee == address(0)) revert ZeroAddress();
         if (msg.sender != employee && !hasRole(RELAYER_ROLE, msg.sender)) revert NotEmployeeOrRelayer();
         _claimAll(employee, msg.sender);
     }
 
-    /// @notice Claims the caller's allocation from a single payroll, including after expiry.
+    /// @notice Claims the caller's allocation from a single payroll, including after expiry and while paused.
+    /// @dev Pause stops new drafts and funding only; employees can always claim and refunds still settle.
     /// @param payrollId Funded payroll containing the caller's unpaid allocation.
-    function claimPayrollSalary(bytes32 payrollId) external nonReentrant whenNotPaused {
+    function claimPayrollSalary(bytes32 payrollId) external nonReentrant {
         PayrollMeta storage payroll = _requirePayroll(payrollId);
         if (payroll.status != PayrollStatus.FUNDED) revert InvalidPayrollStatus(payrollId, payroll.status);
         Allocation storage allocation = _requireUnsettledAllocation(payrollId, msg.sender);
@@ -330,20 +356,24 @@ contract ZalaryPayrollVault is AccessControlDefaultAdminRules, Pausable, Reentra
         emit ProtocolFeeUpdated(newFeeBps, newFeeRecipient);
     }
 
-    /// @notice Sets whether standard draft funding requires a separate Finance approver.
+    /// @notice Sets whether funding requires a separate Finance approver, disabling direct funding when enabled.
     /// @param required Whether the funding account must differ from the draft creator.
     function setRequireSeparateApprover(bool required) external onlyRole(DEFAULT_ADMIN_ROLE) {
         requireSeparateApprover = required;
         emit SeparateApproverUpdated(required);
     }
 
-    /// @notice Pauses drafting, funding, refunds, and claims.
-    function pause() public onlyRole(PAUSER_ROLE) {
+    /// @notice Stops new drafts and funding only; employees can always claim and refunds still settle.
+    /// @dev Callable by the current default admin or an explicitly assigned PAUSER_ROLE holder.
+    /// Outgoing admins lose admin-derived pause authority on default-admin transfer.
+    function pause() public onlyPauserOrAdmin {
         _pause();
     }
 
-    /// @notice Resumes drafting, funding, refunds, and claims.
-    function unpause() public onlyRole(PAUSER_ROLE) {
+    /// @notice Resumes new drafts and funding; claims and refunds remain available throughout a pause.
+    /// @dev Callable by the current default admin or an explicitly assigned PAUSER_ROLE holder.
+    /// Outgoing admins lose admin-derived pause authority on default-admin transfer.
+    function unpause() public onlyPauserOrAdmin {
         _unpause();
     }
 
@@ -561,11 +591,10 @@ contract ZalaryPayrollVault is AccessControlDefaultAdminRules, Pausable, Reentra
     /// @dev Shared funding implementation; callers supply role checks and the reentrancy guard.
     /// All effects precede token interactions; failed transfers roll the transaction back.
     /// @param payrollId Draft identifier.
-    /// @param allowSelfApproval True only on the external dual-role direct-funding path.
-    function _fundPayroll(bytes32 payrollId, bool allowSelfApproval) internal {
+    function _fundPayroll(bytes32 payrollId) internal {
         PayrollMeta storage payroll = _requirePayroll(payrollId);
         if (payroll.status != PayrollStatus.DRAFT) revert InvalidPayrollStatus(payrollId, payroll.status);
-        if (requireSeparateApprover && !allowSelfApproval && msg.sender == payroll.createdByHR) revert SelfApprovalNotAllowed();
+        if (requireSeparateApprover && msg.sender == payroll.createdByHR) revert SelfApprovalNotAllowed();
         if (payroll.deadline <= block.timestamp) revert InvalidDeadline();
         uint256 total = payroll.totalFunded;
         (uint256 fee, uint256 charge) = calculateFee(total);

@@ -100,13 +100,18 @@ contract ZalaryPayrollVaultClaimTest is ZalaryPayrollVaultTestBase {
         vm.stopPrank();
     }
 
-    function test_ClaimPayroll_RevertsWhenPaused() public {
+    function test_ClaimPayroll_SucceedsWhenPaused() public {
         _fundedSimple(id1);
         vm.prank(admin);
         vault.pause();
         vm.prank(alice);
-        vm.expectRevert(Pausable.EnforcedPause.selector);
+        vm.expectEmit(true, true, false, true, address(vault));
+        emit ZalaryPayrollVault.SalaryClaimed(alice, A_AMT, alice);
         vault.claimPayrollSalary(id1);
+        assertEq(usdc.balanceOf(alice), A_AMT);
+        assertEq(vault.getClaimableBalance(alice), 0);
+        assertEq(vault.totalEscrowed(), B_AMT);
+        assertTrue(vault.paused());
     }
 
     // ------------------------------------------------------------ claimSalary
@@ -164,13 +169,18 @@ contract ZalaryPayrollVaultClaimTest is ZalaryPayrollVaultTestBase {
         vault.claimSalary();
     }
 
-    function test_ClaimSalary_RevertsWhenPaused() public {
+    function test_ClaimSalary_SucceedsWhenPaused() public {
         _fundedSimple(id1);
         vm.prank(admin);
         vault.pause();
         vm.prank(alice);
-        vm.expectRevert(Pausable.EnforcedPause.selector);
+        vm.expectEmit(true, true, false, true, address(vault));
+        emit ZalaryPayrollVault.SalaryClaimed(alice, A_AMT, alice);
         vault.claimSalary();
+        assertEq(usdc.balanceOf(alice), A_AMT);
+        assertEq(vault.totalClaimed(alice), A_AMT);
+        assertEq(vault.openPayrollCount(alice), 0);
+        assertTrue(vault.paused());
     }
 
     function test_ClaimSalary_BatchCapRequiresSecondCall() public {
@@ -293,12 +303,30 @@ contract ZalaryPayrollVaultClaimTest is ZalaryPayrollVaultTestBase {
         assertEq(vault.openPayrollCount(alice), 5);
     }
 
-    function test_ClaimFor_RevertsWhenPaused() public {
+    function test_ClaimFor_SucceedsWhenPaused() public {
         _fundedSimple(id1);
         vm.prank(admin);
         vault.pause();
+        // relayer path
         vm.prank(relayer);
-        vm.expectRevert(Pausable.EnforcedPause.selector);
+        vm.expectEmit(true, true, false, true, address(vault));
+        emit ZalaryPayrollVault.SalaryClaimed(alice, A_AMT, relayer);
+        vault.claimSalaryFor(alice);
+        assertEq(usdc.balanceOf(alice), A_AMT);
+        // self path
+        vm.prank(bob);
+        vault.claimSalaryFor(bob);
+        assertEq(usdc.balanceOf(bob), B_AMT);
+        assertEq(vault.totalEscrowed(), 0);
+        assertTrue(vault.paused());
+    }
+
+    function test_ClaimFor_UnauthorizedStillRevertsWhenPaused() public {
+        _fundedSimple(id1);
+        vm.prank(admin);
+        vault.pause();
+        vm.prank(rando);
+        vm.expectRevert(ZalaryPayrollVault.NotEmployeeOrRelayer.selector);
         vault.claimSalaryFor(alice);
     }
 

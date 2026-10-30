@@ -21,9 +21,9 @@ contract ZalaryPayrollVaultDraftTest is ZalaryPayrollVaultTestBase {
         assertEq(vault.MAX_EMPLOYEES_PER_PAYROLL(), 200);
     }
 
-    function test_Constructor_AdminGetsPauserButNotHrOrFinance() public view {
+    function test_Constructor_AdminGetsNoPauserHrOrFinanceRole() public view {
         assertTrue(vault.hasRole(ADMIN_ROLE, admin));
-        assertTrue(vault.hasRole(PAUSER, admin));
+        assertFalse(vault.hasRole(PAUSER, admin));
         assertFalse(vault.hasRole(HR, admin));
         assertFalse(vault.hasRole(FIN, admin));
         assertFalse(vault.isRoleMember(HR, admin));

@@ -115,7 +115,7 @@ function SeparateApproverCard({ vault, isAdmin }: Props) {
   )
 }
 
-function PauseCard({ vault }: { vault: Address }) {
+function PauseCard({ vault, isAdmin }: { vault: Address; isAdmin: boolean }) {
   const { address } = useAccount()
   const tx = useTx()
   const paused = useReadContract({ address: vault, abi: vaultAbi, functionName: 'paused', chainId: CHAIN_ID, query: { refetchInterval: 10_000 } })
@@ -135,14 +135,14 @@ function PauseCard({ vault }: { vault: Address }) {
         <Badge tone={isPaused ? 'bad' : 'good'}>{isPaused ? 'Paused' : 'Running'}</Badge>
       </div>
       <p className="mt-1 text-sm text-pretty" style={{ color: 'var(--muted)' }}>
-        Pausing stops new payrolls, funding, claims and refunds for this company until it is resumed.
+        Pausing stops new payrolls and funding until it is resumed. Employees can still claim their pay, and expired pay can still be refunded.
       </p>
       {tx.error && (
         <div className="mt-3">
           <Notice tone="bad">{tx.error}</Notice>
         </div>
       )}
-      {pauser.data === true ? (
+      {pauser.data === true || isAdmin ? (
         <Button
           variant={isPaused ? 'primary' : 'danger'}
           full
@@ -158,7 +158,7 @@ function PauseCard({ vault }: { vault: Address }) {
         </Button>
       ) : (
         <p className="mt-3 text-xs" style={{ color: 'var(--subtle)' }}>
-          Only a wallet with the Pauser role can pause or resume. Assign it in Roles.
+          Only the company admin or a wallet with the Pauser role can pause or resume. Assign it in Roles.
         </p>
       )}
     </Card>
@@ -171,7 +171,7 @@ export function PoliciesPanel({ vault, isAdmin }: Props) {
     <div className="space-y-5">
       <SeparateApproverCard vault={vault} isAdmin={isAdmin} />
       <FeeCard vault={vault} isAdmin={isAdmin} />
-      <PauseCard vault={vault} />
+      <PauseCard vault={vault} isAdmin={isAdmin} />
     </div>
   )
 }

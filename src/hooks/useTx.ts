@@ -15,7 +15,7 @@ interface RunOptions {
 }
 
 /**
- * Sends one contract write: switches to Arc Testnet if needed, waits for the wallet,
+ * Sends one contract write: switches to the Arc network if needed, waits for the wallet,
  * waits for the receipt, then refreshes all cached reads. Only real states are reported.
  */
 export function useTx() {

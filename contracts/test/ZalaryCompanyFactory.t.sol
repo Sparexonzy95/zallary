@@ -55,7 +55,7 @@ contract ZalaryCompanyFactoryTest is Test {
 
         assertTrue(vault.hasRole(vault.DEFAULT_ADMIN_ROLE(), creatorA));
         assertEq(vault.defaultAdmin(), creatorA);
-        assertTrue(vault.hasRole(vault.PAUSER_ROLE(), creatorA));
+        assertFalse(vault.hasRole(vault.PAUSER_ROLE(), creatorA)); // admin pauses via DEFAULT_ADMIN_ROLE
         assertFalse(vault.hasRole(vault.HR_ROLE(), creatorA));
         assertFalse(vault.hasRole(vault.FINANCE_ROLE(), creatorA));
         assertFalse(vault.hasRole(vault.RELAYER_ROLE(), creatorA));

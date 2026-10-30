@@ -15,6 +15,11 @@ contract PayrollHandler is Test {
     address public fin;
     address public relayer;
     address public feeRec;
+    address public pauser;
+
+    // pause ghosts
+    uint256 public claimsWhilePaused;
+    uint256 public pauseToggles;
 
     address[] public employees;
     bytes32[] public payrollIds;
@@ -27,7 +32,11 @@ contract PayrollHandler is Test {
     uint256 public ghostRescued;
     uint256 public ghostDonated;
 
-    constructor(ZalaryPayrollVault v, MockERC20 t, address admin_, address hr_, address fin_, address relayer_, address feeRec_) {
+    constructor(
+        ZalaryPayrollVault v, MockERC20 t, address admin_, address hr_, address fin_, address relayer_,
+        address feeRec_, address pauser_
+    ) {
+        pauser = pauser_;
         vault = v;
         usdc = t;
         admin = admin_;
@@ -62,6 +71,14 @@ contract PayrollHandler is Test {
         }
         bytes32 id = keccak256(abi.encode("h", ++nonce));
         uint64 dl = uint64(block.timestamp + bound(dlSeed, 1 hours, 30 days));
+        if (vault.paused()) {
+            // creation must be blocked while paused
+            vm.prank(hr);
+            try vault.createPayrollDraft(id, dl, e, m, total) {
+                revert("draft created while paused");
+            } catch {}
+            return;
+        }
         vm.prank(hr);
         vault.createPayrollDraft(id, dl, e, m, total);
         (, uint256 charge) = vault.calculateFee(total);
@@ -75,10 +92,28 @@ contract PayrollHandler is Test {
     function claimSalary(uint256 empSeed) external {
         address emp = employees[bound(empSeed, 0, employees.length - 1)];
         uint256 before = usdc.balanceOf(emp);
+        if (vault.paused() && vault.openPayrollCount(emp) > 0) {
+            // employees are never frozen out while paused: this call must NOT revert
+            vm.prank(emp);
+            vault.claimSalary();
+            ghostClaimed += usdc.balanceOf(emp) - before;
+            ++claimsWhilePaused;
+            return;
+        }
         vm.prank(emp);
         try vault.claimSalary() {
             ghostClaimed += usdc.balanceOf(emp) - before;
         } catch {}
+    }
+
+    /// Toggles pause via the default admin or an explicit PAUSER_ROLE holder.
+    function togglePause(uint256 who) external {
+        address caller = who % 2 == 0 ? admin : pauser;
+        ++pauseToggles;
+        bool isPaused = vault.paused();
+        vm.prank(caller);
+        if (isPaused) vault.unpause();
+        else vault.pause();
     }
 
     function claimSalaryFor(uint256 empSeed) external {
@@ -139,6 +174,7 @@ contract PayrollHandler is Test {
 
     /// A single wallet holding HR + Finance creates and funds its own draft; succeeds iff the flag is off.
     function selfCreateAndFund(uint256 amtSeed) external {
+        if (vault.paused()) return;
         address self = address(0xD0A1);
         if (!vault.hasRole(vault.HR_ROLE(), self)) {
             vm.startPrank(admin);
@@ -179,7 +215,9 @@ contract ZalaryPayrollVaultInvariantTest is ZalaryPayrollVaultTestBase {
 
     function setUp() public override {
         super.setUp();
-        handler = new PayrollHandler(vault, usdc, admin, hr, fin, relayer, feeRec);
+        vm.prank(admin);
+        vault.grantRole(PAUSER, pauser);
+        handler = new PayrollHandler(vault, usdc, admin, hr, fin, relayer, feeRec, pauser);
         targetContract(address(handler));
     }
 

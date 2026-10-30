@@ -2,23 +2,18 @@ import { useState } from 'react'
 import { useAccount, useReadContract, useSwitchChain } from 'wagmi'
 import { createViemAdapterFromProvider } from '@circle-fin/adapter-viem-v2'
 import { AppKit, KitError, type BridgeResult } from '@circle-fin/app-kit'
-import { arbitrumSepolia, arcTestnet, baseSepolia, sepolia } from 'viem/chains'
 import { erc20Abi, type EIP1193Provider } from 'viem'
 import { ArrowRight, ExternalLink, ShieldCheck } from 'lucide-react'
 import { getUsdc } from '@/onchain-facts'
+import { ARC_KIT_NAME, BRIDGE_CHAINS, BRIDGE_SOURCES } from '@/lib/network'
 import { Amount, parseUsdc, usdcDecimalsFor } from '@/onchain-money'
 import { withAddChainFallback } from '@/lib/bridgeProvider'
 import { usdc } from '@/lib/format'
 import { Button, Label, Notice } from '@/components/ui'
 
 const kit = new AppKit()
-const supportedChains = [arcTestnet, sepolia, baseSepolia, arbitrumSepolia] as const
-
-const SOURCES = [
-  { id: sepolia.id, label: 'Ethereum Sepolia', kitName: 'Ethereum_Sepolia' },
-  { id: baseSepolia.id, label: 'Base Sepolia', kitName: 'Base_Sepolia' },
-  { id: arbitrumSepolia.id, label: 'Arbitrum Sepolia', kitName: 'Arbitrum_Sepolia' },
-] as const
+const SOURCES = BRIDGE_SOURCES
+const supportedChains = BRIDGE_CHAINS
 
 export function BridgePanel() {
   const { address, connector, chainId } = useAccount()
@@ -64,7 +59,7 @@ export function BridgePanel() {
       })
       const bridged = await kit.bridge({
         from: { adapter, chain: source.kitName },
-        to: { adapter, chain: 'Arc_Testnet' },
+        to: { adapter, chain: ARC_KIT_NAME },
         amount,
       })
       setResult(bridged)

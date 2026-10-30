@@ -20,7 +20,7 @@ contract ZalaryPayrollVaultAdminTest is ZalaryPayrollVaultTestBase {
 
     // ------------------------------------------------------------------ pause
 
-    function test_Pause_OnlyPauser() public {
+    function test_Pause_OnlyPauserOrAdmin() public {
         vm.prank(hr);
         vm.expectRevert(_unauth(hr, PAUSER));
         vault.pause();
@@ -44,9 +44,9 @@ contract ZalaryPayrollVaultAdminTest is ZalaryPayrollVaultTestBase {
         assertTrue(vault.paused());
     }
 
-    function test_Pause_BlocksCreateFundClaimRefund() public {
+    function test_Pause_BlocksOnlyCreateAndFunding() public {
         _fundedSingle(id1, alice, 10e6);
-        _expire(id1);
+        _draftSimple(_id(3)); // pre-existing draft for the fundPayroll path
         vm.prank(admin);
         vault.pause();
 
@@ -58,22 +58,14 @@ contract ZalaryPayrollVaultAdminTest is ZalaryPayrollVaultTestBase {
         vault.createPayrollDraft(_id(2), dl, e, m, 5e6);
         vm.prank(fin);
         vm.expectRevert(Pausable.EnforcedPause.selector);
-        vault.fundPayroll(_id(2));
+        vault.fundPayroll(_id(3));
         vm.prank(dual);
         vm.expectRevert(Pausable.EnforcedPause.selector);
         vault.fundPayrollDirect(_id(2), dl, e, m, 5e6);
+        // employee withdrawal path stays open
         vm.prank(alice);
-        vm.expectRevert(Pausable.EnforcedPause.selector);
         vault.claimSalary();
-        vm.prank(alice);
-        vm.expectRevert(Pausable.EnforcedPause.selector);
-        vault.claimPayrollSalary(id1);
-        vm.prank(relayer);
-        vm.expectRevert(Pausable.EnforcedPause.selector);
-        vault.claimSalaryFor(alice);
-        vm.prank(fin);
-        vm.expectRevert(Pausable.EnforcedPause.selector);
-        vault.refundLeftover(id1, alice);
+        assertEq(usdc.balanceOf(alice), 10e6);
     }
 
     function test_Pause_UnpauseRestoresOperations() public {
@@ -285,14 +277,14 @@ contract ZalaryPayrollVaultAdminTest is ZalaryPayrollVaultTestBase {
         assertTrue(vault.hasRole(HR, rando));
     }
 
-    function test_Admin_HandoverDoesNotMovePauserRole() public {
-        // informational property: PAUSER_ROLE is independent of DEFAULT_ADMIN_ROLE handover
+    function test_Admin_HandoverGrantsNoPauserRoleToAnyone() public {
+        // PAUSER_ROLE is never granted implicitly: not at construction, not on handover.
         vm.prank(admin);
         vault.beginDefaultAdminTransfer(newAdmin);
         vm.warp(block.timestamp + ADMIN_DELAY + 1);
         vm.prank(newAdmin);
         vault.acceptDefaultAdminTransfer();
-        assertTrue(vault.hasRole(PAUSER, admin), "old admin keeps PAUSER_ROLE");
-        assertFalse(vault.hasRole(PAUSER, newAdmin), "new admin does not get PAUSER_ROLE automatically");
+        assertFalse(vault.hasRole(PAUSER, admin), "old admin has no PAUSER_ROLE");
+        assertFalse(vault.hasRole(PAUSER, newAdmin), "new admin has no PAUSER_ROLE role (pauses via admin role)");
     }
 }

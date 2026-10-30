@@ -21,6 +21,7 @@ abstract contract ZalaryPayrollVaultTestBase is Test {
     address internal bob = makeAddr("bob");
     address internal carol = makeAddr("carol");
     address internal rando = makeAddr("rando");
+    address internal pauser = makeAddr("pauser"); // NOT granted PAUSER_ROLE by the base fixture
 
     bytes32 internal HR;
     bytes32 internal FIN;

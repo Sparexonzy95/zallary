@@ -1,4 +1,5 @@
 import React, { useEffect, useState, type ReactNode } from 'react'
+import { IS_MAINNET } from '@/lib/network'
 import { useAccount, useDisconnect } from 'wagmi'
 import {
   Building2,
@@ -287,14 +288,25 @@ export function AppShell({
       <div className="app-content">
         {/* Mobile topbar (shown on small screens <= 768px via .app-mobile-topbar) */}
         <div className="app-mobile-topbar">
-          <button
-            type="button"
-            onClick={onHome}
-            className="inline-flex items-center"
-            style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
-          >
-            <img src={LOGO} alt="Zalary" style={{ maxHeight: '24px', width: 'auto', objectFit: 'contain' }} />
-          </button>
+          <div className="flex min-w-0 items-center gap-2">
+            <button
+              type="button"
+              onClick={onHome}
+              className="inline-flex items-center"
+              style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
+            >
+              <img src={LOGO} alt="Zalary" style={{ maxHeight: '24px', width: 'auto', objectFit: 'contain' }} />
+            </button>
+            <span
+              className="rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider"
+              style={{
+                border: `1px solid ${IS_MAINNET ? 'rgba(254,158,21,0.5)' : 'rgba(255,255,255,0.14)'}`,
+                color: IS_MAINNET ? '#FE9E15' : '#a1a1a1',
+              }}
+            >
+              {IS_MAINNET ? 'Mainnet' : 'Testnet'}
+            </span>
+          </div>
           <div className="flex items-center gap-2">
             <ConnectKitButton.Custom>
               {({ isConnected: connected, show }) => (

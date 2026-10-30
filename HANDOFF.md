@@ -12,8 +12,10 @@ Prerequisites: [Bun](https://bun.sh). [Foundry](https://book.getfoundry.sh) is o
 
 ```bash
 bun install
-bun run dev               # app on :5173
+bun run dev               # app on :5173 (Arc Testnet)
 ```
+
+For Arc Mainnet, build with `VITE_NETWORK=mainnet`. Read `docs/MAINNET.md` before deploying anything.
 
 The app has no backend and needs no environment variables. The **Card / Bank** tab in Add USDC is a "coming soon" placeholder.
 

@@ -38,4 +38,9 @@ The **Add USDC** button lets a wallet bridge USDC from Ethereum, Base or Arbitru
 
 ### Environment variables
 
-None.
+All optional:
+
+- `VITE_NETWORK`: set to `mainnet` to build for Arc Mainnet. Anything else builds for Arc Testnet.
+- `VITE_FACTORY_ADDRESS`: overrides the company factory address for the selected network.
+
+Mainnet deployment steps are in `docs/MAINNET.md`.

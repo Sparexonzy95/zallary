@@ -25,3 +25,6 @@ console.jsonl
 # Foundry
 cache/
 out/
+
+# Foundry dry-run broadcast logs
+broadcast/*/*/dry-run/
