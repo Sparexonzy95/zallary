@@ -2,7 +2,7 @@ import { isAddress, type Address } from 'viem'
 import { IS_MAINNET } from '@/lib/network'
 
 /** ZalaryCompanyFactory on Arc Testnet. */
-const TESTNET_FACTORY: Address | undefined = '0x738bc761ae2af90e70c8f3f51d85de4361fb4edb'
+const TESTNET_FACTORY: Address | undefined = '0x061f5b2f0ae4cc0e1a6bb2ed17ebda265d694254'
 
 /** ZalaryCompanyFactory on Arc Mainnet. Set after the factory is deployed (or use VITE_FACTORY_ADDRESS). */
 const MAINNET_FACTORY: Address | undefined = undefined

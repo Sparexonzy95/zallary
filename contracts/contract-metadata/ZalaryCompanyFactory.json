@@ -1,13 +1,20 @@
 {
-  "contractAddress": "0x738bc761ae2af90e70c8f3f51d85de4361fb4edb",
+  "contractAddress": "0x061f5b2f0ae4cc0e1a6bb2ed17ebda265d694254",
   "network": "ARC-TESTNET",
   "deployerWalletId": "3c2464b2-8369-52e2-a782-800bbeca5396",
   "contract_code_path": "/home/user/app/contracts/ZalaryCompanyFactory.sol",
   "contract_compiled_code_path": "/home/user/app/contracts/out/ZalaryCompanyFactory.sol/ZalaryCompanyFactory.json",
   "contract_network_and_links": {
-    "Arc Testnet": "https://explorer.testnet.arc.io/address/0x738bc761ae2af90e70c8f3f51d85de4361fb4edb"
+    "Arc Testnet": "https://explorer.testnet.arc.io/address/0x061f5b2f0ae4cc0e1a6bb2ed17ebda265d694254"
   },
   "contract_deployments": [
+    {
+      "chain": "Arc Testnet",
+      "address": "0x061f5b2f0ae4cc0e1a6bb2ed17ebda265d694254",
+      "explorerUrl": "https://explorer.testnet.arc.io/address/0x061f5b2f0ae4cc0e1a6bb2ed17ebda265d694254",
+      "txHash": "0xaec3ff071dd65e171c8ae6ffde3c24d577927ed0f4669a2aff1b3b5106cbf810",
+      "deployedAt": "2026-10-30T12:16:02.992Z"
+    },
     {
       "chain": "Arc Testnet",
       "address": "0x738bc761ae2af90e70c8f3f51d85de4361fb4edb",

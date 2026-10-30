@@ -12,7 +12,7 @@ Institutional USDC payroll on Arc Testnet. A wallet creates a company through `Z
 
 Decisions: funding pulls from the Finance wallet; refunds return to that wallet; admin can rescue only USDC surplus above escrow. Refund UI and admin extras (pause, relayer flows) are not built yet.
 
-Contract sources: `contracts/ZalaryPayrollVault.sol`, `contracts/ZalaryCompanyFactory.sol`; design notes in `contracts/ZalaryPayrollVault-design.md`. ABIs for the app are in `src/abi/` (regenerate from `contracts/out/` after contract changes). Factory address lives in `src/lib/deployments.ts` (deployed on Arc Testnet at 0x738bc761ae2af90e70c8f3f51d85de4361fb4edb).
+Contract sources: `contracts/ZalaryPayrollVault.sol`, `contracts/ZalaryCompanyFactory.sol`; design notes in `contracts/ZalaryPayrollVault-design.md`. ABIs for the app are in `src/abi/` (regenerate from `contracts/out/` after contract changes). Factory address lives in `src/lib/deployments.ts` (hardened version, deployed on Arc Testnet at 0x061f5b2f0ae4cc0e1a6bb2ed17ebda265d694254).
 
 ## Tech Stack
 
