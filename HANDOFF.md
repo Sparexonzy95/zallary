@@ -12,11 +12,10 @@ Prerequisites: [Bun](https://bun.sh). [Foundry](https://book.getfoundry.sh) is o
 
 ```bash
 bun install
-cp .env.example .env      # then add your own CIRCLE_API_KEY (testnet)
-bun run dev:all           # app on :5173 and the on-ramp backend on :8787
+bun run dev               # app on :5173
 ```
 
-Without a `CIRCLE_API_KEY`, everything works except the **Buy with card or bank** tab. Use `bun run dev` for the app alone.
+The app has no backend and needs no environment variables. The **Card / Bank** tab in Add USDC is a "coming soon" placeholder.
 
 You need a wallet on Arc Testnet with test USDC (gas is paid in USDC on Arc). Faucet: https://faucet.circle.com
 
@@ -39,7 +38,6 @@ bun run contracts:test    # only if you touched contracts/
 - `src/lib/deployments.ts` holds the deployed factory address on Arc Testnet. If the contracts are redeployed, update it. Companies made with an older factory keep working but keep their old rules.
 - Money maths: use `@/onchain-money` and `@/onchain-facts` (USDC address, decimals, explorer links). Never hardcode a USDC address or `6` decimals.
 - Contract calls go through `src/hooks/useTx.ts` (switches chain, waits for the receipt, refreshes data, shows plain-language errors from `src/lib/errors.ts`). Keep new writes on it.
-- `server/index.ts` keeps the Circle API key private. Never import `CIRCLE_API_KEY` or anything from `server/` in browser code, and never give it a `VITE_` prefix.
 - `src/onchain-*.ts`, `src/tracing.ts`, `src/console-capture.ts`, `scripts/`: generated or platform files. Leave them.
 
 ## Contracts
@@ -61,4 +59,4 @@ Product decisions already made:
 
 ## What to tell Arc Studio after you push
 
-Say what you changed and which branch. It will pull the changes and test them, including the wallet flows, the on-ramp backend and the contract interactions.
+Say what you changed and which branch. It will pull the changes and test them, including the wallet flows and the contract interactions.

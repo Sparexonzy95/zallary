@@ -42,4 +42,4 @@ bun run dev
 
 - Work may continue outside Arc Studio (for example in Antigravity) and come back through GitHub. Read `HANDOFF.md` first; it lists what is safe to change.
 - After pulling changes: run `bun install`, `bun run check`, regenerate `src/abi/*.ts` if contracts changed, check `src/lib/deployments.ts`, then test the wallet flows and the on-ramp backend (`bun run server`).
-- Secrets live only in `.env` (git-ignored). `.env.example` lists the names.
+- The app needs no secrets or environment variables. Keep any future secrets in `.env` (git-ignored).

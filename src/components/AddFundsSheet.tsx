@@ -7,10 +7,10 @@ import { Sheet } from '@/components/ui'
 type Tab = 'buy' | 'bridge'
 
 export function AddFundsSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
-  const [tab, setTab] = useState<Tab>('buy')
+  const [tab, setTab] = useState<Tab>('bridge')
   const tabs = [
-    { key: 'buy' as const, label: 'Credit Card / Bank', icon: CreditCard },
     { key: 'bridge' as const, label: 'Cross-Chain Bridge', icon: ArrowLeftRight },
+    { key: 'buy' as const, label: 'Card / Bank (Soon)', icon: CreditCard },
   ]
 
   return (
