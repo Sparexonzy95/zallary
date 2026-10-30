@@ -1,4 +1,4 @@
-import { useState, type ButtonHTMLAttributes, type ReactNode } from 'react'
+import { useEffect, useState, type ButtonHTMLAttributes, type ReactNode } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { AlertCircle, AlertTriangle, Check, Copy, ExternalLink, Info, Loader2, X } from 'lucide-react'
 import { addressUrl } from '@/lib/chain'
@@ -195,6 +195,17 @@ export function AddressLink({ address, label }: { address: string; label?: strin
 /* ─── Sheet ─── */
 
 export function Sheet({ open, onClose, title, children }: { open: boolean; onClose: () => void; title: string; children: ReactNode }) {
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [open])
+
   return (
     <AnimatePresence>
       {open && (

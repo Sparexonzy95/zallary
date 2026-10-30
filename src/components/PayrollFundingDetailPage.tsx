@@ -9,7 +9,7 @@ import {
 } from 'lucide-react'
 import { vaultAbi } from '@/abi/vaultAbi'
 import { CHAIN_ID, USDC_ADDRESS } from '@/lib/chain'
-import { bpsToPercent, formatDate, shortId, usdc } from '@/lib/format'
+import { bpsToPercent, formatDate, shortAddress, shortId, usdc } from '@/lib/format'
 import { ROLE, STATUS_NAMES } from '@/lib/roles'
 import { useNowSeconds, usePayrollLabels, useRoles, useSeparateApprover, type Payroll } from '@/hooks/data'
 import { useTx } from '@/hooks/useTx'
@@ -152,12 +152,13 @@ export function PayrollFundingDetailPage({ vault, id, meta, onBack, onFunded }: 
 
           <div className="inner max-h-56 overflow-y-auto rounded-xl p-3 divide-y divide-white/5 text-sm bg-white/[0.02] border border-white/5">
             {employees?.map((employee, index) => (
-              <div key={employee} className="flex items-center justify-between py-2.5 px-2 first:pt-0 last:pb-0">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-mono text-white/40">#{index + 1}</span>
-                  <span className="mono text-xs text-white/80">{employee}</span>
+              <div key={employee} className="flex items-center justify-between gap-2 py-2.5 px-2 first:pt-0 last:pb-0">
+                <div className="flex items-center gap-2 min-w-0">
+                  <span className="text-xs font-mono text-white/40 shrink-0">#{index + 1}</span>
+                  <span className="mono text-xs text-white/80 hidden sm:inline truncate" title={employee}>{employee}</span>
+                  <span className="mono text-xs text-white/80 sm:hidden" title={employee}>{shortAddress(employee)}</span>
                 </div>
-                <span className="mono text-xs tabular-nums font-semibold text-white">
+                <span className="mono text-xs tabular-nums font-semibold text-white shrink-0">
                   {allocations.data?.[index] ? `${usdc(allocations.data[index].amount)} USDC` : '…'}
                 </span>
               </div>

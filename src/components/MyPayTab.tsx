@@ -140,7 +140,7 @@ export function MyPayTab({ vault }: { vault: Address }) {
                 <span>Claim operations</span>
                 <h2>Your Claims</h2>
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                 {claimable > 0n && (
                   <button
                     type="button"
@@ -202,8 +202,7 @@ export function MyPayTab({ vault }: { vault: Address }) {
                 {filteredRows.map((row) => (
                   <div
                     key={row.id}
-                    className="employer-task-payroll-row"
-                    style={{ gridTemplateColumns: 'minmax(0, 1fr) auto auto', alignItems: 'center' }}
+                    className="employer-task-payroll-row employee-claims-row"
                   >
                     <span className="employer-task-row-copy">
                       <strong>{labels[row.id] ?? `Payroll Batch ${shortId(row.id)}`}</strong>

@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
-import { motion, AnimatePresence, type Variants } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
+import { ArrowRight, ChevronDown, Menu, X } from 'lucide-react'
 import { ConnectKitButton } from 'connectkit'
 import { useAccount } from 'wagmi'
+import { WalletBoldIcon } from '@/components/icons'
 import { AnnouncementBar } from './AnnouncementBar'
 
 const RESOURCES = [
@@ -19,24 +21,6 @@ const NAV_LINKS = [
 ]
 
 const ANNOUNCEMENT_MESSAGE = 'UPDATE: USDC NATIVELY SUPPORTED ON CIRCLE ARC'
-
-const mobileMenuContainer: Variants = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: { staggerChildren: 0.08, duration: 0.2 },
-  },
-  exit: { opacity: 0 },
-}
-
-const mobileItem: Variants = {
-  hidden: { opacity: 0, y: 18 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { type: 'spring', stiffness: 260, damping: 22 },
-  },
-}
 
 interface NavbarProps {
   onLaunchApp: () => void
@@ -57,6 +41,17 @@ export function Navbar({ onLaunchApp, onHome }: NavbarProps) {
       document.body.style.overflow = ''
     }
   }, [mobileOpen])
+
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setMobileOpen(false)
+        setResourcesOpen(false)
+      }
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [])
 
   useEffect(() => {
     const onClick = (e: MouseEvent) => {
@@ -87,8 +82,8 @@ export function Navbar({ onLaunchApp, onHome }: NavbarProps) {
         )}
       </AnimatePresence>
 
-      <div className="relative border-b border-white/10 bg-black/50 backdrop-blur-xl">
-        <nav className="mx-auto flex h-20 max-w-[1440px] items-center justify-between px-6 md:px-12">
+      <div className="relative border-b border-white/10 bg-black/60 backdrop-blur-xl">
+        <nav className="mx-auto flex h-20 max-w-[1440px] items-center justify-between px-5 sm:px-6 md:px-12">
           {/* LOGO */}
           <button
             type="button"
@@ -109,25 +104,35 @@ export function Navbar({ onLaunchApp, onHome }: NavbarProps) {
               <button
                 type="button"
                 onClick={() => setResourcesOpen((value) => !value)}
-                className="transition hover:text-white"
+                className="flex items-center gap-1.5 transition hover:text-white"
+                aria-expanded={resourcesOpen}
               >
-                Resources ▾
+                <span>Resources</span>
+                <ChevronDown className={`size-3.5 transition-transform duration-200 ${resourcesOpen ? 'rotate-180' : ''}`} />
               </button>
 
-              {resourcesOpen && (
-                <div className="absolute top-full mt-3 w-52 rounded-xl border border-white/10 bg-black/90 p-2 shadow-2xl backdrop-blur-2xl">
-                  {RESOURCES.map((resource) => (
-                    <a
-                      key={resource.label}
-                      href={resource.href}
-                      className="block rounded-lg px-3 py-2 text-sm text-white/80 transition hover:bg-white/10 hover:text-white"
-                      onClick={() => setResourcesOpen(false)}
-                    >
-                      {resource.label}
-                    </a>
-                  ))}
-                </div>
-              )}
+              <AnimatePresence>
+                {resourcesOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 4 }}
+                    transition={{ duration: 0.18 }}
+                    className="absolute top-full mt-3 w-52 rounded-xl border border-white/10 bg-[#151515] p-1.5 shadow-2xl backdrop-blur-2xl"
+                  >
+                    {RESOURCES.map((resource) => (
+                      <a
+                        key={resource.label}
+                        href={resource.href}
+                        className="block rounded-lg px-3 py-2 text-sm text-white/80 transition hover:bg-white/10 hover:text-white"
+                        onClick={() => setResourcesOpen(false)}
+                      >
+                        {resource.label}
+                      </a>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
             {NAV_LINKS.map((link) => (
@@ -141,16 +146,18 @@ export function Navbar({ onLaunchApp, onHome }: NavbarProps) {
             ))}
           </div>
 
-          {/* DESKTOP CTA */}
-          <div className="hidden items-center gap-4 md:flex">
+          {/* ACTIONS & MOBILE TOGGLE */}
+          <div className="flex items-center gap-2 sm:gap-3">
             <ConnectKitButton.Custom>
               {({ isConnected: connected, show, truncatedAddress }) => (
                 <button
                   type="button"
                   onClick={show}
-                  className="rounded-full border border-white/10 bg-white/5 px-4 py-2 font-mono text-xs font-medium text-white transition hover:bg-white/10"
+                  className="inline-flex min-h-10 items-center gap-1.5 rounded-full border border-white/10 bg-[#161616] hover:bg-[#202020] px-3 sm:px-4 py-2 font-mono text-xs font-medium text-white transition-colors"
+                  title={connected ? "Connected wallet — click to view options" : "Connect wallet"}
                 >
-                  {connected ? truncatedAddress : 'Connect'}
+                  <WalletBoldIcon width={15} height={15} className="text-[#FE9E15]" />
+                  <span>{connected ? truncatedAddress : 'Connect'}</span>
                 </button>
               )}
             </ConnectKitButton.Custom>
@@ -158,85 +165,147 @@ export function Navbar({ onLaunchApp, onHome }: NavbarProps) {
             <button
               type="button"
               onClick={onLaunchApp}
-              className="decrypt-hover-btn rounded-full bg-[#FE9E15] px-6 py-2.5 text-sm font-semibold text-black transition hover:bg-[#FE9E15]/90 hover:scale-[1.02] active:scale-95"
+              className="hidden sm:inline-flex decrypt-hover-btn min-h-10 items-center rounded-full bg-[#FE9E15] px-5 py-2 text-xs font-semibold text-black transition hover:bg-[#FE9E15]/90 hover:scale-[1.02] active:scale-95"
             >
               {isConnected ? 'Open App' : 'Launch App'}
             </button>
-          </div>
 
-          {/* MOBILE TOGGLE */}
-          <button
-            type="button"
-            onClick={() => setMobileOpen((value) => !value)}
-            className="relative z-50 flex h-10 w-10 items-center justify-center lg:hidden"
-            aria-label="menu toggle"
-            aria-expanded={mobileOpen}
-          >
-            <div className="relative flex h-6 w-6 items-center justify-center">
-              <motion.span
-                className="absolute h-[2px] w-6 bg-white"
-                animate={{
-                  rotate: mobileOpen ? 45 : 0,
-                  y: mobileOpen ? 0 : -6,
-                }}
-                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-              />
-              <motion.span
-                className="absolute h-[2px] w-6 bg-white"
-                animate={{
-                  opacity: mobileOpen ? 0 : 1,
-                  scaleX: mobileOpen ? 0 : 1,
-                }}
-              />
-              <motion.span
-                className="absolute h-[2px] w-6 bg-white"
-                animate={{
-                  rotate: mobileOpen ? -45 : 0,
-                  y: mobileOpen ? 0 : 6,
-                }}
-                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-              />
-            </div>
-          </button>
+            {/* MOBILE MENU TOGGLE (min 44x44px target) */}
+            <button
+              type="button"
+              onClick={() => setMobileOpen(true)}
+              className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-[#151515] text-white transition hover:bg-white/10 active:scale-95 lg:hidden"
+              aria-label="Open navigation menu"
+              aria-expanded={mobileOpen}
+            >
+              <Menu className="size-5" />
+            </button>
+          </div>
         </nav>
       </div>
 
-      {/* MOBILE MENU */}
+      {/* FULL-HEIGHT MOBILE OVERLAY DRAWER (ckash Architecture) */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            variants={mobileMenuContainer}
-            initial="hidden"
-            animate="show"
-            exit="exit"
-            className="fixed inset-0 top-20 z-40 flex flex-col bg-black/95 px-6 py-8 backdrop-blur-2xl lg:hidden"
+            initial={{ opacity: 0, y: -16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -16 }}
+            transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+            role="dialog"
+            aria-label="Mobile navigation"
+            aria-modal="true"
+            className="fixed inset-0 z-[70] max-h-[100dvh] overflow-y-auto overscroll-contain bg-[#050505] text-white lg:hidden"
           >
-            <div className="flex flex-col gap-5 text-lg font-medium text-white">
-              {NAV_LINKS.map((link) => (
-                <motion.a
-                  key={link.label}
-                  variants={mobileItem}
-                  href={link.href}
-                  onClick={closeMobileMenu}
-                  className="py-2 text-white/80 transition hover:text-white"
+            <div className="relative z-10 flex min-h-full flex-col px-6 py-6">
+              {/* DRAWER HEADER */}
+              <div className="flex items-center justify-between">
+                <button
+                  type="button"
+                  onClick={() => {
+                    closeMobileMenu()
+                    if (onHome) onHome()
+                    else onLaunchApp()
+                  }}
+                  className="flex items-center gap-2"
                 >
-                  {link.label}
-                </motion.a>
-              ))}
+                  <img
+                    src="/assets/landing/logo_zalary2_mm8mlp.png"
+                    alt="Zalary"
+                    className="h-7 w-auto object-contain"
+                  />
+                </button>
 
-              <div className="my-2 border-t border-white/10" />
+                <button
+                  type="button"
+                  onClick={closeMobileMenu}
+                  aria-label="Close navigation menu"
+                  className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-[#151515] text-white hover:bg-white/10 active:scale-95"
+                >
+                  <X className="size-5" />
+                </button>
+              </div>
 
-              <motion.button
-                variants={mobileItem}
-                type="button"
-                onClick={() => {
-                  closeMobileMenu()
-                  onLaunchApp()
-                }}
-                className="w-full rounded-xl bg-[#FE9E15] py-3.5 text-center text-sm font-semibold text-black"
-              >
-                Launch App
-              </motion.button>
+              {/* NAV SECTIONS */}
+              <div className="mt-8 space-y-8 flex-1">
+                {/* PRODUCT LINKS */}
+                <div>
+                  <p className="mb-3 font-mono text-[11px] uppercase tracking-[0.15em] text-[#FE9E15]">
+                    Explore Product
+                  </p>
+                  <div className="space-y-1">
+                    {NAV_LINKS.map((link) => (
+                      <a
+                        key={link.label}
+                        href={link.href}
+                        onClick={closeMobileMenu}
+                        className="group flex min-h-12 items-center justify-between rounded-xl px-4 py-3 text-[16px] font-medium text-white/80 transition-colors hover:bg-white/[0.06] hover:text-white"
+                      >
+                        <span>{link.label}</span>
+                        <ArrowRight className="size-4 text-white/30 transition-transform group-hover:translate-x-1 group-hover:text-[#FE9E15]" />
+                      </a>
+                    ))}
+                  </div>
+                </div>
+
+                {/* RESOURCES */}
+                <div>
+                  <p className="mb-3 font-mono text-[11px] uppercase tracking-[0.15em] text-white/40">
+                    Resources & Network
+                  </p>
+                  <div className="space-y-1">
+                    {RESOURCES.map((resource) => (
+                      <a
+                        key={resource.label}
+                        href={resource.href}
+                        onClick={closeMobileMenu}
+                        className="group flex min-h-11 items-center justify-between rounded-xl px-4 py-2.5 text-[14px] text-white/60 transition-colors hover:bg-white/[0.04] hover:text-white"
+                      >
+                        <span>{resource.label}</span>
+                        <ArrowRight className="size-3.5 text-white/20 transition-transform group-hover:translate-x-1 group-hover:text-white" />
+                      </a>
+                    ))}
+                  </div>
+                </div>
+
+                {/* CALL TO ACTION BUTTONS */}
+                <div className="pt-4 space-y-3">
+                  <ConnectKitButton.Custom>
+                    {({ isConnected: connected, show, truncatedAddress }) => (
+                      <button
+                        type="button"
+                        onClick={show}
+                        className="flex min-h-12 w-full items-center justify-center gap-2 rounded-xl border border-white/15 bg-[#151515] font-mono text-sm font-semibold text-white transition hover:bg-[#202020]"
+                      >
+                        <WalletBoldIcon width={16} height={16} className="text-[#FE9E15]" />
+                        <span>{connected ? `Connected: ${truncatedAddress}` : 'Connect Wallet'}</span>
+                      </button>
+                    )}
+                  </ConnectKitButton.Custom>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      closeMobileMenu()
+                      onLaunchApp()
+                    }}
+                    className="flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-[#FE9E15] text-sm font-semibold text-black transition hover:bg-[#FE9E15]/90 active:scale-98"
+                  >
+                    <span>{isConnected ? 'Open App Workspace' : 'Launch Zalary App'}</span>
+                    <ArrowRight className="size-4" />
+                  </button>
+                </div>
+              </div>
+
+              {/* DRAWER FOOTER */}
+              <div className="mt-8 border-t border-white/10 pt-5 text-center">
+                <p className="text-xs text-white/45 leading-relaxed">
+                  Institutional payroll infrastructure on Circle Arc.
+                </p>
+                <p className="mt-1 font-mono text-[10px] uppercase tracking-wider text-white/30">
+                  Native USDC Escrow · Non-Custodial
+                </p>
+              </div>
             </div>
           </motion.div>
         )}

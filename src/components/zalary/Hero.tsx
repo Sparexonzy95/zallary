@@ -52,18 +52,18 @@ export function Hero({ onLaunchApp }: HeroProps) {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.68, delay: 0.14 }}
-            className="zl-hero-title break-normal font-sans text-[clamp(2.08rem,8.8vw,4.15rem)] font-extrabold leading-[0.96] tracking-normal text-[#F4F4F1] [word-break:normal] max-[380px]:text-[1.82rem] lg:text-[clamp(3.45rem,4.8vw,4.45rem)]"
+            className="zl-hero-title break-normal font-sans text-[clamp(1.8rem,7.8vw,4.15rem)] font-extrabold leading-[0.98] tracking-normal text-[#F4F4F1] [word-break:normal] max-[380px]:text-[1.55rem] lg:text-[clamp(3.45rem,4.8vw,4.45rem)]"
           >
-            <span className="block whitespace-nowrap text-[#FE9E15]">
+            <span className="block sm:whitespace-nowrap text-[#FE9E15]">
               <DecryptingHeadline text="Institutional payroll" />
             </span>
-            <span className="block whitespace-nowrap">
+            <span className="block sm:whitespace-nowrap">
               <DecryptingHeadline text="infrastructure" />
             </span>
-            <span className="block whitespace-nowrap">
+            <span className="block sm:whitespace-nowrap">
               <DecryptingHeadline text="for modern" />
             </span>
-            <span className="block whitespace-nowrap">
+            <span className="block sm:whitespace-nowrap">
               <DecryptingHeadline text="finance." />
             </span>
           </motion.h1>
