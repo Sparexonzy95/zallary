@@ -55,7 +55,15 @@ export function Home({ onOpen, onCreate }: Props) {
 
   const filterOptions = [
     { value: 'all' as const, label: `All (${allCompanies.length})` },
-    { value: 'mine' as const, label: `Your Companies (${mine.length})` },
+    {
+      value: 'mine' as const,
+      label: (
+        <>
+          <span className="hidden sm:inline">Your Companies</span>
+          <span className="sm:hidden">Mine</span> ({mine.length})
+        </>
+      ),
+    },
     { value: 'claimable' as const, label: 'Claimable' },
   ]
 

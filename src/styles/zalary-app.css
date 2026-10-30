@@ -64,6 +64,10 @@
 html, body, #root {
   margin: 0;
   min-height: 100%;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  position: relative;
   background: var(--z-bg);
   color: var(--z-text);
   font-family: var(--z-body);
@@ -22707,18 +22711,23 @@ textarea:focus {
     gap: 0 !important;
     display: block !important;
     min-height: 100vh !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
   }
 
   .app-content {
     width: 100% !important;
-    max-width: 100vw !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
     overflow-x: hidden !important;
   }
 
   .app-route-decrypt {
     width: 100% !important;
-    max-width: 100vw !important;
-    padding: 1rem 1rem 3rem !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    padding: 1rem 0.85rem 3rem !important;
     box-sizing: border-box !important;
     overflow-x: hidden !important;
   }
@@ -22733,27 +22742,120 @@ textarea:focus {
   }
 }
 
-/* 4. Responsive Metrics Grid (Never Hidden on Mobile) */
+/* 4. Complete Responsive Shield & Containers (All screens <= 768px) */
 @media (max-width: 768px) {
-  .employer-task-hero {
-    grid-template-columns: 1fr !important;
-    gap: 1rem !important;
-    margin-bottom: 1.25rem !important;
+  html, body, #root {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    position: relative !important;
+  }
+
+  .app-mobile-topbar {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .dashboard-shell,
+  .dashboard-shell-employer,
+  .employer-dashboard-redesign,
+  .employer-dashboard-redesign .employer-task-dashboard,
+  .employer-task-main,
+  .employer-task-card,
+  .employer-payroll-board,
+  .template-detail-command-panel,
+  .run-detail-command-panel,
+  .institution-profile-panel,
+  .template-detail-layout,
+  .run-detail-layout,
+  .institution-layout,
+  .finance-layout,
+  .employer-onboarding-page,
+  .create-payroll-card,
+  .create-payroll-card-body {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .employer-payroll-board,
+  .employer-task-card,
+  .create-payroll-card-body,
+  .institution-profile-panel,
+  .run-detail-command-panel {
+    padding: 1rem 0.85rem !important;
+  }
+
+  /* Defeat all unconstrained table min-widths on mobile */
+  .table-wrap,
+  .table-container,
+  .employer-payroll-table-wrap,
+  .template-detail-runs-table-wrap,
+  .employee-claims-table-wrap {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .table,
+  .template-detail-card .table,
+  .dashboard-shell .table,
+  .employer-payroll-card .table,
+  .template-detail-runs-table,
+  .employee-claims-table,
+  .employee-claims-dashboard-redesign .employee-claims-table {
+    min-width: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Hero Section: Single-column flex, full width */
+  .employer-task-hero,
+  .template-detail-hero,
+  .run-detail-hero,
+  .employer-dashboard-redesign .employer-task-hero {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    gap: 0.85rem !important;
+    margin-bottom: 1.15rem !important;
+    box-sizing: border-box !important;
+  }
+
+  .employer-task-hero-copy,
+  .template-detail-hero-copy,
+  .run-detail-hero-copy {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
   }
 
   .employer-task-hero-metrics,
   .run-detail-hero-metrics,
+  .template-detail-hero-metrics,
   .employer-dashboard-redesign .employer-task-hero-metrics {
     display: grid !important;
     grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)) !important;
     gap: 0.65rem !important;
     width: 100% !important;
-    justify-self: stretch !important;
-    margin-top: 0.5rem !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    margin-top: 0.25rem !important;
   }
 
   .employer-task-hero-metric,
   .run-detail-hero-metric {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
     padding: 0.85rem 1rem !important;
     background: #151515 !important;
     border: 1px solid rgba(255, 255, 255, 0.08) !important;
@@ -22761,6 +22863,7 @@ textarea:focus {
     display: flex !important;
     flex-direction: column !important;
     gap: 4px !important;
+    overflow: hidden !important;
   }
 
   .employer-task-hero-metric span,
@@ -22773,102 +22876,223 @@ textarea:focus {
 
   .employer-task-hero-metric strong,
   .run-detail-hero-metric strong {
-    font-size: 1.2rem !important;
+    font-size: 1.15rem !important;
     font-weight: 700 !important;
     color: #ffffff !important;
     letter-spacing: -0.02em !important;
-  }
-}
-
-/* 5. Swipeable Horizontal Filter Tabs (Never Hidden on Mobile) */
-@media (max-width: 768px) {
-  .employer-task-filters.filter-tabs,
-  .employer-payroll-filters,
-  .employer-dashboard-redesign .employer-task-filters.filter-tabs {
-    display: flex !important;
-    width: 100% !important;
-    overflow-x: auto !important;
-    -webkit-overflow-scrolling: touch !important;
     white-space: nowrap !important;
-    gap: 0.4rem !important;
-    scrollbar-width: none !important;
-    padding-bottom: 2px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
   }
 
-  .employer-task-filters.filter-tabs::-webkit-scrollbar,
-  .employer-payroll-filters::-webkit-scrollbar {
-    display: none !important;
+  .employer-task-actions {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    gap: 0.65rem !important;
   }
 
-  .filter-tab {
-    min-height: 40px !important;
-    padding: 6px 14px !important;
-    font-size: 13px !important;
+  .employer-task-actions > *,
+  .employer-task-actions button,
+  .employer-task-actions a {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+
+  /* Card Head: wraps gracefully without pushing badges off-screen */
+  .employer-task-card-head {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: flex-start !important;
+    flex-wrap: wrap !important;
+    gap: 0.5rem 0.75rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .employer-task-card-head > div {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .employer-task-count {
     flex-shrink: 0 !important;
-    border-radius: 6px !important;
+    align-self: flex-start !important;
   }
 
-  .employer-payroll-filter-trigger {
-    display: none !important;
-  }
-
+  /* Toolbar & Filter Tabs: Clean finger-swiping, zero overflow */
   .employer-task-toolbar,
   .employer-payroll-toolbar {
+    display: flex !important;
     flex-direction: column !important;
-    gap: 0.75rem !important;
     align-items: stretch !important;
+    gap: 0.75rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
   }
 
   .employer-task-search,
   .employer-payroll-search {
     width: 100% !important;
     max-width: 100% !important;
-  }
-}
-
-/* 6. Responsive Payroll Rows & Table Items */
-@media (max-width: 640px) {
-  .employer-task-payroll-row,
-  .employer-payroll-item {
-    display: grid !important;
-    grid-template-columns: 1fr auto !important;
-    gap: 10px 12px !important;
-    padding: 14px 16px !important;
-    border-radius: 8px !important;
-    background: #151515 !important;
-    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
   }
 
-  .employer-task-row-copy {
-    grid-column: 1 / -1 !important;
+  .employer-task-filter-area,
+  .employer-payroll-filter-area {
     display: flex !important;
-    flex-direction: column !important;
-    gap: 4px !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+    padding-bottom: 3px !important;
   }
 
-  .employer-task-row-copy strong {
-    font-size: 15px !important;
-    color: #ffffff !important;
-    font-weight: 600 !important;
+  .employer-task-filter-area::-webkit-scrollbar,
+  .employer-payroll-filter-area::-webkit-scrollbar {
+    display: none !important;
   }
 
-  .employer-task-row-copy span {
-    font-size: 13px !important;
+  .filter-tabs,
+  .employer-payroll-filters,
+  .employer-task-filters,
+  .employer-dashboard-redesign .employer-task-filters.filter-tabs {
+    display: inline-flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 6px !important;
+    width: max-content !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    background: transparent !important;
+    padding: 2px !important;
+    border: none !important;
+    overflow: visible !important;
+  }
+
+  .filter-tab,
+  .employer-payroll-filters .filter-tab,
+  .employer-task-filters .filter-tab,
+  .employer-dashboard-redesign .employer-task-filters .filter-tab {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+    width: auto !important;
+    min-height: 38px !important;
+    padding: 6px 12px !important;
+    border-radius: 8px !important;
+    font-size: 12px !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    background: rgba(255, 255, 255, 0.04) !important;
     color: rgba(255, 255, 255, 0.65) !important;
   }
 
+  .employer-payroll-filter-trigger {
+    display: none !important;
+  }
+
+  .mobile-menu-toggle {
+    min-width: 44px !important;
+    min-height: 44px !important;
+  }
+}
+
+/* 5. Responsive Rows for Mobile Screens (<= 640px) */
+@media (max-width: 640px) {
+  .employer-task-payroll-row,
+  .employer-payroll-item,
+  .employee-claims-row,
+  .institution-member-row {
+    display: grid !important;
+    grid-template-columns: 1fr auto !important;
+    gap: 10px 12px !important;
+    padding: 12px 14px !important;
+    border-radius: 8px !important;
+    background: #151515 !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .employer-task-row-copy,
+  .institution-member-copy {
+    grid-column: 1 / -1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 3px !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+
+  .employer-task-row-copy strong,
+  .institution-member-copy strong {
+    display: block !important;
+    font-size: 14px !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  .employer-task-row-copy span,
+  .institution-member-copy span {
+    display: block !important;
+    font-size: 12px !important;
+    color: rgba(255, 255, 255, 0.6) !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
   .employer-task-payroll-row .status,
-  .employer-task-payroll-row .status-badge {
+  .employer-task-payroll-row .status-badge,
+  .employee-claims-row .status,
+  .employee-claims-row .status-badge,
+  .institution-member-row .status,
+  .institution-member-row .status-badge {
     grid-column: 1 !important;
+    grid-row: 2 !important;
     justify-self: start !important;
     align-self: center !important;
   }
 
-  .employer-task-view-link {
+  .employer-task-payroll-row > div:last-child,
+  .employer-task-payroll-row .employer-task-view-link,
+  .employee-claims-row > div:last-child,
+  .institution-member-row > div:last-child {
     grid-column: 2 !important;
+    grid-row: 2 !important;
     justify-self: end !important;
     align-self: center !important;
-    font-size: 13px !important;
+  }
+
+  .employer-task-view-link {
+    font-size: 12px !important;
     font-weight: 600 !important;
     color: #FE9E15 !important;
   }
@@ -22876,15 +23100,9 @@ textarea:focus {
   .employer-task-payroll-row > svg {
     display: none !important;
   }
-
-  .employer-task-card-head {
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    gap: 0.5rem !important;
-  }
 }
 
-/* 7. Forms, Inputs & iOS Zoom Prevention */
+/* 6. Forms, Inputs & iOS Zoom Prevention */
 @media (max-width: 768px) {
   input,
   select,
@@ -22892,6 +23110,9 @@ textarea:focus {
     font-size: 16px !important; /* Prevents unwanted auto-zoom in iOS Safari */
     min-height: 44px !important;
     border-radius: 6px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   button,
@@ -22902,7 +23123,7 @@ textarea:focus {
   }
 }
 
-/* 8. Full Page Responsiveness on Mobile & Tablet */
+/* 7. Full Page Responsiveness on Mobile & Tablet */
 @media (max-width: 900px) {
   .template-detail-layout,
   .run-detail-layout,
@@ -22918,35 +23139,24 @@ textarea:focus {
     position: static !important;
     max-width: 100% !important;
   }
-
-  .employer-task-actions {
-    flex-wrap: wrap !important;
-    width: 100% !important;
-  }
-
-  .employer-task-actions button,
-  .employer-task-actions a {
-    flex: 1 1 auto !important;
-    text-align: center !important;
-    justify-content: center !important;
-  }
 }
 
-/* 9. Clamped Responsive Headings */
+/* 8. Clamped Responsive Headings */
 h1 {
-  font-size: clamp(1.75rem, 5vw, 2.5rem) !important;
+  font-size: clamp(1.6rem, 5vw, 2.5rem) !important;
   line-height: 1.15 !important;
+  word-break: break-word !important;
 }
 
 h2 {
-  font-size: clamp(1.35rem, 3.5vw, 1.85rem) !important;
+  font-size: clamp(1.25rem, 3.5vw, 1.85rem) !important;
+  word-break: break-word !important;
 }
 
 .employer-task-hero-subtitle {
-  font-size: clamp(0.85rem, 2vw, 0.95rem) !important;
+  font-size: clamp(0.82rem, 2vw, 0.95rem) !important;
 }
 
-/* 10. Robust Toolbar, Search & Filter Tabs (No Overlapping, Pure Responsive) */
 .page-container {
   width: 100%;
   max-width: 80rem;
@@ -22958,6 +23168,7 @@ h2 {
   padding-block: clamp(3.5rem, 8vw, 7rem);
 }
 
+/* Default Filter Tabs Base Styles */
 .employer-task-toolbar,
 .employer-payroll-toolbar {
   display: flex !important;
@@ -22989,11 +23200,6 @@ h2 {
   scrollbar-width: none !important;
 }
 
-.employer-task-filter-area::-webkit-scrollbar,
-.employer-payroll-filter-area::-webkit-scrollbar {
-  display: none !important;
-}
-
 .filter-tabs,
 .employer-payroll-filters,
 .employer-task-filters,
@@ -23005,7 +23211,7 @@ h2 {
   justify-content: flex-start !important;
   gap: 6px !important;
   width: max-content !important;
-  max-width: 100% !important;
+  max-width: none !important;
   background: transparent !important;
   padding: 2px !important;
   border: none !important;
@@ -23053,68 +23259,5 @@ h2 {
   color: #FE9E15 !important;
   border-color: rgba(254, 158, 21, 0.35) !important;
   font-weight: 600 !important;
-}
-
-@media (max-width: 768px) {
-  .employer-task-toolbar,
-  .employer-payroll-toolbar {
-    flex-direction: column !important;
-    align-items: stretch !important;
-    gap: 10px !important;
-  }
-
-  .employer-task-search,
-  .employer-payroll-search {
-    width: 100% !important;
-    flex: 1 1 100% !important;
-  }
-
-  .employer-task-filter-area,
-  .employer-payroll-filter-area {
-    width: 100% !important;
-    justify-content: flex-start !important;
-    padding-bottom: 4px !important;
-  }
-
-  .filter-tabs,
-  .employer-payroll-filters,
-  .employer-task-filters {
-    width: max-content !important;
-    min-width: 100% !important;
-  }
-
-  .mobile-menu-toggle {
-    min-width: 44px !important;
-    min-height: 44px !important;
-  }
-}
-
-/* 11. Responsive Claim & Payroll Rows */
-.employee-claims-row {
-  display: grid !important;
-  grid-template-columns: minmax(0, 1fr) auto auto !important;
-  align-items: center !important;
-  gap: 12px 16px !important;
-}
-
-@media (max-width: 640px) {
-  .employee-claims-row {
-    grid-template-columns: 1fr auto !important;
-    gap: 10px 12px !important;
-  }
-
-  .employee-claims-row .employer-task-row-copy {
-    grid-column: 1 / -1 !important;
-  }
-
-  .employee-claims-row .status-badge {
-    grid-column: 1 !important;
-    justify-self: start !important;
-  }
-
-  .employee-claims-row > div:last-child {
-    grid-column: 2 !important;
-    justify-self: end !important;
-  }
 }
 
