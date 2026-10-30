@@ -357,34 +357,6 @@ export function AppShell({
         <main className="app-route-decrypt flex-1 overflow-y-auto px-4 py-6 sm:px-8 sm:py-8">
           <div className="mx-auto max-w-6xl">{children}</div>
         </main>
-
-        {/* ─── ckash-Style Mobile Bottom Bar ─── */}
-        {nav.length > 0 && (
-          <nav className="app-mobile-bottom-bar md:hidden" aria-label="Mobile Navigation">
-            {nav.map((item) => {
-              const Icon = item.icon
-              const active = item.active
-
-              return (
-                <button
-                  key={item.key}
-                  type="button"
-                  className={`app-mobile-bottom-item${active ? ' active' : ''}`}
-                  onClick={() => {
-                    item.onSelect()
-                    setSidebarOpen(false)
-                  }}
-                  aria-current={active ? 'page' : undefined}
-                >
-                  <span className="bottom-item-icon">
-                    <Icon size={18} strokeWidth={active ? 2.2 : 1.8} />
-                  </span>
-                  <span className="bottom-item-label">{item.label}</span>
-                </button>
-              )
-            })}
-          </nav>
-        )}
       </div>
     </div>
   )
