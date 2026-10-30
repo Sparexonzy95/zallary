@@ -128,7 +128,7 @@ export function FundPanel({ vault, id, meta }: Props) {
       {/* ─── Status Notices ─── */}
       {!isFinanceOfficer && (
         <Notice tone="warn">
-          {isAdmin ? (
+          {isAdmin && !separate.enforced ? (
             <div className="space-y-2">
               <p>
                 Your connected wallet is the <strong>Institution Admin</strong>, but has not yet been assigned the on-chain <strong>Finance Officer</strong> role required to execute treasury funding.
@@ -154,7 +154,9 @@ export function FundPanel({ vault, id, meta }: Props) {
               </Button>
             </div>
           ) : (
-            'Your connected wallet does not hold the Finance Officer role required to fund payroll drafts.'
+            (isAdmin
+              ? 'This company requires a different person to fund each payroll. Assign the Finance role to another wallet in Governance.'
+              : 'Your connected wallet does not hold the Finance Officer role required to fund payroll drafts.')
           )}
         </Notice>
       )}
@@ -239,7 +241,7 @@ export function FundPanel({ vault, id, meta }: Props) {
         )}
 
         <p className="text-[11px] text-white/40 text-center leading-normal">
-          Vault approval is restricted to the exact audited sum ({usdc(charge)} USDC). Tokens transfer directly into the company's segregated escrow.
+          Vault approval is restricted to the exact reviewed sum ({usdc(charge)} USDC). Tokens transfer directly into the company's segregated escrow.
         </p>
       </div>
     </div>

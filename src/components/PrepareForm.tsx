@@ -402,7 +402,7 @@ export function PrepareForm({
             {validated.lines.length > 0 && (
               <div className="employer-task-hero-metrics grid sm:grid-cols-2 gap-3 p-4 rounded-2xl bg-white/[0.02] border border-white/5">
                 <div className="employer-task-hero-metric">
-                  <span className="text-xs uppercase tracking-wider text-white/40 font-mono">Audited Recipients</span>
+                  <span className="text-xs uppercase tracking-wider text-white/40 font-mono">Recipients</span>
                   <strong className="text-xl font-bold text-white font-mono">
                     {validated.lines.length} {validated.lines.length === 1 ? 'recipient' : 'recipients'}
                   </strong>

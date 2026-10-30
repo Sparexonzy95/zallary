@@ -12,7 +12,7 @@ import { containerFast, itemVariant, VP_TIGHT } from '@/lib/animations'
 
 const FEATURES = [
   { title: 'Maker-checker separation enforces dual-authorization for all payouts', icon: Lock },
-  { title: 'Role-based access control with audited OpenZeppelin contracts', icon: KeyRound },
+  { title: 'Role-based access control built on OpenZeppelin contracts', icon: KeyRound },
   { title: 'Direct USDC settlement without intermediary custody or delay', icon: Eye },
   { title: 'Full transparency: immutable onchain proof of every payroll execution', icon: FileCheck2 },
   { title: 'Circle Arc native execution with gas paid directly in USDC', icon: Shield },

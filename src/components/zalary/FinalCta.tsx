@@ -70,7 +70,7 @@ export function FinalCta({ onLaunchApp }: { onLaunchApp: () => void }) {
               >
                 Run your first onchain payroll.
                 <span className="block text-black/75">
-                  Audited. Onchain. Instant.
+                  Transparent. Onchain. Instant.
                 </span>
               </motion.h2>
 

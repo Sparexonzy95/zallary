@@ -94,7 +94,7 @@ export function HowItWorks() {
               variants={itemVariant}
               className="max-w-[620px] text-[15px] leading-relaxed tracking-normal text-white/50"
             >
-              A transparent, audited onchain payroll pipeline with USDC native escrow, maker-checker governance, and instant claims on Circle Arc.
+              A transparent onchain payroll pipeline with USDC native escrow, maker-checker governance, and instant claims on Circle Arc.
             </motion.p>
           </motion.div>
         </div>

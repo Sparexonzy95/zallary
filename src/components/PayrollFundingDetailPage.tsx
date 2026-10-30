@@ -146,7 +146,7 @@ export function PayrollFundingDetailPage({ vault, id, meta, onBack, onFunded }: 
         {/* ─── Roster Breakdown Table ─── */}
         <div className="space-y-2">
           <div className="flex items-center justify-between text-xs text-white/50 px-1 font-mono uppercase tracking-wider">
-            <span>Audited Recipients ({employees?.length ?? 0})</span>
+            <span>Recipients ({employees?.length ?? 0})</span>
             <span>Allocated Amount (USDC)</span>
           </div>
 
@@ -196,7 +196,7 @@ export function PayrollFundingDetailPage({ vault, id, meta, onBack, onFunded }: 
         {/* ─── Status Notices ─── */}
         {!isFinanceOfficer && (
           <Notice tone="warn">
-            {isAdmin ? (
+            {isAdmin && !separate.enforced ? (
               <div className="space-y-2">
                 <div className="flex items-center gap-2 font-semibold text-white">
                   <ShieldAlert className="size-4 text-[#FE9E15]" />
@@ -226,7 +226,9 @@ export function PayrollFundingDetailPage({ vault, id, meta, onBack, onFunded }: 
                 </Button>
               </div>
             ) : (
-              'Your connected wallet does not hold the Finance Officer role required to fund payroll drafts.'
+              (isAdmin
+              ? 'This company requires a different person to fund each payroll. Assign the Finance role to another wallet in Governance.'
+              : 'Your connected wallet does not hold the Finance Officer role required to fund payroll drafts.')
             )}
           </Notice>
         )}
@@ -316,7 +318,7 @@ export function PayrollFundingDetailPage({ vault, id, meta, onBack, onFunded }: 
             )}
 
             <p className="text-[11px] text-white/40 text-center leading-normal">
-              Vault approval is restricted to the exact audited sum ({usdc(charge)} USDC). Tokens transfer directly into the company's segregated escrow.
+              Vault approval is restricted to the exact reviewed sum ({usdc(charge)} USDC). Tokens transfer directly into the company's segregated escrow.
             </p>
           </div>
         ) : (

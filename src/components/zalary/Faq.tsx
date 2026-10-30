@@ -55,7 +55,7 @@ const FAQS: { category: Category; q: string; a: string }[] = [
   {
     category: 'Security',
     q: 'How secure is Zalary?',
-    a: 'Zalary uses audited OpenZeppelin smart contracts with role-based access control (Admin, HR, Finance, Employee) and configurable multi-person approval requirements.',
+    a: 'Zalary is built on OpenZeppelin smart contracts, which are widely audited, with role-based access control (Admin, HR, Finance, Employee) and an optional rule that a different person must approve each payroll. The Zalary contracts themselves have had an internal security review but not yet an independent third-party audit.',
   },
   {
     category: 'Security',

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { Suspense, lazy, useCallback, useEffect, useMemo, useState } from 'react'
 import { useAccount, useSwitchChain } from 'wagmi'
 import { isAddress, type Address } from 'viem'
 import { Building2, Plus } from 'lucide-react'
@@ -7,13 +7,23 @@ import { AddFundsContext } from '@/lib/addFunds'
 import { PORTALS, canOpen, defaultPortal, isPortal, type Portal } from '@/lib/portals'
 import { useCompanies, useRoles } from '@/hooks/data'
 import { Button, Notice } from '@/components/ui'
-import { AddFundsSheet } from '@/components/AddFundsSheet'
 import { AppShell, type NavItem } from '@/components/AppShell'
-import { CompanyView } from '@/components/CompanyView'
 import { Home } from '@/components/Home'
-import { RegisterInstitutionPage } from '@/components/RegisterInstitutionPage'
-import { NewLandingPage } from '@/components/zalary/NewLandingPage'
 import { DecryptHoverText } from '@/components/DecryptHoverText'
+
+// Heavy screens load on demand so the first paint stays fast.
+const AddFundsSheet = lazy(() => import('@/components/AddFundsSheet').then((m) => ({ default: m.AddFundsSheet })))
+const CompanyView = lazy(() => import('@/components/CompanyView').then((m) => ({ default: m.CompanyView })))
+const RegisterInstitutionPage = lazy(() =>
+  import('@/components/RegisterInstitutionPage').then((m) => ({ default: m.RegisterInstitutionPage })),
+)
+const NewLandingPage = lazy(() => import('@/components/zalary/NewLandingPage').then((m) => ({ default: m.NewLandingPage })))
+
+const ScreenFallback = () => (
+  <div className="flex min-h-[40vh] items-center justify-center text-sm" style={{ color: 'var(--muted)' }} role="status">
+    Loading…
+  </div>
+)
 
 interface Route {
   view: 'landing' | 'app' | 'register'
@@ -80,7 +90,16 @@ export default function App() {
   const { switchChain, isPending } = useSwitchChain()
   const [route, setRoute] = useState<Route>(readRoute)
   const [addingFunds, setAddingFunds] = useState(false)
-  const addFunds = useMemo(() => ({ open: () => setAddingFunds(true) }), [])
+  const [fundsOpened, setFundsOpened] = useState(false)
+  const addFunds = useMemo(
+    () => ({
+      open: () => {
+        setFundsOpened(true)
+        setAddingFunds(true)
+      },
+    }),
+    [],
+  )
   const { roles } = useRoles(route.vault ?? undefined, address)
   const companies = useCompanies(address)
 
@@ -140,6 +159,7 @@ export default function App() {
     <AddFundsContext.Provider value={addFunds}>
       <DecryptHoverText />
 
+      <Suspense fallback={<ScreenFallback />}>
       {route.view === 'landing' && !route.vault ? (
         <NewLandingPage
           onLaunchApp={() => go({ view: 'app', vault: null, portal: null })}
@@ -183,7 +203,8 @@ export default function App() {
         </AppShell>
       )}
 
-      <AddFundsSheet open={addingFunds} onClose={() => setAddingFunds(false)} />
+      {fundsOpened && <AddFundsSheet open={addingFunds} onClose={() => setAddingFunds(false)} />}
+      </Suspense>
     </AddFundsContext.Provider>
   )
 }

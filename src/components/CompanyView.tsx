@@ -120,7 +120,7 @@ export function CompanyView({ vault, portal }: Props) {
                 </h1>
                 <p className="employer-task-hero-subtitle">
                   {isCreatingHR
-                    ? 'Configure recipient addresses and USDC allocations. Drafts are immutable and audited by Finance.'
+                    ? 'Configure recipient addresses and USDC allocations. Drafts are immutable and reviewed by Finance.'
                     : 'Draft employee payroll rosters, upload recipient allocations, and submit batches to Finance.'}
                 </p>
               </div>
