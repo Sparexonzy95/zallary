@@ -55,15 +55,7 @@ export function Home({ onOpen, onCreate }: Props) {
 
   const filterOptions = [
     { value: 'all' as const, label: `All (${allCompanies.length})` },
-    {
-      value: 'mine' as const,
-      label: (
-        <>
-          <span className="hidden sm:inline">Your Companies</span>
-          <span className="sm:hidden">Mine</span> ({mine.length})
-        </>
-      ),
-    },
+    { value: 'mine' as const, label: `Your Companies (${mine.length})` },
     { value: 'claimable' as const, label: 'Claimable' },
   ]
 
@@ -145,17 +137,20 @@ export function Home({ onOpen, onCreate }: Props) {
               </label>
 
               <div className="employer-payroll-filter-area employer-task-filter-area w-full sm:w-auto">
-                <div className="filter-tabs employer-payroll-filters employer-task-filters home-filter-tabs grid grid-cols-3 sm:flex sm:items-center gap-1.5 w-full sm:w-max">
-                  {filterOptions.map((option) => (
-                    <button
-                      key={option.value}
-                      type="button"
-                      className={`filter-tab shrink-0 w-full sm:w-auto justify-center text-center whitespace-nowrap${filter === option.value ? ' active' : ''}`}
-                      onClick={() => setFilter(option.value)}
-                    >
-                      {option.label}
-                    </button>
-                  ))}
+                <div className="filter-tabs employer-payroll-filters employer-task-filters home-filter-tabs grid grid-cols-2 sm:flex sm:items-center gap-1.5 w-full sm:w-max">
+                  {filterOptions.map((option, index) => {
+                    const isOddLast = filterOptions.length % 2 === 1 && index === filterOptions.length - 1
+                    return (
+                      <button
+                        key={option.value}
+                        type="button"
+                        className={`filter-tab shrink-0 w-full sm:w-auto justify-center text-center whitespace-nowrap${isOddLast ? ' col-span-2 sm:col-span-1' : ''}${filter === option.value ? ' active' : ''}`}
+                        onClick={() => setFilter(option.value)}
+                      >
+                        {option.label}
+                      </button>
+                    )
+                  })}
                 </div>
               </div>
             </div>

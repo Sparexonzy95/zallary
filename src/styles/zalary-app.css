@@ -22843,12 +22843,21 @@ textarea:focus {
   .template-detail-hero-metrics,
   .employer-dashboard-redesign .employer-task-hero-metrics {
     display: grid !important;
-    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)) !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     gap: 0.65rem !important;
     width: 100% !important;
     max-width: 100% !important;
     box-sizing: border-box !important;
     margin-top: 0.25rem !important;
+  }
+
+  /* When 2x2 doesn't complete (e.g. 3 cards -> 2:1 ratio), make the remaining 1 card fill in across the 2 on top */
+  .employer-task-hero-metrics > .employer-task-hero-metric:last-child:nth-child(odd),
+  .run-detail-hero-metrics > .employer-task-hero-metric:last-child:nth-child(odd),
+  .template-detail-hero-metrics > .employer-task-hero-metric:last-child:nth-child(odd),
+  .employer-dashboard-redesign .employer-task-hero-metrics > .employer-task-hero-metric:last-child:nth-child(odd),
+  .employer-task-hero-metrics > *:last-child:nth-child(odd) {
+    grid-column: 1 / -1 !important;
   }
 
   .employer-task-hero-metric,
@@ -23419,7 +23428,7 @@ h2 {
     display: none !important;
   }
 
-  /* HR and Finance Payroll Status Filters: Strict 2x2 Vertical Grid (No scrollbars!) */
+  /* HR and Finance Payroll Status Filters: 2x2 Grid (If odd remaining 1, fill in across the 2 on top) */
   .payroll-status-filter-tabs,
   .employer-payroll-filter-area .filter-tabs:not(.home-filter-tabs) {
     display: grid !important;
@@ -23433,6 +23442,13 @@ h2 {
     margin: 0 !important;
     border: none !important;
     box-sizing: border-box !important;
+  }
+
+  /* When 2x2 doesn't complete (e.g. 5 filters or 3 filters), make the remaining 1 fill in across the 2 on top */
+  .payroll-status-filter-tabs > .filter-tab:last-child:nth-child(odd),
+  .employer-payroll-filter-area .filter-tabs:not(.home-filter-tabs) > .filter-tab:last-child:nth-child(odd),
+  .payroll-status-filter-tabs > *:last-child:nth-child(odd) {
+    grid-column: 1 / -1 !important;
   }
 
   .payroll-status-filter-tabs .filter-tab,
@@ -23454,10 +23470,10 @@ h2 {
     text-overflow: ellipsis !important;
   }
 
-  /* Home Workspace Filters: 3-column Grid (All, Mine, Claimable) */
+  /* Home Workspace Filters: 2-column Grid with 2:1 ratio (Row 1: All & Your Companies, Row 2: Claimable full width) */
   .home-filter-tabs {
     display: grid !important;
-    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     width: 100% !important;
     max-width: 100% !important;
     min-width: 0 !important;
@@ -23467,6 +23483,12 @@ h2 {
     margin: 0 !important;
     border: none !important;
     box-sizing: border-box !important;
+  }
+
+  /* When 2x2 doesn't complete (3 tabs -> 2:1), make the remaining 1 fill in across the 2 on top */
+  .home-filter-tabs > .filter-tab:last-child:nth-child(odd),
+  .home-filter-tabs > *:last-child:nth-child(odd) {
+    grid-column: 1 / -1 !important;
   }
 
   .home-filter-tabs .filter-tab {
@@ -23479,12 +23501,40 @@ h2 {
     max-width: 100% !important;
     min-height: 38px !important;
     height: 38px !important;
-    padding: 6px 4px !important;
+    padding: 6px 8px !important;
     box-sizing: border-box !important;
     font-size: 11.5px !important;
     white-space: nowrap !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
+  }
+
+  /* Metric cards across all dashboards: 2-column grid with 2:1 ratio (remaining 1 fills across 2 on top) */
+  .employer-task-hero-metrics,
+  .run-detail-hero-metrics,
+  .template-detail-hero-metrics,
+  .employee-claims-hero-metrics,
+  .claim-detail-hero-metrics,
+  .account-dashboard-hero-metrics,
+  .employer-dashboard-redesign .employer-task-hero-metrics {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    margin-top: 0.25rem !important;
+  }
+
+  .employer-task-hero-metrics > .employer-task-hero-metric:last-child:nth-child(odd),
+  .run-detail-hero-metrics > .employer-task-hero-metric:last-child:nth-child(odd),
+  .template-detail-hero-metrics > .employer-task-hero-metric:last-child:nth-child(odd),
+  .employee-claims-hero-metrics > .employer-task-hero-metric:last-child:nth-child(odd),
+  .claim-detail-hero-metrics > .employer-task-hero-metric:last-child:nth-child(odd),
+  .account-dashboard-hero-metrics > .employer-task-hero-metric:last-child:nth-child(odd),
+  .employer-dashboard-redesign .employer-task-hero-metrics > .employer-task-hero-metric:last-child:nth-child(odd),
+  .employer-task-hero-metrics > *:last-child:nth-child(odd) {
+    grid-column: 1 / -1 !important;
   }
 
   /* Flipit-Style Mobile Bottom Navigation Tabs */
