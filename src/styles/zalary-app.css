@@ -22932,18 +22932,56 @@ textarea:focus {
     display: flex !important;
     flex-direction: column !important;
     align-items: stretch !important;
-    gap: 0.75rem !important;
+    gap: 0.5rem !important;
     width: 100% !important;
     max-width: 100% !important;
     min-width: 0 !important;
+    margin-bottom: 0.75rem !important;
+    padding-top: 0 !important;
   }
 
   .employer-task-search,
   .employer-payroll-search {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
     width: 100% !important;
     max-width: 100% !important;
     min-width: 0 !important;
+    height: 38px !important;
+    min-height: 38px !important;
+    max-height: 38px !important;
+    padding: 0 10px 0 12px !important;
+    border-radius: 8px !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
     box-sizing: border-box !important;
+  }
+
+  .employer-task-search input,
+  .employer-payroll-search input {
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    font-size: 13px !important;
+    color: rgba(255, 255, 255, 0.95) !important;
+    line-height: normal !important;
+    width: 100% !important;
+    flex: 1 1 auto !important;
+    outline: none !important;
+  }
+
+  .employer-task-search svg,
+  .employer-payroll-search svg {
+    width: 14px !important;
+    height: 14px !important;
+    flex-shrink: 0 !important;
+    color: rgba(255, 255, 255, 0.45) !important;
   }
 
   .employer-task-filter-area,
@@ -23168,23 +23206,71 @@ h2 {
   padding-block: clamp(3.5rem, 8vw, 7rem);
 }
 
-/* Default Filter Tabs Base Styles */
+/* Default Filter Tabs & Search Bar Base Styles */
 .employer-task-toolbar,
 .employer-payroll-toolbar {
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
   flex-wrap: wrap !important;
-  gap: 0.85rem 1rem !important;
+  gap: 0.75rem 1rem !important;
   width: 100% !important;
-  margin-bottom: 1.25rem !important;
+  margin-top: 0 !important;
+  margin-bottom: 1rem !important;
+  padding-top: 0 !important;
 }
 
 .employer-task-search,
 .employer-payroll-search {
-  flex: 1 1 260px !important;
-  min-width: min(100%, 220px) !important;
-  max-width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  width: 280px !important;
+  max-width: 320px !important;
+  min-width: 200px !important;
+  flex: 0 1 280px !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  max-height: 38px !important;
+  padding: 0 10px 0 12px !important;
+  border-radius: 8px !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-sizing: border-box !important;
+  transition: border-color 0.15s ease, background-color 0.15s ease !important;
+  cursor: text !important;
+}
+
+.employer-task-search:focus-within,
+.employer-payroll-search:focus-within {
+  border-color: rgba(254, 158, 21, 0.4) !important;
+  background: rgba(255, 255, 255, 0.07) !important;
+}
+
+.employer-task-search input,
+.employer-payroll-search input {
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  font-size: 13px !important;
+  color: rgba(255, 255, 255, 0.95) !important;
+  line-height: normal !important;
+  width: 100% !important;
+  flex: 1 1 auto !important;
+  outline: none !important;
+}
+
+.employer-task-search svg,
+.employer-payroll-search svg {
+  width: 14px !important;
+  height: 14px !important;
+  flex-shrink: 0 !important;
+  color: rgba(255, 255, 255, 0.45) !important;
 }
 
 .employer-task-filter-area,

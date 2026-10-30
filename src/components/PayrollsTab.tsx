@@ -252,7 +252,7 @@ export function PayrollsTab({
         </label>
 
         {!hideFilters && (
-          <div className="employer-payroll-filter-area employer-task-filter-area w-full overflow-x-auto overflow-y-hidden">
+          <div className="employer-payroll-filter-area employer-task-filter-area w-full sm:w-auto overflow-x-auto overflow-y-hidden">
             <div className="filter-tabs employer-payroll-filters employer-task-filters flex items-center gap-1.5 flex-nowrap w-max">
               {filterTabs.map((option) => (
                 <button
