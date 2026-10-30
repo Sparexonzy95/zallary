@@ -30,17 +30,17 @@ const footerLinks = [
   {
     title: 'Company',
     items: [
-      { label: 'About Us', href: 'https://docs.zalary.xyz' },
-      { label: 'Docs', href: 'https://docs.zalary.xyz' },
-      { label: 'Arc Testnet', href: 'https://studio.arc.io' },
+      { label: 'About Us', href: '#' },
+      { label: 'Docs', href: '#' },
+      { label: 'Circle Arc', href: '#' },
     ],
   },
   {
     title: 'Support',
     items: [
-      { label: 'Help Center', href: 'https://docs.zalary.xyz' },
-      { label: 'Faucet (Circle)', href: 'https://faucet.circle.com' },
-      { label: 'Explorer', href: 'https://testnet.arcscan.io' },
+      { label: 'Help Center', href: '#' },
+      { label: 'Circle Faucet', href: '#' },
+      { label: 'Explorer', href: '#' },
     ],
   },
   {
@@ -57,12 +57,12 @@ const socials = [
   {
     icon: <Mail size={18} />,
     label: 'Email',
-    href: 'mailto:zalaryhq@gmail.com',
+    href: '#',
   },
   {
     icon: <XLogo size={18} />,
     label: 'X',
-    href: 'https://x.com/zalary.hq',
+    href: '#',
   },
 ]
 
@@ -136,7 +136,7 @@ export function Footer({ onLaunchApp }: { onLaunchApp: () => void }) {
             </div>
 
             <a
-              href="mailto:zalaryhq@gmail.com"
+              href="#"
               aria-label="Email Zalary team"
               className="decrypt-hover-btn group flex h-20 w-20 items-center justify-center rounded-full border border-white/15 bg-[#FE9E15] text-black transition-all duration-300 hover:scale-105"
             >
@@ -172,9 +172,7 @@ export function Footer({ onLaunchApp }: { onLaunchApp: () => void }) {
             </div>
 
             <a
-              href="https://x.com/zalary.hq"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="#"
               className="decrypt-hover-btn group flex h-20 w-20 items-center justify-center rounded-full border border-black/10 bg-neutral-200 text-black transition-all duration-300 hover:scale-105"
               aria-label="Visit Zalary on X"
             >
@@ -261,7 +259,7 @@ export function Footer({ onLaunchApp }: { onLaunchApp: () => void }) {
 
           <div className="text-left md:text-right">
             <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-white/35">
-              © 2026 Zalary. Built on Arc Testnet.
+              © 2026 Zalary. Built on Circle Arc.
             </p>
           </div>
         </div>

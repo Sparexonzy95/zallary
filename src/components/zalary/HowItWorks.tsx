@@ -6,7 +6,7 @@ import { containerVariant, itemVariant, VP } from '@/lib/animations'
 const STEPS = [
   {
     title: 'Register institution vault',
-    body: 'Organizations deploy a non-custodial company smart vault on Circle Arc Testnet with dedicated role authorities.',
+    body: 'Organizations deploy a non-custodial company smart vault on Circle Arc with dedicated role authorities.',
     surface: '#111113',
     media: '#171719',
     image: '/assets/landing/step1_-_deposit_hzn0oy.png',
@@ -94,7 +94,7 @@ export function HowItWorks() {
               variants={itemVariant}
               className="max-w-[620px] text-[15px] leading-relaxed tracking-normal text-white/50"
             >
-              A transparent, audited onchain payroll pipeline with USDC native escrow, maker-checker governance, and instant claims on Arc Testnet.
+              A transparent, audited onchain payroll pipeline with USDC native escrow, maker-checker governance, and instant claims on Circle Arc.
             </motion.p>
           </motion.div>
         </div>

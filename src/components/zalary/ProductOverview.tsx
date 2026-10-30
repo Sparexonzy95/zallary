@@ -23,7 +23,7 @@ const CARDS = [
     id: 2,
     title: 'Native USDC Settlement',
     subtitle:
-      'Direct Circle USDC settlement on Arc Testnet ensuring zero price slippage, rapid confirmation, and low gas overhead.',
+      'Direct Circle USDC settlement on Arc ensuring zero price slippage, rapid confirmation, and low gas overhead.',
     image:
       '/assets/landing/ChatGPT_Image_Apr_25_2026_03_08_13_PM_rnob9m.png',
   },

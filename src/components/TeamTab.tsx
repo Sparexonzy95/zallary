@@ -237,7 +237,7 @@ function RoleAssignmentWizard({
             <span>Step 2 of 3</span>
             <h2>Enter Officer Wallet Address</h2>
           </div>
-          <Field label={`${ROLE_LABEL[role]} Wallet Address`} help="Arc Testnet account or corporate multisig">
+          <Field label={`${ROLE_LABEL[role]} Wallet Address`} help="Circle Arc account or corporate multisig">
             <input
               className="field mono text-xs sm:text-sm"
               value={input}
@@ -253,7 +253,7 @@ function RoleAssignmentWizard({
             </p>
           )}
           <div className="role-access-note">
-            Delegated {ROLE_LABEL[role]} permissions will be cryptographically registered on Circle Arc Testnet.
+            Delegated {ROLE_LABEL[role]} permissions will be cryptographically registered on Circle Arc.
           </div>
           <div className="pt-2 flex justify-between items-center">
             <Button
@@ -293,7 +293,7 @@ function RoleAssignmentWizard({
             </div>
             <div className="review-row">
               <span>Network</span>
-              <strong className="text-[#38d996]">Circle Arc Testnet</strong>
+              <strong className="text-[#38d996]">Circle Arc</strong>
             </div>
             <div className="review-row">
               <span>Authorization</span>

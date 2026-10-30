@@ -75,7 +75,7 @@ export function Hero({ onLaunchApp }: HeroProps) {
             className="mt-6 max-w-[620px] font-mono text-[15px] leading-[1.6] tracking-normal text-white/50 sm:text-[17px]"
           >
             Institutional payroll vaults, segregated maker-checker governance,
-            and automated USDC escrow settlement on Circle Arc Testnet.
+            and automated USDC escrow settlement on Circle Arc.
           </motion.p>
 
           <motion.div
@@ -92,9 +92,7 @@ export function Hero({ onLaunchApp }: HeroProps) {
               Get started
             </button>
             <a
-              href="https://docs.zalary.xyz"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="#"
               className="inline-flex min-h-11 items-center justify-center px-3 text-sm font-medium text-white/60 transition hover:text-white"
             >
               Docs

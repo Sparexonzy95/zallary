@@ -15,12 +15,12 @@ const FAQS: { category: Category; q: string; a: string }[] = [
   {
     category: 'General',
     q: 'What is Zalary and who is it built for?',
-    a: 'Zalary is an institutional onchain payroll protocol designed for modern teams, DAOs, and globally distributed organizations on Arc Testnet. It allows operators to manage payroll with dual-approval maker-checker governance while keeping sensitive compensation flows protected.',
+    a: 'Zalary is an institutional onchain payroll protocol designed for modern teams, DAOs, and globally distributed organizations on Circle Arc. It allows operators to manage payroll with dual-approval maker-checker governance while keeping sensitive compensation flows protected.',
   },
   {
     category: 'General',
     q: 'What makes Zalary different from traditional payroll systems?',
-    a: 'Traditional payroll systems rely on centralized intermediaries, slow wire settlements, and custodial risk. Zalary coordinates payroll through smart contracts on Circle Arc Testnet with instant USDC finalization directly to employee wallets.',
+    a: 'Traditional payroll systems rely on centralized intermediaries, slow wire settlements, and custodial risk. Zalary coordinates payroll through smart contracts on Circle Arc with instant USDC finalization directly to employee wallets.',
   },
   {
     category: 'General',
@@ -35,7 +35,7 @@ const FAQS: { category: Category; q: string; a: string }[] = [
   {
     category: 'Payment',
     q: 'What assets can be used for payroll?',
-    a: 'Zalary runs natively on Circle Arc Testnet where gas is paid directly in USDC. All payroll amounts and claims settle in USDC.',
+    a: 'Zalary runs natively on Circle Arc where gas is paid directly in USDC. All payroll amounts and claims settle in USDC.',
   },
   {
     category: 'Payment',
@@ -60,7 +60,7 @@ const FAQS: { category: Category; q: string; a: string }[] = [
   {
     category: 'Security',
     q: 'Is the payroll process fully onchain?',
-    a: 'Yes, company registration, role assignments, draft approvals, funding, and employee claims are executed verifiably onchain on Arc Testnet.',
+    a: 'Yes, company registration, role assignments, draft approvals, funding, and employee claims are executed verifiably onchain on Circle Arc.',
   },
   {
     category: 'Security',
@@ -70,7 +70,7 @@ const FAQS: { category: Category; q: string; a: string }[] = [
   {
     category: 'Security',
     q: 'Can transactions be verified onchain?',
-    a: 'Yes, every vault creation, funding transaction, and salary claim has an immutable transaction hash viewable on the Arc Testnet block explorer.',
+    a: 'Yes, every vault creation, funding transaction, and salary claim has an immutable transaction hash viewable on the Circle Arc block explorer.',
   },
   {
     category: 'Governance',

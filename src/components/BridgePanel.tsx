@@ -84,7 +84,7 @@ export function BridgePanel() {
   return (
     <div className="space-y-4">
       <p className="text-xs text-[var(--muted)] leading-relaxed">
-        Bridge native testnet USDC from Ethereum, Base, or Arbitrum directly to Arc Testnet.
+        Bridge native USDC from Ethereum, Base, or Arbitrum directly to Circle Arc.
       </p>
 
       {/* Network Selectors */}
@@ -113,7 +113,7 @@ export function BridgePanel() {
         <div className="space-y-1">
           <Label>Destination Chain</Label>
           <div className="field flex items-center text-xs sm:text-sm font-medium text-[var(--ink)]">
-            Arc Testnet
+            Circle Arc
           </div>
         </div>
       </div>

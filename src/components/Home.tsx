@@ -92,7 +92,7 @@ export function Home({ onOpen, onCreate }: Props) {
               Institution <span>Vaults</span>
             </h1>
             <p className="employer-task-hero-subtitle">
-              Manage corporate payroll vaults, maker-checker delegations, and private USDC settlements on Circle Arc Testnet.
+              Manage corporate payroll vaults, maker-checker delegations, and USDC settlements on Circle Arc.
             </p>
           </div>
 
@@ -183,7 +183,7 @@ export function Home({ onOpen, onCreate }: Props) {
             ) : companies.isError ? (
               <div className="p-4">
                 <Notice tone="bad">
-                  Could not query factory contracts on Arc Testnet. Please verify RPC connection.
+                  Could not query factory contracts on Circle Arc. Please verify RPC connection.
                 </Notice>
               </div>
             ) : filteredCompanies.length === 0 ? (
@@ -193,7 +193,7 @@ export function Home({ onOpen, onCreate }: Props) {
                   body={
                     search
                       ? 'Try adjusting your search query or filter.'
-                      : 'Deploy your first institutional company vault on Arc Testnet to get started.'
+                      : 'Deploy your first institutional company vault on Circle Arc to get started.'
                   }
                   action={
                     isConnected && (
@@ -265,7 +265,7 @@ export function Home({ onOpen, onCreate }: Props) {
             </div>
             <div className="employer-status-row">
               <span>Network</span>
-              <strong className="text-[#38d996]">Arc Testnet</strong>
+              <strong className="text-[#38d996]">Circle Arc</strong>
             </div>
             <div className="employer-status-row">
               <span>Token</span>

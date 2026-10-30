@@ -15,7 +15,7 @@ const FEATURES = [
   { title: 'Role-based access control with audited OpenZeppelin contracts', icon: KeyRound },
   { title: 'Direct USDC settlement without intermediary custody or delay', icon: Eye },
   { title: 'Full transparency: immutable onchain proof of every payroll execution', icon: FileCheck2 },
-  { title: 'Circle Arc Testnet native execution with gas paid directly in USDC', icon: Shield },
+  { title: 'Circle Arc native execution with gas paid directly in USDC', icon: Shield },
 ]
 
 export function Security() {

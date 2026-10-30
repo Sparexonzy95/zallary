@@ -77,7 +77,7 @@ export function FundPanel({ vault, id, meta }: Props) {
           <FileCheck2 className="size-5 text-[#FE9E15]" />
           <div>
             <strong className="text-base text-white font-display block">Finance Audit & Escrow Execution</strong>
-            <span className="text-xs text-white/50 block">Direct Treasury Funding on Arc Testnet</span>
+            <span className="text-xs text-white/50 block">Direct Treasury Funding on Circle Arc</span>
           </div>
         </div>
         <span className="status status-funding_ready">Ready for Funding</span>

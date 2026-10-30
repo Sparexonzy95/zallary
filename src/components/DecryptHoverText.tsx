@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-const DECRYPT_CHARS = '01ZALARYARCTESTNET#$%'
+const DECRYPT_CHARS = '01ZALARYARC#$%'
 const DECRYPT_DURATION_MS = 520
 
 const BUTTON_SELECTOR = [

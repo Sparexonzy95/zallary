@@ -64,7 +64,7 @@ export function RegisterInstitutionPage({ onCreated, onBack }: Props) {
           ],
         }),
       {
-        success: 'Institution Company Vault deployed on Arc Testnet!',
+        success: 'Institution Company Vault deployed on Circle Arc!',
         onDone: (receipt) => {
           const [created] = parseEventLogs({
             abi: factoryAbi,
@@ -97,7 +97,7 @@ export function RegisterInstitutionPage({ onCreated, onBack }: Props) {
           <div className="employer-kicker">Institution</div>
           <h1>Register institution</h1>
           <p>
-            Deploy an institutional payroll escrow vault on Circle Arc Testnet.
+            Deploy an institutional payroll escrow vault on Circle Arc.
           </p>
         </div>
 
@@ -107,7 +107,7 @@ export function RegisterInstitutionPage({ onCreated, onBack }: Props) {
               <Wallet size={16} />
             </span>
             <strong>{address ? shortAddress(address) : 'Not connected'}</strong>
-            <span className="employer-onboarding-network">Arc Testnet</span>
+            <span className="employer-onboarding-network">Circle Arc</span>
           </div>
         </div>
       </div>
@@ -128,7 +128,7 @@ export function RegisterInstitutionPage({ onCreated, onBack }: Props) {
           {([
             { number: '01', title: 'Wallet', caption: 'Verified', idx: 0 as const },
             { number: '02', title: 'Profile', caption: 'Vault details', idx: 1 as const },
-            { number: '03', title: 'On-chain', caption: 'Arc Testnet', idx: 2 as const },
+            { number: '03', title: 'On-chain', caption: 'Circle Arc', idx: 2 as const },
           ]).map((s) => {
             const active = s.idx === step
             const complete =
@@ -296,7 +296,7 @@ export function RegisterInstitutionPage({ onCreated, onBack }: Props) {
                     </div>
                     <div className="review-row">
                       <span>Settlement network</span>
-                      <strong className="text-[#38d996]">Circle Arc Testnet (USDC)</strong>
+                      <strong className="text-[#38d996]">Circle Arc (USDC)</strong>
                     </div>
                   </div>
                 </div>

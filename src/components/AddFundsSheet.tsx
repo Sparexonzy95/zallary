@@ -14,7 +14,7 @@ export function AddFundsSheet({ open, onClose }: { open: boolean; onClose: () =>
   ]
 
   return (
-    <Sheet open={open} onClose={onClose} title="Add USDC to Arc Testnet">
+    <Sheet open={open} onClose={onClose} title="Add USDC to Circle Arc">
       <div role="tablist" className="filter-tabs employer-payroll-filters mb-5">
         {tabs.map((item) => {
           const active = tab === item.key

@@ -137,7 +137,7 @@ export function PayrollFundingDetailPage({ vault, id, meta, onBack, onFunded }: 
               <strong className="text-base text-white font-display block">
                 {isDraft ? 'Audit & Treasury Funding Execution' : 'Settled Escrow Details'}
               </strong>
-              <span className="text-xs text-white/50 block">Circle Arc Testnet · Non-Custodial Vault</span>
+              <span className="text-xs text-white/50 block">Circle Arc · Non-Custodial Vault</span>
             </div>
           </div>
           <StatusBadge value={isDraft ? 'funding_ready' : status.toLowerCase()} />
@@ -324,7 +324,7 @@ export function PayrollFundingDetailPage({ vault, id, meta, onBack, onFunded }: 
               <CheckCircle2 size={16} /> Escrow Active & Funded
             </span>
             <p className="text-xs text-white/50">
-              Allocations are locked on Circle Arc Testnet. Employees can connect their wallets and claim directly.
+              Allocations are locked on Circle Arc. Employees can connect their wallets and claim directly.
             </p>
           </div>
         )}

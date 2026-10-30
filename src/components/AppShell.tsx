@@ -17,7 +17,7 @@ import {
 } from '@/components/icons'
 
 const LOGO = '/assets/landing/logo_zalary2_mm8mlp.png'
-const DASHBOARD_DECRYPT_CHARS = '01ZALARYARCTESTNET#$%'
+const DASHBOARD_DECRYPT_CHARS = '01ZALARYARC#$%'
 const DASHBOARD_DECRYPT_DURATION_MS = 520
 
 export interface NavItem {
@@ -243,7 +243,7 @@ export function AppShell({
                   }`}
                 />
                 <span className="sidebar-profile-subtitle">
-                  {isConnected ? 'Arc Testnet' : 'Offline'}
+                  {isConnected ? 'Circle Arc' : 'Offline'}
                 </span>
               </div>
             </div>
@@ -278,7 +278,19 @@ export function AppShell({
             <img src={LOGO} alt="Zalary" style={{ maxHeight: '24px', width: 'auto', objectFit: 'contain' }} />
           </button>
           <div className="flex items-center gap-2">
-            <ConnectKitButton />
+            <ConnectKitButton.Custom>
+              {({ isConnected: connected, show, truncatedAddress }) => (
+                <button
+                  type="button"
+                  onClick={show}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-[#161616] hover:bg-[#202020] px-3 py-1.5 text-xs font-mono font-medium text-white transition-colors cursor-pointer"
+                  title={connected ? "Connected wallet — click to view options" : "Connect wallet"}
+                >
+                  <WalletBoldIcon width={15} height={15} className="text-[#FE9E15]" />
+                  <span>{connected ? truncatedAddress : 'Connect'}</span>
+                </button>
+              )}
+            </ConnectKitButton.Custom>
             <button
               type="button"
               onClick={() => setSidebarOpen((open) => !open)}
@@ -293,7 +305,7 @@ export function AppShell({
         {/* Desktop topbar header */}
         <header className="topbar hidden md:flex">
           <div className="flex items-center gap-3">
-            <div className="badge">Circle Arc Testnet</div>
+            {/* Network pill removed per user request */}
           </div>
 
           <div className="topbar-right">
@@ -309,7 +321,19 @@ export function AppShell({
               </Button>
             )}
 
-            <ConnectKitButton />
+            <ConnectKitButton.Custom>
+              {({ isConnected: connected, show, truncatedAddress }) => (
+                <button
+                  type="button"
+                  onClick={show}
+                  className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-[#161616] hover:bg-[#202020] hover:border-white/20 px-3.5 py-1.5 text-xs font-mono font-medium text-white transition-colors cursor-pointer"
+                  title={connected ? "Connected wallet — click to view options" : "Connect wallet"}
+                >
+                  <WalletBoldIcon width={16} height={16} className="text-[#FE9E15]" />
+                  <span>{connected ? truncatedAddress : 'Connect Wallet'}</span>
+                </button>
+              )}
+            </ConnectKitButton.Custom>
           </div>
         </header>
 

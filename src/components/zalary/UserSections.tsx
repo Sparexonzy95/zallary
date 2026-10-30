@@ -148,7 +148,7 @@ export function EmployerSection({ onLaunchApp }: { onLaunchApp: () => void }) {
       title="Build payroll once. Run it repeatedly with precision and control."
       subtitle="Maker-checker governance separating HR preparation from Finance funding."
       features={[
-        'Create reusable company vaults on Arc Testnet',
+        'Create reusable company vaults on Circle Arc',
         'Configure employees, roles and salary allocations',
         'Schedule recurring payroll drafts with strict maker-checker controls',
         'Direct USDC funding from company treasury',
@@ -176,7 +176,7 @@ export function EmployeeSection({ onLaunchApp }: { onLaunchApp: () => void }) {
         'One-click USDC claim directly to your wallet',
         'No intermediaries or custodial delays',
         'Real-time transaction confirmation and receipts',
-        'Instant liquidity on Circle Arc Testnet',
+        'Instant liquidity on Circle Arc',
         'Historical claim audit trail and transparent onchain receipts',
       ]}
       cta="Continue as Employee"

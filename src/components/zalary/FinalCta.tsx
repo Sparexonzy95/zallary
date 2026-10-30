@@ -79,7 +79,7 @@ export function FinalCta({ onLaunchApp }: { onLaunchApp: () => void }) {
                 className="mt-5 max-w-[52ch] text-sm leading-relaxed text-black/75 md:text-base"
               >
                 Manage salaries and pay your team in USDC with full maker-checker
-                governance, executed verifiably on Circle Arc Testnet.
+                governance, executed verifiably on Circle Arc.
               </motion.p>
             </div>
 

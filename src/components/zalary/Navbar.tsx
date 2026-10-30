@@ -5,9 +5,9 @@ import { useAccount } from 'wagmi'
 import { AnnouncementBar } from './AnnouncementBar'
 
 const RESOURCES = [
-  { label: 'Documentation', href: 'https://docs.zalary.xyz' },
-  { label: 'Circle Faucet', href: 'https://faucet.circle.com' },
-  { label: 'Arc Explorer', href: 'https://testnet.arcscan.io' },
+  { label: 'Documentation', href: '#' },
+  { label: 'Circle Faucet', href: '#' },
+  { label: 'Arc Explorer', href: '#' },
 ]
 
 const NAV_LINKS = [
@@ -18,7 +18,7 @@ const NAV_LINKS = [
   { label: 'FAQ', href: '#faq' },
 ]
 
-const ANNOUNCEMENT_MESSAGE = 'UPDATE: USDC NOW SUPPORTED ON ARC TESTNET'
+const ANNOUNCEMENT_MESSAGE = 'UPDATE: USDC NATIVELY SUPPORTED ON CIRCLE ARC'
 
 const mobileMenuContainer: Variants = {
   hidden: { opacity: 0 },
@@ -120,8 +120,6 @@ export function Navbar({ onLaunchApp, onHome }: NavbarProps) {
                     <a
                       key={resource.label}
                       href={resource.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
                       className="block rounded-lg px-3 py-2 text-sm text-white/80 transition hover:bg-white/10 hover:text-white"
                       onClick={() => setResourcesOpen(false)}
                     >

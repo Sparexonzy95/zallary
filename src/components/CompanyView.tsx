@@ -215,7 +215,7 @@ export function CompanyView({ vault, portal }: Props) {
                     </div>
                     <div className="employer-status-row">
                       <span>Network</span>
-                      <strong className="text-[#38d996]">Arc Testnet</strong>
+                      <strong className="text-[#38d996]">Circle Arc</strong>
                     </div>
                   </div>
                 </aside>

@@ -106,7 +106,7 @@ export function MyPayTab({ vault }: { vault: Address }) {
               Available <span>Earnings</span>
             </h1>
             <p className="employer-task-hero-subtitle">
-              Review and claim your earned salary payouts directly on Circle Arc Testnet.
+              Review and claim your earned salary payouts directly on Circle Arc.
             </p>
           </div>
 
@@ -124,33 +124,6 @@ export function MyPayTab({ vault }: { vault: Address }) {
               <strong>{usdc(lifetime)} USDC</strong>
             </div>
           </div>
-
-          <div className="employer-task-actions">
-            <button
-              type="button"
-              disabled={claimable === 0n || claimAll.busy}
-              onClick={() =>
-                void claimAll.run(
-                  (write) =>
-                    write({
-                      address: vault,
-                      abi: vaultAbi,
-                      functionName: 'claimSalary',
-                    }),
-                  { success: 'Salary transferred to your wallet!' },
-                )
-              }
-              className="btn btn-primary !min-h-11 !px-5 font-semibold text-sm !inline-flex items-center gap-2"
-              style={{ display: 'inline-flex' }}
-            >
-              <ArrowDownLeft size={16} strokeWidth={2} />
-              {claimAll.status === 'wallet'
-                ? 'Confirm in Wallet…'
-                : claimAll.status === 'confirming'
-                  ? 'Withdrawing…'
-                  : `Claim All Available (${usdc(claimable)} USDC)`}
-            </button>
-          </div>
         </section>
 
         {claimedError && (
@@ -164,31 +137,45 @@ export function MyPayTab({ vault }: { vault: Address }) {
           <section className="employer-task-card employer-payroll-board">
             <div className="employer-task-card-head">
               <div>
-                <span>Claim history</span>
+                <span>Claim operations</span>
                 <h2>Your Claims</h2>
               </div>
-              <span className="employer-task-count">
-                {filteredRows.length} item{filteredRows.length === 1 ? '' : 's'}
-              </span>
+              <div className="flex items-center gap-3">
+                {claimable > 0n && (
+                  <button
+                    type="button"
+                    disabled={claimAll.busy}
+                    onClick={() =>
+                      void claimAll.run(
+                        (write) =>
+                          write({
+                            address: vault,
+                            abi: vaultAbi,
+                            functionName: 'claimSalary',
+                          }),
+                        { success: 'All claimable salary transferred to your wallet!' },
+                      )
+                    }
+                    className="btn btn-primary !min-h-9 !py-1 text-xs !px-4 font-semibold !inline-flex items-center gap-2 whitespace-nowrap"
+                  >
+                    <ArrowDownLeft size={14} strokeWidth={2} />
+                    <span>
+                      {claimAll.status === 'wallet'
+                        ? 'Confirm in Wallet…'
+                        : claimAll.status === 'confirming'
+                          ? 'Withdrawing…'
+                          : `Claim All (${usdc(claimable)} USDC)`}
+                    </span>
+                  </button>
+                )}
+                <span className="employer-task-count">
+                  {filteredRows.length} item{filteredRows.length === 1 ? '' : 's'}
+                </span>
+              </div>
             </div>
 
-            <div
-              className="employer-payroll-toolbar employer-task-toolbar"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'flex-end',
-                width: '100%',
-              }}
-            >
-              <label
-                className="employer-payroll-search employer-task-search"
-                style={{
-                  marginInlineStart: 'auto',
-                  maxWidth: '360px',
-                  width: '100%',
-                }}
-              >
+            <div className="employer-payroll-toolbar employer-task-toolbar">
+              <label className="employer-payroll-search employer-task-search">
                 <Search size={15} strokeWidth={2} />
                 <input
                   type="search"
@@ -213,7 +200,11 @@ export function MyPayTab({ vault }: { vault: Address }) {
             ) : (
               <div className="employer-task-payroll-list">
                 {filteredRows.map((row) => (
-                  <div key={row.id} className="employer-task-payroll-row">
+                  <div
+                    key={row.id}
+                    className="employer-task-payroll-row"
+                    style={{ gridTemplateColumns: 'minmax(0, 1fr) auto auto', alignItems: 'center' }}
+                  >
                     <span className="employer-task-row-copy">
                       <strong>{labels[row.id] ?? `Payroll Batch ${shortId(row.id)}`}</strong>
                       <span>
@@ -226,7 +217,7 @@ export function MyPayTab({ vault }: { vault: Address }) {
                     <div className="flex items-center gap-2">
                       <button
                         type="button"
-                        className="btn btn-primary !min-h-8 !py-1 text-xs !px-3 font-semibold !inline-flex items-center gap-1.5"
+                        className="btn btn-primary !min-h-8 !py-1 text-xs !px-3.5 font-semibold !inline-flex items-center gap-1.5"
                         style={{ display: 'inline-flex' }}
                         disabled={claimOne.busy}
                         onClick={() =>
