@@ -8,7 +8,7 @@ import {
   type MotionValue,
 } from 'framer-motion'
 
-const CATEGORIES = ['General', 'Payment', 'Security', 'Confidential'] as const
+const CATEGORIES = ['General', 'Payment', 'Security', 'Governance'] as const
 type Category = (typeof CATEGORIES)[number]
 
 const FAQS: { category: Category; q: string; a: string }[] = [
@@ -73,19 +73,19 @@ const FAQS: { category: Category; q: string; a: string }[] = [
     a: 'Yes, every vault creation, funding transaction, and salary claim has an immutable transaction hash viewable on the Arc Testnet block explorer.',
   },
   {
-    category: 'Confidential',
-    q: 'How does Zalary protect employee privacy?',
-    a: 'Employee allocations are managed in structured drafts. Employees pull their own funds rather than having public mass push transactions linked together.',
+    category: 'Governance',
+    q: 'How does maker-checker segregation work in Zalary?',
+    a: 'Zalary enforces strict separation of duties: HR managers can only prepare immutable payroll drafts with recipient rosters, while distinct Finance officers audit and fund the escrow. This prevents rogue disbursements and institutional fraud.',
   },
   {
-    category: 'Confidential',
-    q: 'Who can see payroll information?',
-    a: 'Only authorized wallets assigned the corresponding company role (HR, Finance, Admin) or the recipient employee can view detailed salary records.',
+    category: 'Governance',
+    q: 'What happens to unclaimed employee salaries?',
+    a: 'Each payroll batch has a configurable expiration deadline. Once expired, any remaining uncollected USDC can be reclaimed directly back into the company treasury by the Finance officer.',
   },
   {
-    category: 'Confidential',
-    q: 'Why is privacy important in institutional payroll?',
-    a: 'Exposing compensation publicly creates salary disparity friction and competitive vulnerabilities. Zalary keeps operations clean, governed, and structured.',
+    category: 'Governance',
+    q: 'Can organizations assign multiple admins or officers?',
+    a: 'Yes. Company vaults leverage OpenZeppelin role-based access control (AccessControl). Institution admins can add, revoke, or reassign HR and Finance roles dynamically.',
   },
 ]
 

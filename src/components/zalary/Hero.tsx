@@ -55,7 +55,7 @@ export function Hero({ onLaunchApp }: HeroProps) {
             className="zl-hero-title break-normal font-sans text-[clamp(2.08rem,8.8vw,4.15rem)] font-extrabold leading-[0.96] tracking-normal text-[#F4F4F1] [word-break:normal] max-[380px]:text-[1.82rem] lg:text-[clamp(3.45rem,4.8vw,4.45rem)]"
           >
             <span className="block whitespace-nowrap text-[#FE9E15]">
-              <DecryptingHeadline text="Private payroll" />
+              <DecryptingHeadline text="Institutional payroll" />
             </span>
             <span className="block whitespace-nowrap">
               <DecryptingHeadline text="infrastructure" />
@@ -74,8 +74,8 @@ export function Hero({ onLaunchApp }: HeroProps) {
             transition={{ duration: 0.64, delay: 0.22 }}
             className="mt-6 max-w-[620px] font-mono text-[15px] leading-[1.6] tracking-normal text-white/50 sm:text-[17px]"
           >
-            Manage salaries, balances, and payouts with full confidentiality
-            and verifiable onchain execution on Arc Testnet.
+            Institutional payroll vaults, segregated maker-checker governance,
+            and automated USDC escrow settlement on Circle Arc Testnet.
           </motion.p>
 
           <motion.div
@@ -121,7 +121,7 @@ export function Hero({ onLaunchApp }: HeroProps) {
           />
           <motion.img
             src={HERO_IMAGE}
-            alt="Zalary private payroll infrastructure visual"
+            alt="Zalary institutional payroll infrastructure visual"
             onError={(e) => {
               ;(e.currentTarget).src = '/assets/zalaryland.png'
             }}

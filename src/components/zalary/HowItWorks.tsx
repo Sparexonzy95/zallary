@@ -5,43 +5,43 @@ import { containerVariant, itemVariant, VP } from '@/lib/animations'
 
 const STEPS = [
   {
-    title: 'Deposit stablecoins',
-    body: 'Employers fund payroll with stablecoin value before any private salary logic begins.',
+    title: 'Register institution vault',
+    body: 'Organizations deploy a non-custodial company smart vault on Circle Arc Testnet with dedicated role authorities.',
     surface: '#111113',
     media: '#171719',
     image: '/assets/landing/step1_-_deposit_hzn0oy.png',
   },
   {
-    title: 'Convert into confidential value',
-    body: 'Deposits move into the confidential layer so balances and payroll activity stay protected.',
+    title: 'Maker-checker governance',
+    body: 'HR prepares payroll drafts with recipient allocations; distinct Finance officers audit and approve escrow deposit.',
     surface: '#141416',
     media: '#1A1A1D',
     image: '/assets/landing/step_2_-_confidential_s6tlvk.png',
   },
   {
     title: 'Create payroll allocations',
-    body: 'Teams create the payroll run, add employee allocations, and prepare the payout structure.',
+    body: 'HR enters employee addresses, payment dates, and USDC compensation with CSV upload or roster presets.',
     surface: '#101214',
     media: '#171A1D',
     image: '/assets/landing/step_3_create_payrolls_liowmr.png',
   },
   {
-    title: 'Fund and activate payroll',
-    body: 'The run is funded and activated, making private claims available to eligible employees.',
+    title: 'Audit and fund escrow',
+    body: 'Finance verifies the draft, authorizes USDC allowance, and deposits funds into immutable onchain escrow.',
     surface: '#151312',
     media: '#1B1815',
     image: '/assets/landing/step_4_fund_and_activate_wlxoib.png',
   },
   {
-    title: 'Employees finalize claims',
-    body: 'Employees find claimable payroll, request the payout, and complete the confidential claim.',
+    title: 'Employees claim earnings',
+    body: 'Employees connect their wallet to the Claim portal to verify allocations and claim USDC directly.',
     surface: '#121416',
     media: '#181C1F',
     image: '/assets/landing/step_5_employee_request_xbwshc.png',
   },
   {
-    title: 'Withdraw and complete payout',
-    body: 'After claim completion, value moves through withdrawal and lands with the employee.',
+    title: 'Automated treasury reclaims',
+    body: 'Any unclaimed allocations past the expiration deadline can be reclaimed back to company treasury seamlessly.',
     surface: '#131315',
     media: '#1B1B1E',
     image: '/assets/landing/step_6_bbnkul.png',
@@ -84,9 +84,9 @@ export function HowItWorks() {
               variants={itemVariant}
               className="font-display text-[22px] font-bold leading-[1.1] tracking-normal text-white sm:text-[28px] md:text-[36px]"
             >
-              From deposit to payout,{' '}
+              From vault setup to employee claims,{' '}
               <span className="text-neutral-500">
-                every step stays private.
+                institutional control at every step.
               </span>
             </motion.h2>
 
@@ -94,8 +94,7 @@ export function HowItWorks() {
               variants={itemVariant}
               className="max-w-[620px] text-[15px] leading-relaxed tracking-normal text-white/50"
             >
-              A clear payroll path for stablecoin funding, confidential
-              execution, employee claims, and wallet-native withdrawals on Arc Testnet.
+              A transparent, audited onchain payroll pipeline with USDC native escrow, maker-checker governance, and instant claims on Arc Testnet.
             </motion.p>
           </motion.div>
         </div>
@@ -107,7 +106,7 @@ export function HowItWorks() {
           viewport={VP}
           ref={carouselRef}
           className="flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-          aria-label="Private payroll workflow carousel"
+          aria-label="Institutional payroll workflow carousel"
         >
           {STEPS.map((step, index) => (
             <motion.article

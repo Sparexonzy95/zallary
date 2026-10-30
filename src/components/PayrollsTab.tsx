@@ -1,8 +1,7 @@
 import { useMemo, useState } from 'react'
-import type { Address } from 'viem'
+import type { Address, Hex } from 'viem'
 import {
-  CheckCircle2,
-  ChevronUp,
+  ArrowRight,
   Search,
   XCircle,
 } from 'lucide-react'
@@ -12,7 +11,6 @@ import { STATUS_NAMES } from '@/lib/roles'
 import { useNowSeconds, usePayrollLabels, usePayrolls, type PayrollRow } from '@/hooks/data'
 import { useTx } from '@/hooks/useTx'
 import { EmptyState, Notice, Skeleton, StatusBadge } from '@/components/ui'
-import { FundPanel } from '@/components/FundPanel'
 import { RefundsPanel } from '@/components/RefundsPanel'
 
 interface Props {
@@ -23,6 +21,7 @@ interface Props {
   hideFilters?: boolean
   title?: string
   eyebrow?: string
+  onSelectPayroll?: (id: Hex) => void
 }
 
 function Row({
@@ -31,16 +30,15 @@ function Row({
   label,
   isHR,
   isFinance,
-  defaultOpen = false,
+  onSelect,
 }: {
   vault: Address
   row: PayrollRow
   label?: string
   isHR: boolean
   isFinance: boolean
-  defaultOpen?: boolean
+  onSelect?: () => void
 }) {
-  const [open, setOpen] = useState(defaultOpen)
   const cancel = useTx()
   const status = STATUS_NAMES[row.meta.status] ?? 'Draft'
   const isDraft = status === 'Draft'
@@ -55,11 +53,11 @@ function Row({
   return (
     <div className="space-y-2">
       <div
-        className={`employer-task-payroll-row${isDraft && isFinance ? ' cursor-pointer' : ''}`}
+        className={`employer-task-payroll-row${isFinance ? ' cursor-pointer' : ''}`}
         onClick={() => {
-          if (isDraft && isFinance) setOpen((v) => !v)
+          if (isFinance) onSelect?.()
         }}
-        title={isDraft && isFinance ? (open ? 'Click to collapse audit' : 'Click to review and fund') : undefined}
+        title={isFinance ? (isDraft ? 'Click to review and fund' : 'Click to view audit details') : undefined}
       >
         <span className="employer-task-row-copy">
           <strong>{label ?? `Payroll Batch ${shortId(row.id)}`}</strong>
@@ -79,11 +77,26 @@ function Row({
               style={{ display: 'inline-flex' }}
               onClick={(e) => {
                 e.stopPropagation()
-                setOpen((v) => !v)
+                onSelect?.()
               }}
             >
-              {open ? <ChevronUp size={14} /> : <CheckCircle2 size={14} />}
-              <span>{open ? 'Close' : 'Review & Fund'}</span>
+              <ArrowRight size={14} />
+              <span>Review & Fund</span>
+            </button>
+          )}
+
+          {!isDraft && isFinance && (
+            <button
+              type="button"
+              className="btn btn-secondary !min-h-8 !py-1 text-xs !px-3 font-semibold !inline-flex items-center gap-1.5"
+              style={{ display: 'inline-flex' }}
+              onClick={(e) => {
+                e.stopPropagation()
+                onSelect?.()
+              }}
+            >
+              <span>View Audit</span>
+              <ArrowRight size={14} />
             </button>
           )}
 
@@ -113,7 +126,7 @@ function Row({
             </button>
           )}
 
-          {!isDraft && (
+          {!isFinance && !isDraft && (
             <span className="employer-task-view-link">
               {status === 'Completed' ? 'Settled' : 'Funded'}
             </span>
@@ -124,13 +137,6 @@ function Row({
       {cancel.error && (
         <div className="mt-2">
           <Notice tone="bad">{cancel.error}</Notice>
-        </div>
-      )}
-
-      {/* Expandable Finance Review Screen */}
-      {open && isDraft && isFinance && (
-        <div className="mt-3">
-          <FundPanel vault={vault} id={row.id} meta={row.meta} />
         </div>
       )}
     </div>
@@ -145,6 +151,7 @@ export function PayrollsTab({
   hideFilters = false,
   title,
   eyebrow,
+  onSelectPayroll,
 }: Props) {
   const payrolls = usePayrolls(vault)
   const { labels } = usePayrollLabels(vault)
@@ -282,7 +289,7 @@ export function PayrollsTab({
         </p>
       ) : (
         <div className="employer-task-payroll-list">
-          {filteredRows.map((row, index) => (
+          {filteredRows.map((row) => (
             <Row
               key={row.id}
               vault={vault}
@@ -290,7 +297,7 @@ export function PayrollsTab({
               label={labels[row.id]}
               isHR={isHR}
               isFinance={isFinance}
-              defaultOpen={isFinance && (STATUS_NAMES[row.meta.status] ?? 'Draft') === 'Draft' && (filteredRows.length === 1 || index === 0)}
+              onSelect={() => onSelectPayroll?.(row.id)}
             />
           ))}
         </div>

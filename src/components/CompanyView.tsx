@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { useAccount } from 'wagmi'
-import type { Address } from 'viem'
+import type { Address, Hex } from 'viem'
 import {
   ArrowLeft,
   ListChecks,
@@ -14,6 +14,7 @@ import { shortAddress, usdc } from '@/lib/format'
 import { Card, Notice, Skeleton } from '@/components/ui'
 import { MyPayTab } from '@/components/MyPayTab'
 import { PayrollsTab } from '@/components/PayrollsTab'
+import { PayrollFundingDetailPage } from '@/components/PayrollFundingDetailPage'
 import { PrepareForm } from '@/components/PrepareForm'
 import { TeamTab } from '@/components/TeamTab'
 
@@ -31,6 +32,7 @@ export function CompanyView({ vault, portal }: Props) {
   const nowSec = useNowSeconds()
 
   const [isCreatingHR, setIsCreatingHR] = useState(false)
+  const [selectedFinancePayrollId, setSelectedFinancePayrollId] = useState<Hex | null>(null)
 
   const company = companies.data?.find((c) => c.vault.toLowerCase() === vault.toLowerCase())
 
@@ -74,6 +76,11 @@ export function CompanyView({ vault, portal }: Props) {
       totalCount: list.length,
     }
   }, [payrolls.data, nowSec])
+
+  const selectedFinancePayroll = useMemo(() => {
+    if (!selectedFinancePayrollId || !payrolls.data) return null
+    return payrolls.data.find((p) => p.id === selectedFinancePayrollId) ?? null
+  }, [selectedFinancePayrollId, payrolls.data])
 
   return (
     <div className="space-y-4">
@@ -168,7 +175,7 @@ export function CompanyView({ vault, portal }: Props) {
                   <PayrollsTab
                     vault={vault}
                     isHR={true}
-                    isFinance={roles.FINANCE || roles.ADMIN}
+                    isFinance={false}
                     initialFilter="all"
                   />
                 </main>
@@ -218,41 +225,55 @@ export function CompanyView({ vault, portal }: Props) {
         </div>
       ) : active === 'finance' ? (
         /* ═════════ FINANCE & TREASURY PORTAL ═════════ */
-        <div className="stack dashboard-shell dashboard-shell-employer employer-dashboard-premium employer-dashboard-redesign finance-dashboard-page">
-          <div className="employer-task-dashboard">
-            <section className="employer-task-hero">
-              <div className="employer-task-hero-copy">
-                <span className="employer-task-kicker">Finance</span>
-                <h1>
-                  Funding <span>queue</span>
-                </h1>
-                <p className="employer-task-hero-subtitle">
-                  Approve USDC and fund payroll runs after HR marks them ready.
-                </p>
-              </div>
-
-              <div className="employer-task-hero-metrics" aria-label="Funding summary">
-                <div className="employer-task-hero-metric">
-                  <span>Ready runs</span>
-                  <strong>{financeMetrics.readyCount}</strong>
+        selectedFinancePayroll ? (
+          <PayrollFundingDetailPage
+            vault={vault}
+            id={selectedFinancePayroll.id}
+            meta={selectedFinancePayroll.meta}
+            onBack={() => setSelectedFinancePayrollId(null)}
+            onFunded={() => {
+              void payrolls.refetch()
+              setSelectedFinancePayrollId(null)
+            }}
+          />
+        ) : (
+          <div className="stack dashboard-shell dashboard-shell-employer employer-dashboard-premium employer-dashboard-redesign finance-dashboard-page">
+            <div className="employer-task-dashboard">
+              <section className="employer-task-hero">
+                <div className="employer-task-hero-copy">
+                  <span className="employer-task-kicker">Finance</span>
+                  <h1>
+                    Funding <span>queue</span>
+                  </h1>
+                  <p className="employer-task-hero-subtitle">
+                    Approve USDC and fund payroll runs after HR marks them ready.
+                  </p>
                 </div>
-                <div className="employer-task-hero-metric">
-                  <span>Total required</span>
-                  <strong className="text-[#FE9E15]">{usdc(financeMetrics.readyTotal)} USDC</strong>
-                </div>
-              </div>
-            </section>
 
-            <main className="employer-task-main">
-              <PayrollsTab
-                vault={vault}
-                isHR={false}
-                isFinance={true}
-                initialFilter="draft"
-              />
-            </main>
+                <div className="employer-task-hero-metrics" aria-label="Funding summary">
+                  <div className="employer-task-hero-metric">
+                    <span>Ready runs</span>
+                    <strong>{financeMetrics.readyCount}</strong>
+                  </div>
+                  <div className="employer-task-hero-metric">
+                    <span>Total required</span>
+                    <strong className="text-[#FE9E15]">{usdc(financeMetrics.readyTotal)} USDC</strong>
+                  </div>
+                </div>
+              </section>
+
+              <main className="employer-task-main">
+                <PayrollsTab
+                  vault={vault}
+                  isHR={false}
+                  isFinance={true}
+                  initialFilter="draft"
+                  onSelectPayroll={setSelectedFinancePayrollId}
+                />
+              </main>
+            </div>
           </div>
-        </div>
+        )
       ) : active === 'institution' ? (
         /* ═════════ INSTITUTION & GOVERNANCE PORTAL ═════════ */
         <div className="stack dashboard-shell dashboard-shell-employer employer-dashboard-premium employer-dashboard-redesign template-detail-page institution-workspace-page">

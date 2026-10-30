@@ -68,7 +68,7 @@ export function FinalCta({ onLaunchApp }: { onLaunchApp: () => void }) {
                 variants={fadeUpVariant}
                 className="text-2xl font-bold leading-tight md:text-4xl lg:text-5xl max-[480px]:text-[26px]"
               >
-                Run your first private payroll.
+                Run your first onchain payroll.
                 <span className="block text-black/75">
                   Audited. Onchain. Instant.
                 </span>

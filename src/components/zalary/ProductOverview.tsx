@@ -13,25 +13,25 @@ import {
 const CARDS = [
   {
     id: 1,
-    title: 'Private Payroll',
+    title: 'Institutional Payroll',
     subtitle:
-      'Secure salary logic, confidential balances, and protected payroll execution without exposing sensitive operations publicly.',
+      'Non-custodial smart vaults, segregated maker-checker governance, and immutable batch execution for enterprise organizations.',
     image:
       '/assets/landing/ChatGPT_Image_Apr_25_2026_03_10_18_PM_2_wrk37z.png',
   },
   {
     id: 2,
-    title: 'Stable Deposit Flow',
+    title: 'Native USDC Settlement',
     subtitle:
-      'Stablecoin deposits move into a privacy-first payroll structure built for smooth funding, payroll runs, and employee claims.',
+      'Direct Circle USDC settlement on Arc Testnet ensuring zero price slippage, rapid confirmation, and low gas overhead.',
     image:
       '/assets/landing/ChatGPT_Image_Apr_25_2026_03_08_13_PM_rnob9m.png',
   },
   {
     id: 3,
-    title: 'Confidential Operations',
+    title: 'Maker-Checker Controls',
     subtitle:
-      'Balances remain protected while employers manage payroll schedules, employee setup, and automated execution flows.',
+      'Separation of duties: HR drafts rosters and allocations, while authorized Finance officers audit and fund the escrow.',
     image:
       '/assets/landing/ChatGPT_Image_Apr_25_2026_03_10_18_PM_4_qwh5d9.png',
   },
@@ -39,15 +39,15 @@ const CARDS = [
     id: 4,
     title: 'Employee Claims',
     subtitle:
-      'Employees discover claimable payroll runs, request payouts, track pending actions, and complete secure wallet withdrawals.',
+      'Employees discover claimable payroll runs, connect their Web3 wallet, and claim their earnings with a single on-chain transaction.',
     image:
       '/assets/landing/ChatGPT_Image_Apr_25_2026_03_10_18_PM_1_mmlxip.png',
   },
   {
     id: 5,
-    title: 'Email Notifications',
+    title: 'Treasury Reclaims',
     subtitle:
-      'Employees receive clear email updates when payroll is ready to claim, actions are pending, or payout status changes.',
+      'Automated expiration deadlines protect company funds, allowing seamless reclaim of expired balances back to company reserves.',
     image:
       '/assets/landing/ChatGPT_Image_May_29_2026_07_56_31_PM_iflszb.png',
   },
@@ -73,7 +73,7 @@ export function ProductOverview() {
             variants={fadeUpVariant}
             className="text-[22px] font-bold leading-[1.1] tracking-[-0.025em] text-white sm:text-[28px] md:text-[36px]"
           >
-            Confidential payroll infrastructure,
+            Institutional payroll infrastructure,
             <span className="block text-white/50">
               built for modern execution.
             </span>
@@ -83,8 +83,8 @@ export function ProductOverview() {
             variants={itemVariant}
             className="mt-4 max-w-[540px] text-[15px] leading-[1.7] text-white/45 md:text-[16px]"
           >
-            Designed for employers, employees, and privacy-first payroll
-            operations with wallet-native workflows.
+            Designed for institutional treasuries, HR teams, and global employees
+            with verifiable non-custodial smart vaults on Circle Arc.
           </motion.p>
         </motion.div>
 

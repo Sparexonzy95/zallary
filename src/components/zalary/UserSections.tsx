@@ -145,7 +145,7 @@ export function EmployerSection({ onLaunchApp }: { onLaunchApp: () => void }) {
       id="employers"
       bg="#101010"
       eyebrow="For employers"
-      title="Build payroll once. Run it repeatedly with privacy and control."
+      title="Build payroll once. Run it repeatedly with precision and control."
       subtitle="Maker-checker governance separating HR preparation from Finance funding."
       features={[
         'Create reusable company vaults on Arc Testnet',
@@ -169,7 +169,7 @@ export function EmployeeSection({ onLaunchApp }: { onLaunchApp: () => void }) {
       bg="#0c0c0c"
       reverse
       eyebrow="For employees"
-      title="Claim what is yours, without exposing what stays private."
+      title="Claim what is yours, securely and on your schedule."
       subtitle="Direct onchain salary claims paid in native USDC."
       features={[
         'View claimable payroll across all enrolled companies',
@@ -177,7 +177,7 @@ export function EmployeeSection({ onLaunchApp }: { onLaunchApp: () => void }) {
         'No intermediaries or custodial delays',
         'Real-time transaction confirmation and receipts',
         'Instant liquidity on Circle Arc Testnet',
-        'Complete privacy of personal payroll history',
+        'Historical claim audit trail and transparent onchain receipts',
       ]}
       cta="Continue as Employee"
       image={EMPLOYEE_IMAGE}
