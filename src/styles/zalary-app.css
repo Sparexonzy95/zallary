@@ -23601,3 +23601,176 @@ h2 {
   }
 }
 
+
+
+/* Responsive fixes */
+@media (max-width: 768px) {
+  /* Keep the Studio badge above the 60px bottom navigation */
+  .studio-watermark {
+    bottom: calc(72px + env(safe-area-inset-bottom, 0px)) !important;
+    right: 12px !important;
+  }
+}
+
+@media (max-width: 380px) {
+  /* Long action labels (e.g. "Register Institution") must fit narrow phones */
+  .employer-task-primary-action,
+  .employer-task-secondary-action {
+    padding-left: 0.6rem;
+    padding-right: 0.6rem;
+    letter-spacing: 0.01em;
+    font-size: 0.68rem;
+  }
+}
+
+/* Grid cards: children must be allowed to shrink so nothing pokes past the card edge */
+.employer-payroll-board,
+.employer-task-card {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.employer-payroll-board > *,
+.employer-task-card > * {
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* Lists and money values: shrink or wrap instead of overflowing or showing "..." */
+.employer-task-payroll-list {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.employer-task-payroll-list > * {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.employer-task-hero-metric strong {
+  min-width: 0;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere;
+  font-size: clamp(0.8rem, 4.6vw, 1.05rem);
+}
+
+/* Payroll rows: stack on phones so the copy wraps and actions never leave the card */
+@media (max-width: 520px) {
+  html body .employer-task-payroll-row.employer-task-payroll-row.employer-task-payroll-row {
+    grid-template-columns: minmax(0, 1fr) !important;
+    align-items: start !important;
+    gap: 0.6rem !important;
+  }
+
+  html body .employer-task-payroll-row > * {
+    grid-column: 1 / -1 !important;
+    grid-row: auto !important;
+    justify-self: stretch !important;
+  }
+
+  html body .employer-task-payroll-row .employer-task-row-copy {
+    display: grid !important;
+    width: 100% !important;
+    overflow: visible !important;
+  }
+
+  html body .employer-task-payroll-row .employer-task-row-copy strong,
+  html body .employer-task-payroll-row .employer-task-row-copy span {
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    overflow-wrap: anywhere;
+  }
+
+  html body .employer-task-payroll-row > div {
+    display: flex !important;
+    flex-wrap: wrap;
+    width: 100% !important;
+    min-width: 0;
+  }
+
+  html body .employer-task-payroll-row > div > .btn,
+  html body .employer-task-payroll-row > div > button {
+    flex: 1 1 8rem;
+    justify-content: center;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 380px) {
+  .employer-task-filters .filter-tab,
+  .filter-tabs .filter-tab {
+    letter-spacing: 0;
+    padding-left: 0.4rem;
+    padding-right: 0.4rem;
+    font-size: 0.66rem;
+  }
+}
+
+
+/* Payroll list rows (own classes so older overrides cannot break the mobile layout) */
+.zp-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 0.75rem 0.9rem;
+  min-height: 4.55rem;
+  min-width: 0;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  background: var(--surface-alternate);
+  color: inherit;
+  transition: border-color 0.14s ease, background 0.14s ease;
+}
+
+.zp-row:hover {
+  border-color: var(--border-hover);
+  background: var(--surface-elevated);
+}
+
+.zp-row-copy {
+  display: grid;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.zp-row-copy > strong {
+  color: var(--text-primary);
+  font-size: 0.96rem;
+  font-weight: 620;
+  overflow-wrap: anywhere;
+}
+
+.zp-row-copy > span {
+  color: var(--text-muted, #a1a1a1);
+  font-size: 0.78rem;
+  overflow-wrap: anywhere;
+}
+
+.zp-row-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+@media (max-width: 640px) {
+  .zp-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .zp-row-actions {
+    grid-column: 1 / -1;
+    justify-content: stretch;
+  }
+
+  .zp-row-actions > * {
+    flex: 1 1 8rem;
+    justify-content: center;
+    min-width: 0;
+    max-width: 100%;
+  }
+}

@@ -53,13 +53,13 @@ function Row({
   return (
     <div className="space-y-2">
       <div
-        className={`employer-task-payroll-row${isFinance ? ' cursor-pointer' : ''}`}
+        className={`zp-row${isFinance ? ' cursor-pointer' : ''}`}
         onClick={() => {
           if (isFinance) onSelect?.()
         }}
         title={isFinance ? (isDraft ? 'Click to review and fund' : 'Click to view audit details') : undefined}
       >
-        <span className="employer-task-row-copy">
+        <span className="zp-row-copy">
           <strong>{label ?? `Payroll Batch ${shortId(row.id)}`}</strong>
           <span>
             Deadline: {formatDate(row.meta.deadline)} · {usdc(row.meta.totalFunded)} USDC
@@ -69,7 +69,7 @@ function Row({
 
         <StatusBadge value={status} />
 
-        <div className="flex items-center gap-2">
+        <div className="zp-row-actions">
           {isDraft && isFinance && (
             <button
               type="button"
@@ -126,7 +126,7 @@ function Row({
             </button>
           )}
 
-          {!isFinance && !isDraft && (
+          {!isFinance && (status === 'Completed' || status === 'Funded') && (
             <span className="employer-task-view-link">
               {status === 'Completed' ? 'Settled' : 'Funded'}
             </span>
