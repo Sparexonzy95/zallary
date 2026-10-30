@@ -1,43 +1,21 @@
 import { useState, useMemo } from 'react'
 import {
+  ArrowRight,
   Building2,
-  ChevronRight,
   Plus,
   Search,
 } from 'lucide-react'
 import { useAccount } from 'wagmi'
 import { ConnectKitButton } from 'connectkit'
 import type { Address } from 'viem'
-import { useCompanies, type CompanyRow } from '@/hooks/data'
+import { useCompanies } from '@/hooks/data'
 import { FACTORY_ADDRESS } from '@/lib/deployments'
-import { ROLE_LABEL, type RoleKey } from '@/lib/roles'
 import { formatDate, shortAddress, usdc } from '@/lib/format'
 import { EmptyState, Notice, Skeleton } from '@/components/ui'
 
 interface Props {
   onOpen: (vault: Address) => void
   onCreate: () => void
-}
-
-function RoleBadges({ company }: { company: CompanyRow }) {
-  const keys = (Object.keys(company.roles) as RoleKey[]).filter((key) => company.roles[key])
-  return (
-    <div className="flex flex-wrap items-center gap-1.5">
-      {keys.map((key) => (
-        <span
-          key={key}
-          className={`status ${key === 'ADMIN' ? 'status-active' : 'status-funding_ready'}`}
-        >
-          {ROLE_LABEL[key]}
-        </span>
-      ))}
-      {company.claimable > 0n && (
-        <span className="status status-funded">
-          {usdc(company.claimable)} USDC claimable
-        </span>
-      )}
-    </div>
-  )
 }
 
 export function Home({ onOpen, onCreate }: Props) {
@@ -224,10 +202,8 @@ export function Home({ onOpen, onCreate }: Props) {
                       </span>
                     </span>
 
-                    <RoleBadges company={company} />
-
                     <span className="employer-task-view-link">Open Vault</span>
-                    <ChevronRight size={16} strokeWidth={2} />
+                    <ArrowRight size={16} strokeWidth={2} />
                   </button>
                 ))}
               </div>
