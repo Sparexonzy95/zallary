@@ -119,7 +119,7 @@ export function MyPayTab({ vault }: { vault: Address }) {
               <span>Ready Batches</span>
               <strong>{rows.length}</strong>
             </div>
-            <div className="employer-task-hero-metric">
+            <div className="employer-task-hero-metric col-span-2 sm:col-span-1">
               <span>Lifetime Claimed</span>
               <strong>{usdc(lifetime)} USDC</strong>
             </div>

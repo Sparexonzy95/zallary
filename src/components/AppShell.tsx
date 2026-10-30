@@ -23,6 +23,7 @@ const DASHBOARD_DECRYPT_DURATION_MS = 520
 export interface NavItem {
   key: string
   label: string
+  shortLabel?: string
   icon: LucideIcon
   active: boolean
   onSelect: () => void
@@ -296,15 +297,20 @@ export function AppShell({
           </button>
           <div className="flex items-center gap-2">
             <ConnectKitButton.Custom>
-              {({ isConnected: connected, show, truncatedAddress }) => (
+              {({ isConnected: connected, show }) => (
                 <button
                   type="button"
                   onClick={show}
-                  className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-[#161616] hover:bg-[#202020] px-3 py-1.5 text-xs font-mono font-medium text-white transition-colors cursor-pointer"
-                  title={connected ? "Connected wallet — click to view options" : "Connect wallet"}
+                  className={
+                    connected
+                      ? "size-9 rounded-full border border-white/10 bg-[#161616] hover:bg-[#202020] hover:border-[#FE9E15]/40 flex items-center justify-center text-[#FE9E15] transition-all cursor-pointer"
+                      : "inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-[#161616] hover:bg-[#202020] px-3 py-1.5 text-xs font-mono font-medium text-white transition-colors cursor-pointer"
+                  }
+                  title={connected ? (address ? `Connected: ${address}` : "Connected wallet — click to view options") : "Connect wallet"}
+                  aria-label={connected ? "Connected wallet" : "Connect wallet"}
                 >
-                  <WalletBoldIcon width={15} height={15} className="text-[#FE9E15]" />
-                  <span>{connected ? truncatedAddress : 'Connect'}</span>
+                  <WalletBoldIcon width={16} height={16} className="text-[#FE9E15]" />
+                  {!connected && <span>Connect</span>}
                 </button>
               )}
             </ConnectKitButton.Custom>
@@ -339,15 +345,20 @@ export function AppShell({
             )}
 
             <ConnectKitButton.Custom>
-              {({ isConnected: connected, show, truncatedAddress }) => (
+              {({ isConnected: connected, show }) => (
                 <button
                   type="button"
                   onClick={show}
-                  className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-[#161616] hover:bg-[#202020] hover:border-white/20 px-3.5 py-1.5 text-xs font-mono font-medium text-white transition-colors cursor-pointer"
-                  title={connected ? "Connected wallet — click to view options" : "Connect wallet"}
+                  className={
+                    connected
+                      ? "size-9 rounded-full border border-white/10 bg-[#161616] hover:bg-[#202020] hover:border-[#FE9E15]/40 flex items-center justify-center text-[#FE9E15] transition-all cursor-pointer"
+                      : "inline-flex items-center gap-2 rounded-full border border-white/10 bg-[#161616] hover:bg-[#202020] hover:border-white/20 px-3.5 py-1.5 text-xs font-mono font-medium text-white transition-colors cursor-pointer"
+                  }
+                  title={connected ? (address ? `Connected: ${address}` : "Connected wallet — click to view options") : "Connect wallet"}
+                  aria-label={connected ? "Connected wallet" : "Connect wallet"}
                 >
-                  <WalletBoldIcon width={16} height={16} className="text-[#FE9E15]" />
-                  <span>{connected ? truncatedAddress : 'Connect Wallet'}</span>
+                  <WalletBoldIcon width={17} height={17} className="text-[#FE9E15]" />
+                  {!connected && <span>Connect Wallet</span>}
                 </button>
               )}
             </ConnectKitButton.Custom>
@@ -357,6 +368,32 @@ export function AppShell({
         <main className="app-route-decrypt flex-1 overflow-y-auto px-4 py-6 sm:px-8 sm:py-8">
           <div className="mx-auto max-w-6xl">{children}</div>
         </main>
+
+        {/* ─── Flipit-Style Mobile Bottom Navigation Tabs (Strictly hidden on desktop via .mobile-nav) ─── */}
+        {nav.length > 0 && (
+          <nav className="mobile-nav" aria-label="Mobile Navigation">
+            {nav.map((item) => {
+              const Icon = item.icon
+              const active = item.active
+
+              return (
+                <button
+                  key={item.key}
+                  type="button"
+                  className={active ? 'active' : ''}
+                  onClick={() => {
+                    item.onSelect()
+                    setSidebarOpen(false)
+                  }}
+                  aria-current={active ? 'page' : undefined}
+                >
+                  <Icon size={18} strokeWidth={active ? 2.2 : 1.8} />
+                  <span>{item.shortLabel ?? item.label}</span>
+                </button>
+              )
+            })}
+          </nav>
+        )}
       </div>
     </div>
   )

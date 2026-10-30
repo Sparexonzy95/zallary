@@ -105,7 +105,7 @@ export function Hero({ onLaunchApp }: HeroProps) {
           initial={{ opacity: 0, x: 36 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.82, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
-          className="relative min-h-[340px] lg:min-h-[520px]"
+          className="relative min-h-[340px] lg:min-h-[520px] overflow-hidden"
         >
           <motion.div
             aria-hidden="true"

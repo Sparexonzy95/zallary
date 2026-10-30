@@ -252,18 +252,21 @@ export function PayrollsTab({
         </label>
 
         {!hideFilters && (
-          <div className="employer-payroll-filter-area employer-task-filter-area w-full overflow-x-auto overflow-y-hidden">
-            <div className="filter-tabs employer-payroll-filters employer-task-filters flex items-center gap-1.5 flex-nowrap w-max">
-              {filterTabs.map((option) => (
-                <button
-                  key={option.key}
-                  type="button"
-                  className={`filter-tab shrink-0 whitespace-nowrap${statusFilter === option.key ? ' active' : ''}`}
-                  onClick={() => setStatusFilter(option.key)}
-                >
-                  {option.label}
-                </button>
-              ))}
+          <div className="employer-payroll-filter-area employer-task-filter-area w-full sm:w-auto">
+            <div className="filter-tabs employer-payroll-filters employer-task-filters payroll-status-filter-tabs grid grid-cols-2 sm:flex sm:items-center gap-1.5 w-full sm:w-max">
+              {filterTabs.map((option, index) => {
+                const isOddLast = filterTabs.length % 2 === 1 && index === filterTabs.length - 1
+                return (
+                  <button
+                    key={option.key}
+                    type="button"
+                    className={`filter-tab shrink-0 w-full sm:w-auto justify-center text-center whitespace-nowrap${isOddLast ? ' col-span-2 sm:col-span-1' : ''}${statusFilter === option.key ? ' active' : ''}`}
+                    onClick={() => setStatusFilter(option.key)}
+                  >
+                    {option.label}
+                  </button>
+                )
+              })}
             </div>
           </div>
         )}

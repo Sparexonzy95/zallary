@@ -134,7 +134,7 @@ export function CompanyView({ vault, portal }: Props) {
                   <span>Total Batches</span>
                   <strong>{hrMetrics.batchCount}</strong>
                 </div>
-                <div className="employer-task-hero-metric">
+                <div className="employer-task-hero-metric col-span-2 sm:col-span-1">
                   <span>Active Drafts</span>
                   <strong>{hrMetrics.draftCount}</strong>
                 </div>

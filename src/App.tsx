@@ -124,6 +124,14 @@ export default function App() {
         ...PORTALS.filter((item) => canOpen(item, roles)).map((item) => ({
           key: item.key,
           label: item.label,
+          shortLabel:
+            item.key === 'institution'
+              ? 'Team'
+              : item.key === 'hr'
+              ? 'HR'
+              : item.key === 'finance'
+              ? 'Finance'
+              : 'My Pay',
           icon: item.icon,
           active: (route.portal ?? defaultPortal(roles)) === item.key,
           onSelect: () => go({ view: 'app', vault: route.vault, portal: item.key }),
@@ -131,6 +139,7 @@ export default function App() {
         {
           key: 'companies',
           label: 'Workspaces',
+          shortLabel: 'Workspaces',
           icon: Building2,
           active: false,
           onSelect: () => go({ view: 'app', vault: null, portal: null }),
@@ -140,6 +149,7 @@ export default function App() {
         {
           key: 'companies',
           label: 'Workspaces',
+          shortLabel: 'Workspaces',
           icon: Building2,
           active: route.view !== 'register',
           onSelect: () => go({ view: 'app', vault: null, portal: null }),
@@ -147,6 +157,7 @@ export default function App() {
         {
           key: 'create_company',
           label: 'Register Institution',
+          shortLabel: 'Register',
           icon: Plus,
           active: route.view === 'register',
           onSelect: () => go({ view: 'register', vault: null, portal: null }),
