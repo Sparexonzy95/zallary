@@ -297,15 +297,20 @@ export function AppShell({
           </button>
           <div className="flex items-center gap-2">
             <ConnectKitButton.Custom>
-              {({ isConnected: connected, show, truncatedAddress }) => (
+              {({ isConnected: connected, show }) => (
                 <button
                   type="button"
                   onClick={show}
-                  className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-[#161616] hover:bg-[#202020] px-3 py-1.5 text-xs font-mono font-medium text-white transition-colors cursor-pointer"
-                  title={connected ? "Connected wallet — click to view options" : "Connect wallet"}
+                  className={
+                    connected
+                      ? "size-9 rounded-full border border-white/10 bg-[#161616] hover:bg-[#202020] hover:border-[#FE9E15]/40 flex items-center justify-center text-[#FE9E15] transition-all cursor-pointer"
+                      : "inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-[#161616] hover:bg-[#202020] px-3 py-1.5 text-xs font-mono font-medium text-white transition-colors cursor-pointer"
+                  }
+                  title={connected ? (address ? `Connected: ${address}` : "Connected wallet — click to view options") : "Connect wallet"}
+                  aria-label={connected ? "Connected wallet" : "Connect wallet"}
                 >
-                  <WalletBoldIcon width={15} height={15} className="text-[#FE9E15]" />
-                  <span>{connected ? truncatedAddress : 'Connect'}</span>
+                  <WalletBoldIcon width={16} height={16} className="text-[#FE9E15]" />
+                  {!connected && <span>Connect</span>}
                 </button>
               )}
             </ConnectKitButton.Custom>
@@ -340,15 +345,20 @@ export function AppShell({
             )}
 
             <ConnectKitButton.Custom>
-              {({ isConnected: connected, show, truncatedAddress }) => (
+              {({ isConnected: connected, show }) => (
                 <button
                   type="button"
                   onClick={show}
-                  className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-[#161616] hover:bg-[#202020] hover:border-white/20 px-3.5 py-1.5 text-xs font-mono font-medium text-white transition-colors cursor-pointer"
-                  title={connected ? "Connected wallet — click to view options" : "Connect wallet"}
+                  className={
+                    connected
+                      ? "size-9 rounded-full border border-white/10 bg-[#161616] hover:bg-[#202020] hover:border-[#FE9E15]/40 flex items-center justify-center text-[#FE9E15] transition-all cursor-pointer"
+                      : "inline-flex items-center gap-2 rounded-full border border-white/10 bg-[#161616] hover:bg-[#202020] hover:border-white/20 px-3.5 py-1.5 text-xs font-mono font-medium text-white transition-colors cursor-pointer"
+                  }
+                  title={connected ? (address ? `Connected: ${address}` : "Connected wallet — click to view options") : "Connect wallet"}
+                  aria-label={connected ? "Connected wallet" : "Connect wallet"}
                 >
-                  <WalletBoldIcon width={16} height={16} className="text-[#FE9E15]" />
-                  <span>{connected ? truncatedAddress : 'Connect Wallet'}</span>
+                  <WalletBoldIcon width={17} height={17} className="text-[#FE9E15]" />
+                  {!connected && <span>Connect Wallet</span>}
                 </button>
               )}
             </ConnectKitButton.Custom>
