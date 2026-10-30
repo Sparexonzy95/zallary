@@ -23283,38 +23283,7 @@ h2 {
   color: rgba(255, 255, 255, 0.45) !important;
 }
 
-.employer-task-filter-area,
-.employer-payroll-filter-area {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: flex-start !important;
-  flex: 0 1 auto !important;
-  max-width: 100% !important;
-  overflow-x: auto !important;
-  overflow-y: hidden !important;
-  -webkit-overflow-scrolling: touch !important;
-  scrollbar-width: none !important;
-}
-
-.filter-tabs,
-.payroll-status-filter-tabs,
-.home-filter-tabs,
-.employer-payroll-filters,
-.employer-task-filters,
-.employer-dashboard-redesign .employer-task-filters.filter-tabs {
-  display: inline-flex !important;
-  flex-direction: row !important;
-  flex-wrap: nowrap !important;
-  align-items: center !important;
-  justify-content: flex-start !important;
-  gap: 6px !important;
-  width: max-content !important;
-  max-width: none !important;
-  background: transparent !important;
-  padding: 2px !important;
-  border: none !important;
-}
-
+/* Base Filter Tab Tokens & States */
 .filter-tab,
 .employer-payroll-filters .filter-tab,
 .employer-task-filters .filter-tab,
@@ -23324,7 +23293,6 @@ h2 {
   justify-content: center !important;
   white-space: nowrap !important;
   flex-shrink: 0 !important;
-  width: auto !important;
   min-height: 38px !important;
   padding: 6px 14px !important;
   border-radius: 8px !important;
@@ -23339,6 +23307,7 @@ h2 {
   background: rgba(255, 255, 255, 0.04) !important;
   color: rgba(255, 255, 255, 0.65) !important;
   transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease !important;
+  box-sizing: border-box !important;
 }
 
 .filter-tab:hover,
@@ -23357,5 +23326,228 @@ h2 {
   color: #FE9E15 !important;
   border-color: rgba(254, 158, 21, 0.35) !important;
   font-weight: 600 !important;
+}
+
+/* Strictly hide mobile nav tabs on desktop */
+.mobile-nav {
+  display: none !important;
+}
+
+/* Desktop Toolbar & Inline Filters (>= 769px) */
+@media (min-width: 769px) {
+  .employer-task-toolbar,
+  .employer-payroll-toolbar {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    flex-wrap: wrap !important;
+    gap: 0.75rem 1rem !important;
+    width: 100% !important;
+  }
+
+  .employer-task-filter-area,
+  .employer-payroll-filter-area {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    flex: 0 1 auto !important;
+    max-width: 100% !important;
+    overflow: visible !important;
+  }
+
+  .filter-tabs,
+  .payroll-status-filter-tabs,
+  .home-filter-tabs,
+  .employer-payroll-filters,
+  .employer-task-filters,
+  .employer-dashboard-redesign .employer-task-filters.filter-tabs {
+    display: inline-flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 6px !important;
+    width: max-content !important;
+    max-width: none !important;
+    background: transparent !important;
+    padding: 2px !important;
+    border: none !important;
+  }
+
+  .filter-tab {
+    width: auto !important;
+  }
+}
+
+/* Mobile Screens Toolbar, 2x2 Grid Status Filters & Flipit Bottom Tabs (<= 768px) */
+@media (max-width: 768px) {
+  .employer-task-toolbar,
+  .employer-payroll-toolbar {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    width: 100% !important;
+    margin-top: 0 !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .employer-task-search,
+  .employer-payroll-search {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    flex: 1 1 auto !important;
+  }
+
+  /* Zero horizontal scrollbar on mobile filter areas */
+  .employer-task-filter-area,
+  .employer-payroll-filter-area {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow: visible !important;
+    overflow-x: visible !important;
+    overflow-y: visible !important;
+    -webkit-overflow-scrolling: auto !important;
+    scrollbar-width: none !important;
+  }
+
+  .employer-task-filter-area::-webkit-scrollbar,
+  .employer-payroll-filter-area::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  /* HR and Finance Payroll Status Filters: Strict 2x2 Vertical Grid (No scrollbars!) */
+  .payroll-status-filter-tabs,
+  .employer-payroll-filter-area .filter-tabs:not(.home-filter-tabs) {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    gap: 8px !important;
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    box-sizing: border-box !important;
+  }
+
+  .payroll-status-filter-tabs .filter-tab,
+  .employer-payroll-filter-area .filter-tabs:not(.home-filter-tabs) .filter-tab {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    min-height: 38px !important;
+    height: 38px !important;
+    padding: 6px 8px !important;
+    box-sizing: border-box !important;
+    font-size: 11.5px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  /* Home Workspace Filters: 3-column Grid (All, Mine, Claimable) */
+  .home-filter-tabs {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    gap: 6px !important;
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    box-sizing: border-box !important;
+  }
+
+  .home-filter-tabs .filter-tab {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    min-height: 38px !important;
+    height: 38px !important;
+    padding: 6px 4px !important;
+    box-sizing: border-box !important;
+    font-size: 11.5px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  /* Flipit-Style Mobile Bottom Navigation Tabs */
+  .mobile-nav {
+    display: flex !important;
+    position: fixed !important;
+    inset: auto 0 0 !important;
+    height: 60px !important;
+    background: #111113 !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+    z-index: 50 !important;
+    justify-content: space-around !important;
+    align-items: center !important;
+    padding-bottom: env(safe-area-inset-bottom, 0px) !important;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5) !important;
+  }
+
+  .mobile-nav button {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 3px !important;
+    height: 100% !important;
+    background: transparent !important;
+    border: none !important;
+    color: rgba(255, 255, 255, 0.5) !important;
+    font-size: 10px !important;
+    font-weight: 500 !important;
+    cursor: pointer !important;
+    transition: color 0.15s ease !important;
+    padding: 4px 0 !important;
+    font-family: inherit !important;
+    min-width: 0 !important;
+  }
+
+  .mobile-nav button:hover {
+    color: rgba(255, 255, 255, 0.85) !important;
+  }
+
+  .mobile-nav button.active {
+    color: #FE9E15 !important;
+    font-weight: 600 !important;
+  }
+
+  .mobile-nav button.active svg {
+    color: #FE9E15 !important;
+    stroke: #FE9E15 !important;
+  }
+
+  .mobile-nav button span {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    max-width: 100% !important;
+    padding: 0 2px !important;
+  }
+
+  /* Content bottom clearance for mobile navigation bar */
+  .app-content,
+  .app-route-decrypt {
+    padding-bottom: calc(64px + env(safe-area-inset-bottom, 16px)) !important;
+  }
 }
 

@@ -23,6 +23,7 @@ const DASHBOARD_DECRYPT_DURATION_MS = 520
 export interface NavItem {
   key: string
   label: string
+  shortLabel?: string
   icon: LucideIcon
   active: boolean
   onSelect: () => void
@@ -357,6 +358,32 @@ export function AppShell({
         <main className="app-route-decrypt flex-1 overflow-y-auto px-4 py-6 sm:px-8 sm:py-8">
           <div className="mx-auto max-w-6xl">{children}</div>
         </main>
+
+        {/* ─── Flipit-Style Mobile Bottom Navigation Tabs (Strictly hidden on desktop via .mobile-nav) ─── */}
+        {nav.length > 0 && (
+          <nav className="mobile-nav" aria-label="Mobile Navigation">
+            {nav.map((item) => {
+              const Icon = item.icon
+              const active = item.active
+
+              return (
+                <button
+                  key={item.key}
+                  type="button"
+                  className={active ? 'active' : ''}
+                  onClick={() => {
+                    item.onSelect()
+                    setSidebarOpen(false)
+                  }}
+                  aria-current={active ? 'page' : undefined}
+                >
+                  <Icon size={18} strokeWidth={active ? 2.2 : 1.8} />
+                  <span>{item.shortLabel ?? item.label}</span>
+                </button>
+              )
+            })}
+          </nav>
+        )}
       </div>
     </div>
   )
