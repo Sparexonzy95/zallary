@@ -7,7 +7,8 @@ import {
 import { vaultAbi } from '@/abi/vaultAbi'
 import { CHAIN_ID, USDC_ADDRESS } from '@/lib/chain'
 import { bpsToPercent, shortAddress, usdc } from '@/lib/format'
-import { useNowSeconds, useSeparateApprover, type Payroll } from '@/hooks/data'
+import { ROLE } from '@/lib/roles'
+import { useNowSeconds, useRoles, useSeparateApprover, type Payroll } from '@/hooks/data'
 import { useTx } from '@/hooks/useTx'
 import { useAddFunds } from '@/lib/addFunds'
 import { Button, Notice, Skeleton } from '@/components/ui'
@@ -23,9 +24,11 @@ export function FundPanel({ vault, id, meta }: Props) {
   const { address } = useAccount()
   const approve = useTx()
   const addFunds = useAddFunds()
+  const grantFinance = useTx()
   const now = useNowSeconds()
   const separate = useSeparateApprover(vault)
   const fund = useTx()
+  const { roles } = useRoles(vault, address)
 
   const base = useReadContracts({
     allowFailure: false,
@@ -61,9 +64,11 @@ export function FundPanel({ vault, id, meta }: Props) {
     address !== undefined &&
     meta.createdByHR.toLowerCase() === address.toLowerCase()
   const expired = BigInt(now) >= meta.deadline
+  const isFinanceOfficer = roles.FINANCE
+  const isAdmin = roles.ADMIN
   const enoughBalance = balance >= charge
   const needsApproval = allowance < charge
-  const blocked = preparedByMe || expired
+  const blocked = preparedByMe || expired || !isFinanceOfficer
 
   return (
     <div className="employer-task-card template-detail-command-panel run-detail-command-panel p-5 sm:p-6 space-y-5 rounded-2xl bg-[#151515] border border-white/10">
@@ -121,6 +126,39 @@ export function FundPanel({ vault, id, meta }: Props) {
       </dl>
 
       {/* ─── Status Notices ─── */}
+      {!isFinanceOfficer && (
+        <Notice tone="warn">
+          {isAdmin ? (
+            <div className="space-y-2">
+              <p>
+                Your connected wallet is the <strong>Institution Admin</strong>, but has not yet been assigned the on-chain <strong>Finance Officer</strong> role required to execute treasury funding.
+              </p>
+              <Button
+                loading={grantFinance.busy}
+                className="btn btn-primary !min-h-9 text-xs font-semibold"
+                onClick={() =>
+                  address &&
+                  void grantFinance.run(
+                    (write) =>
+                      write({
+                        address: vault,
+                        abi: vaultAbi,
+                        functionName: 'grantRole',
+                        args: [ROLE.FINANCE, address],
+                      }),
+                    { success: 'Finance Officer role granted! You may now approve and fund.' },
+                  )
+                }
+              >
+                Assign Finance Role to My Wallet
+              </Button>
+            </div>
+          ) : (
+            'Your connected wallet does not hold the Finance Officer role required to fund payroll drafts.'
+          )}
+        </Notice>
+      )}
+
       {preparedByMe && (
         <Notice tone="warn">
           Self-approval is blocked: You drafted this payroll batch. Under company policy, a distinct Finance account must audit and execute funding.

@@ -168,7 +168,7 @@ export function CompanyView({ vault, portal }: Props) {
                   <PayrollsTab
                     vault={vault}
                     isHR={true}
-                    isFinance={roles.FINANCE}
+                    isFinance={roles.FINANCE || roles.ADMIN}
                     initialFilter="all"
                   />
                 </main>

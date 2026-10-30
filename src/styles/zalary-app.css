@@ -15481,7 +15481,7 @@ a.address-pill:hover {
 
 /* Desktop: hide New Payroll from hero — it lives in the sidebar */
 @media (min-width: 1101px) {
-  .employer-task-primary-action:not(.employer-sidebar-new-payroll) {
+  .employer-task-hero .employer-task-primary-action:not(.employer-sidebar-new-payroll) {
     display: none;
   }
 

@@ -140,7 +140,8 @@ export function MyPayTab({ vault }: { vault: Address }) {
                   { success: 'Salary transferred to your wallet!' },
                 )
               }
-              className="employer-task-primary-action !min-h-11 !px-5 font-semibold text-sm"
+              className="btn btn-primary !min-h-11 !px-5 font-semibold text-sm !inline-flex items-center gap-2"
+              style={{ display: 'inline-flex' }}
             >
               <ArrowDownLeft size={16} strokeWidth={2} />
               {claimAll.status === 'wallet'
@@ -225,7 +226,8 @@ export function MyPayTab({ vault }: { vault: Address }) {
                     <div className="flex items-center gap-2">
                       <button
                         type="button"
-                        className="employer-task-primary-action !min-h-8 !py-1 text-xs px-3 font-semibold"
+                        className="btn btn-primary !min-h-8 !py-1 text-xs !px-3 font-semibold !inline-flex items-center gap-1.5"
+                        style={{ display: 'inline-flex' }}
                         disabled={claimOne.busy}
                         onClick={() =>
                           void claimOne.run(

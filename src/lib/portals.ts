@@ -19,7 +19,8 @@ export const PORTALS: readonly PortalInfo[] = [
   { key: 'employee', label: 'Claim Salary', blurb: 'Inspect and claim your earned payouts', icon: CircleDollarSign },
 ]
 
-export const canOpen = (portal: PortalInfo, roles: Record<RoleKey, boolean>) => !portal.role || roles[portal.role]
+export const canOpen = (portal: PortalInfo, roles: Record<RoleKey, boolean>) =>
+  roles.ADMIN || !portal.role || Boolean(roles[portal.role])
 
 export const isPortal = (value: string | null): value is Portal => PORTALS.some((portal) => portal.key === value)
 

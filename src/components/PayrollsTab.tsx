@@ -31,14 +31,16 @@ function Row({
   label,
   isHR,
   isFinance,
+  defaultOpen = false,
 }: {
   vault: Address
   row: PayrollRow
   label?: string
   isHR: boolean
   isFinance: boolean
+  defaultOpen?: boolean
 }) {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(defaultOpen)
   const cancel = useTx()
   const status = STATUS_NAMES[row.meta.status] ?? 'Draft'
   const isDraft = status === 'Draft'
@@ -52,7 +54,13 @@ function Row({
 
   return (
     <div className="space-y-2">
-      <div className="employer-task-payroll-row">
+      <div
+        className={`employer-task-payroll-row${isDraft && isFinance ? ' cursor-pointer' : ''}`}
+        onClick={() => {
+          if (isDraft && isFinance) setOpen((v) => !v)
+        }}
+        title={isDraft && isFinance ? (open ? 'Click to collapse audit' : 'Click to review and fund') : undefined}
+      >
         <span className="employer-task-row-copy">
           <strong>{label ?? `Payroll Batch ${shortId(row.id)}`}</strong>
           <span>
@@ -67,8 +75,12 @@ function Row({
           {isDraft && isFinance && (
             <button
               type="button"
-              className="employer-task-primary-action !min-h-8 !py-1 text-xs px-3 font-semibold flex items-center gap-1.5"
-              onClick={() => setOpen((v) => !v)}
+              className="btn btn-primary !min-h-8 !py-1 text-xs !px-3 font-semibold !inline-flex items-center gap-1.5"
+              style={{ display: 'inline-flex' }}
+              onClick={(e) => {
+                e.stopPropagation()
+                setOpen((v) => !v)
+              }}
             >
               {open ? <ChevronUp size={14} /> : <CheckCircle2 size={14} />}
               <span>{open ? 'Close' : 'Review & Fund'}</span>
@@ -80,7 +92,8 @@ function Row({
               type="button"
               className="btn btn-danger !min-h-8 !py-1 text-xs px-2.5 font-semibold flex items-center gap-1"
               disabled={cancel.busy}
-              onClick={() =>
+              onClick={(e) => {
+                e.stopPropagation()
                 void cancel.run(
                   (write) =>
                     write({
@@ -93,7 +106,7 @@ function Row({
                     success: 'Payroll draft cancelled on-chain.',
                   },
                 )
-              }
+              }}
             >
               <XCircle size={14} />
               <span>Cancel</span>
@@ -269,7 +282,7 @@ export function PayrollsTab({
         </p>
       ) : (
         <div className="employer-task-payroll-list">
-          {filteredRows.map((row) => (
+          {filteredRows.map((row, index) => (
             <Row
               key={row.id}
               vault={vault}
@@ -277,6 +290,7 @@ export function PayrollsTab({
               label={labels[row.id]}
               isHR={isHR}
               isFinance={isFinance}
+              defaultOpen={isFinance && (STATUS_NAMES[row.meta.status] ?? 'Draft') === 'Draft' && (filteredRows.length === 1 || index === 0)}
             />
           ))}
         </div>
