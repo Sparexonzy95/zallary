@@ -16,6 +16,7 @@ import { MyPayTab } from '@/components/MyPayTab'
 import { PayrollsTab } from '@/components/PayrollsTab'
 import { PayrollFundingDetailPage } from '@/components/PayrollFundingDetailPage'
 import { PrepareForm } from '@/components/PrepareForm'
+import { PoliciesPanel } from '@/components/PoliciesPanel'
 import { TeamTab } from '@/components/TeamTab'
 
 interface Props {
@@ -301,6 +302,7 @@ export function CompanyView({ vault, portal }: Props) {
           <div className="template-detail-layout institution-workspace-layout">
             <main className="template-detail-main institution-workspace-main space-y-6">
               <TeamTab vault={vault} isAdmin={roles.ADMIN} />
+              <PoliciesPanel vault={vault} isAdmin={roles.ADMIN} />
             </main>
           </div>
         </div>
