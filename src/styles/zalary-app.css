@@ -22992,11 +22992,8 @@ textarea:focus {
     width: 100% !important;
     max-width: 100% !important;
     min-width: 0 !important;
-    overflow-x: auto !important;
-    overflow-y: hidden !important;
-    -webkit-overflow-scrolling: touch !important;
-    scrollbar-width: none !important;
-    padding-bottom: 3px !important;
+    overflow: visible !important;
+    padding-bottom: 2px !important;
   }
 
   .employer-task-filter-area::-webkit-scrollbar,
@@ -23004,23 +23001,31 @@ textarea:focus {
     display: none !important;
   }
 
-  .filter-tabs,
-  .employer-payroll-filters,
-  .employer-task-filters,
-  .employer-dashboard-redesign .employer-task-filters.filter-tabs {
-    display: inline-flex !important;
-    flex-direction: row !important;
-    flex-wrap: nowrap !important;
-    align-items: center !important;
-    justify-content: flex-start !important;
-    gap: 6px !important;
-    width: max-content !important;
-    max-width: none !important;
+  /* 2-column grid for HR and Finance status filters on mobile (2 by 2 / 2 by 3) */
+  .payroll-status-filter-tabs,
+  .employer-payroll-filter-area .filter-tabs:not(.home-filter-tabs) {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    width: 100% !important;
+    max-width: 100% !important;
     min-width: 0 !important;
+    gap: 6px !important;
     background: transparent !important;
-    padding: 2px !important;
+    padding: 2px 0 !important;
     border: none !important;
-    overflow: visible !important;
+  }
+
+  /* 3-column grid for Home workspace filters on mobile (3 by 1) */
+  .home-filter-tabs {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    gap: 6px !important;
+    background: transparent !important;
+    padding: 2px 0 !important;
+    border: none !important;
   }
 
   .filter-tab,
@@ -23030,16 +23035,21 @@ textarea:focus {
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
+    text-align: center !important;
     white-space: nowrap !important;
-    flex-shrink: 0 !important;
-    width: auto !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
     min-height: 38px !important;
-    padding: 6px 12px !important;
+    padding: 6px 8px !important;
     border-radius: 8px !important;
-    font-size: 12px !important;
+    font-size: 11.5px !important;
+    letter-spacing: 0.02em !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
     background: rgba(255, 255, 255, 0.04) !important;
     color: rgba(255, 255, 255, 0.65) !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
   }
 
   .employer-payroll-filter-trigger {
@@ -23287,6 +23297,8 @@ h2 {
 }
 
 .filter-tabs,
+.payroll-status-filter-tabs,
+.home-filter-tabs,
 .employer-payroll-filters,
 .employer-task-filters,
 .employer-dashboard-redesign .employer-task-filters.filter-tabs {

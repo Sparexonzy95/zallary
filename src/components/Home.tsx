@@ -144,13 +144,13 @@ export function Home({ onOpen, onCreate }: Props) {
                 />
               </label>
 
-              <div className="employer-payroll-filter-area employer-task-filter-area w-full sm:w-auto overflow-x-auto overflow-y-hidden">
-                <div className="filter-tabs employer-payroll-filters employer-task-filters flex items-center gap-1.5 flex-nowrap w-max">
+              <div className="employer-payroll-filter-area employer-task-filter-area w-full sm:w-auto">
+                <div className="filter-tabs employer-payroll-filters employer-task-filters home-filter-tabs grid grid-cols-3 sm:flex sm:items-center gap-1.5 w-full sm:w-max">
                   {filterOptions.map((option) => (
                     <button
                       key={option.value}
                       type="button"
-                      className={`filter-tab shrink-0 whitespace-nowrap${filter === option.value ? ' active' : ''}`}
+                      className={`filter-tab shrink-0 w-full sm:w-auto justify-center text-center whitespace-nowrap${filter === option.value ? ' active' : ''}`}
                       onClick={() => setFilter(option.value)}
                     >
                       {option.label}
